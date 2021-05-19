@@ -1,24 +1,26 @@
 function isEqual(pixelArt, pixelPic) {
   //Get the value type
   let type = Object.prototype.toString.call(pixelArt);
+  let result = 0;
 
-  //If the two objects are not the same type return false
-  if (type !== Object.prototype.toString.call(pixelPic)) {
-    console.log('Not same type');
-    return false;
-  }
+  //   //If the two objects are not the same type return false
+  //   if (type !== Object.prototype.toString.call(pixelPic)) {
+  //     console.log('Not same type');
+  //     return false;
+  //   }
 
-  // If items are not an object or array, return false
-  if (['[object Array]', '[object Object]'].indexOf(type) < 0) {
-    console.log('Not an array or object');
-    return false;
-  }
+  //   // If items are not an object or array, return false
+  //   if (['[object Array]', '[object Object]'].indexOf(type) < 0) {
+  //     console.log('Not an array or object');
+  //     return false;
+  //   }
 
   // Compare the length of the length of the two items
   let pixelArtLen =
     type === '[object Array]' ? pixelArt.length : Object.keys(pixelArt).length;
   let pixelPicLen =
     type === '[object Array]' ? pixelPic.length : Object.keys(pixelPic).length;
+
   if (pixelArtLen !== pixelPicLen) {
     console.log('Not same length');
     return false;
@@ -28,6 +30,8 @@ function isEqual(pixelArt, pixelPic) {
   function compare(item1, item2) {
     // Get the object type
     let itemType = Object.prototype.toString.call(item1);
+
+    console.log(itemType);
 
     // If an object or array, compare recursively
     if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
@@ -43,17 +47,22 @@ function isEqual(pixelArt, pixelPic) {
         console.log('Items are not the same type');
         return false;
       }
+      //   result++;
 
-      // Else if it's a function, convert to a string and compare
-      // Otherwise, just compare
-      if (itemType === '[object Function]') {
-        if (item1.toString() !== item2.toString()) return false;
-      } else {
-        if (item1 !== item2) return false;
-      }
+      //   // Else if it's a function, convert to a string and compare
+      //   // Otherwise, just compare
+      //   if (itemType === '[object Function]') {
+      //     if (item1.toString() !== item2.toString()) return false;
+      //   } else {
+      //     if (item1 !== item2) return false;
+      //   }
     }
+
+    result++;
+    console.log(result);
   }
 
+  //   let result = 0;
   // Compare properties
   if (type === '[object Array]') {
     for (let i = 0; i < pixelArtLen; i++) {
@@ -64,11 +73,13 @@ function isEqual(pixelArt, pixelPic) {
       if (pixelArt.hasOwnProperty(key)) {
         if (compare(pixelArt[key], pixelPic[key]) === false) return false;
       }
+      //   result++;
+      //   console.log(result);
     }
   }
 
   //If nothing failed, return true
-  return true;
+  return (result / 100) * 9;
 }
 
 function comparePixelArts(arrOne, arrTwo) {
@@ -78,6 +89,7 @@ function comparePixelArts(arrOne, arrTwo) {
     return false;
   }
 }
+
 const createdPixels = [
   ['b', 'y', 'b'],
   ['r', 'g', 'b'],
@@ -90,5 +102,5 @@ const originalPixels = [
   ['b', 'r', 'r'],
 ];
 
-// console.log(isEqual(createdPixels, originalPixels));
-console.log(comparePixelArts(createdPixels, originalPixels));
+console.log(isEqual(createdPixels, originalPixels));
+// console.log(comparePixelArts(createdPixels, originalPixels));
