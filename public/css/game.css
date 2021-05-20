@@ -1,3 +1,77 @@
+html,
+body {
+  line-height: 1.4;
+  box-sizing: border-box;
+  margin: 0px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.root {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+}
+
+#paintContainer {
+  width: 38%;
+  background-color: #ffef62;
+}
+#gameContainer {
+  width: 38%;
+  background-color: #fff6a1;
+}
+
+#chatContainer {
+  width: 26%;
+  background-color: #fff9c0;
+}
+
+h2 {
+  width: 85%;
+  margin: 10px auto;
+}
+
+.column-container {
+  width: 85%;
+  margin: auto;
+}
+
+.canvas-control {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+#canvas,
+#facit {
+  background-color: white;
+  width: 100%;
+  min-height: 300px;
+  height: 60vh;
+}
+
+.canvasBtn {
+  padding: 7px;
+  margin: 10px;
+  border: none;
+  outline: none;
+  background-color: #fdfade;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.canvasBtn:hover {
+  background-color: #c7c4a7;
+}
+
 .dropbtn {
   background-color: #fff9c0;
   border: none;
@@ -50,12 +124,11 @@ a {
   border: 0;
   font-size: 17px;
   width: 30%;
-
-  &:hover {
-    background: #ffd000;
-  }
 }
 
+.btn:hover {
+  background: #ffd000;
+}
 /* Chat Page */
 
 .chat-messages {
@@ -66,21 +139,21 @@ a {
 }
 
 .chat-messages .message {
-  padding: 10px;
-  margin-bottom: 15px;
-  background-color: gray;
+  padding: 5px;
+  margin: 5px;
+  background-color: #ffef62;
   border-radius: 5px;
 }
 
-.chat-messages .message .meta {
+.chat-messages .message-info {
   font-size: 15px;
   font-weight: bold;
-  color: #ffe602;
+  color: #3a371a;
   opacity: 0.7;
-  margin-bottom: 7px;
+  margin-bottom: 20px;
 }
 
-.chat-messages .message .meta span {
+.chat-messages .message-info span {
   color: orange;
 }
 
