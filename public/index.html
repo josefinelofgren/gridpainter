@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <title>Gridpainter</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <div id="root">
+    <div class="container" id="startContainer">
+      <header id="startHeader"></header>
+      <div id="startMain">
+        <form action="game.html">
+          <div class="form-control">
+            <label class="input-label" for="inputUsername">Username</label>
+            <input type="text" name="username" id="inputUsername" placeholder="Enter username.." required/>
+          </div>
+          <div class="form-control">
+            <!-- <label class="input-label" for="inputRoom">Color</label>
+            <select name="color" id="color">
+              <option value="One"></option>
+              <option value="Two"></option>
+              <option value="Three"></option>
+            </select> -->
+          </div>
+          <button class="btn" type="submit">Join game</button>
+        </form>
+      </div>
+  </div>
+
+
+  <script src="socket.io/socket.io.js"></script>
+  <script src="javascripts/main.js"></script>
+</body>
+
+</html>
