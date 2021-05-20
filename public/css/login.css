@@ -1,22 +1,22 @@
 /* Join Page */
 .join-container {
   font-family: 'Roboto', sans-serif;
-  max-width: 500px;
+  max-width: 450px;
   margin: 80px auto;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 
 .join-header {
   text-align: center;
   padding: 20px;
-  background: rgb(255, 213, 25);
+  background: #ffef62;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
 
 .join-main {
   padding: 30px 40px;
-  background: rgb(255, 174, 0);
+  background: #fff6a1;
   border-radius: 0px 0px 5px 5px;
 }
 
@@ -28,9 +28,10 @@
   margin-bottom: 20px;
 }
 
-.join-main label {
+.input-label {
   display: block;
   margin-bottom: 5px;
+  font-size: 16px;
 }
 
 .join-main input[type='text'] {
@@ -50,4 +51,16 @@
 .join-main .btn {
   margin-top: 20px;
   width: 100%;
+  cursor: pointer;
+  padding: 5px 10px;
+  background: #ffe602;
+  color: black;
+  border-radius: 5px;
+  border: 0;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background: #ffdf29;
 }
