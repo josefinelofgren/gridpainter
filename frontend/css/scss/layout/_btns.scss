@@ -1,0 +1,13 @@
+.canvasBtn {
+  padding: 7px;
+  margin: 10px;
+  border: none;
+  outline: none;
+  background-color: #fdfade;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #c7c4a7;
+  }
+}

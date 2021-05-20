@@ -1,0 +1,101 @@
+.dropbtn {
+  background-color: #fff9c0;
+  border: none;
+  outline: none;
+}
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 5px 10px;
+  background: #ffe602;
+  color: black;
+  border-radius: 0px 7px 7px 0px;
+  border: 0;
+  font-size: 17px;
+  width: 30%;
+
+  &:hover {
+    background: #ffd000;
+  }
+}
+
+/* Chat Page */
+
+.chat-messages {
+  height: 80vh;
+  background-color: white;
+  max-height: 700px;
+  overflow-y: scroll;
+}
+
+.chat-messages .message {
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: gray;
+  border-radius: 5px;
+}
+
+.chat-messages .message .meta {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffe602;
+  opacity: 0.7;
+  margin-bottom: 7px;
+}
+
+.chat-messages .message .meta span {
+  color: orange;
+}
+
+.chat-form-container {
+  padding: 10px 0px;
+}
+
+.chat-form-container form {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.chat-form-container input[type='text'] {
+  font-size: 16px;
+  padding: 5px;
+  height: 40px;
+  width: 70%;
+}
