@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Gridpainter</title>
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
@@ -13,28 +13,30 @@
         <h1>Welcome to Pixel-art</h1>
       </header>
       <main class="join-main">
-        <form action="chat.html">
+        <form action="game.html">
           <div class="form-control">
-            <label for="username">Username</label>
+            <label class="input-label" for="inputUsername">Username</label>
             <input
               type="text"
               name="username"
-              id="username"
+              id="inputUsername"
               placeholder="Enter username..."
               required
             />
           </div>
           <div class="form-control">
-            <label for="color">Pic a color</label>
+            <!-- <label for="color">Pic a color</label>
             <select name="color" id="color">
               <option value="Pink">Pink</option>
               <option value="Green">Green</option>
               <option value="Blue">Blue</option>
-            </select>
+            </select> -->
           </div>
-          <button type="submit" class="btn">Join Pixel-Art</button>
+          <button type="submit" class="btn">Join game</button>
         </form>
       </main>
     </section>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="javascripts/main.js"></script>
   </body>
 </html>
