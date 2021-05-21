@@ -1,34 +1,3 @@
-const logInTemplate = `
-    <section class="join-container">
-        <header class="join-header">
-            <h1>Welcome to Pixel-art</h1>
-        </header>
-        <main class="join-main">
-            <form action="chat.html">
-                <div class="form-control">
-                <label for="username">Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    placeholder="Enter username..."
-                    required
-                />
-                </div>
-                <div class="form-control">
-                    <label for="color">Pic a color</label>
-                    <select name="color" id="color">
-                        <option value="Pink">Pink</option>
-                        <option value="Green">Green</option>
-                        <option value="Blue">Blue</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn">Join Pixel-Art</button>
-            </form>
-        </main>
-    </section>
-`;
-
 const paintTemplate = `
 <section id="paintContainer">
 <h2 class="column-title">Paint</h2>
@@ -78,9 +47,9 @@ const gameTemplate = `
 `;
 
 const extraGameBtn = `
-    <button id="doneBtn">Done
-        <i class="fas fa-check-circle"></i>
-    </button>
+  <button id="doneBtn" class="canvas-btn">
+    <i class="fas fa-check-circle"></i>Done
+  </button>  
 `;
 
 const waitingTemplate = `
@@ -117,3 +86,8 @@ function renderTemplates(element, template) {
 function addTemplate(element, template) {
   element.insertAdjacentHTML('afterbegin', template);
 }
+function test() {
+  console.log('test msjs');
+};
+
+export {test}
