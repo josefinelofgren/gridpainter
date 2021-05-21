@@ -1,9 +1,9 @@
-import {test} from "./modules/templates.mjs";
+import { test } from './modules/templates.mjs';
+import { findRandomPic } from './modules/play.mjs';
 
 //////////////////////////
 
-
-const facitGrid = document.querySelector('#facit');
+// const facitGrid = document.querySelector('#facit');
 const canvasGrid = document.querySelector('#canvas');
 const paint = document.querySelector('#paint');
 const erase = document.querySelector('#erase');
@@ -11,42 +11,40 @@ const save = document.querySelector('#save');
 // const reprint = document.getElementById("reprint");
 const saveArray = document.querySelector('#saveArray');
 const printSavedPics = document.querySelector('#optionsBtn');
-const printListContainer = document.getElementById("printList");
 
 //array of random pic-arrays
 const randomPics = [
-    [
-        {name: "facit", id: "row1cell1", color: "purple"}, 
-        {name: "facit", id: "row1cell2", color: "purple"}, 
-        {name: "facit", id: "row2cell1", color: null},
-        {name: "facit", id: "row2cell2", color: null}
-    ],
-    [
-        {name: "facit", id: "row1cell1", color: "green"}, 
-        {name: "facit", id: "row1cell2", color: "green"}, 
-        {name: "facit", id: "row2cell1", color: "black"},
-        {name: "facit", id: "row2cell2", color: "green"}
-    ],
-    [
-        {name: "facit", id: "row1cell1", color: "blue"}, 
-        {name: "facit", id: "row1cell2", color: "green"}, 
-        {name: "facit", id: "row2cell1", color: "orange"},
-        {name: "facit", id: "row2cell2", color: "green"}
-    ],
-    [
-        {name: "facit", id: "row1cell1", color: "blue"}, 
-        {name: "facit", id: "row1cell2", color: "green"}, 
-        {name: "facit", id: "row2cell1", color: "orange"},
-        {name: "facit", id: "row2cell2", color: "pink"}
-    ],
-    [
-        {name: "facit", id: "row1cell1", color: "blue"}, 
-        {name: "facit", id: "row1cell2", color: "green"}, 
-        {name: "facit", id: "row2cell1", color: "red"},
-        {name: "facit", id: "row2cell2", color: "red"}
-    ]
+  [
+    { name: 'facit', id: 'row1cell1', color: 'purple' },
+    { name: 'facit', id: 'row1cell2', color: 'purple' },
+    { name: 'facit', id: 'row2cell1', color: null },
+    { name: 'facit', id: 'row2cell2', color: null },
+  ],
+  [
+    { name: 'facit', id: 'row1cell1', color: 'green' },
+    { name: 'facit', id: 'row1cell2', color: 'green' },
+    { name: 'facit', id: 'row2cell1', color: 'black' },
+    { name: 'facit', id: 'row2cell2', color: 'green' },
+  ],
+  [
+    { name: 'facit', id: 'row1cell1', color: 'blue' },
+    { name: 'facit', id: 'row1cell2', color: 'green' },
+    { name: 'facit', id: 'row2cell1', color: 'orange' },
+    { name: 'facit', id: 'row2cell2', color: 'green' },
+  ],
+  [
+    { name: 'facit', id: 'row1cell1', color: 'blue' },
+    { name: 'facit', id: 'row1cell2', color: 'green' },
+    { name: 'facit', id: 'row2cell1', color: 'orange' },
+    { name: 'facit', id: 'row2cell2', color: 'pink' },
+  ],
+  [
+    { name: 'facit', id: 'row1cell1', color: 'blue' },
+    { name: 'facit', id: 'row1cell2', color: 'green' },
+    { name: 'facit', id: 'row2cell1', color: 'red' },
+    { name: 'facit', id: 'row2cell2', color: 'red' },
+  ],
 ];
-
 
 //user color
 let userColor;
@@ -63,241 +61,207 @@ let facit;
 //on click "play"
 document.getElementById('playBtn').addEventListener('click', () => {
   //find random image to copy
-  findRandomPic(randomPics);
+  findRandomPic(randomPics, facit);
 
-//print timer stuff inid =  gameInfo
+  //print timer stuff inid =  gameInfo
 
   // pause();
   // cron = setInterval(() => {
   //   timer();
   // }, 10);
 
-  // const temp? = `  
+  // const temp? = `
   // <span id="hour">00</span>:<span id="minute">00</span>:<span
   // id="second"
   // >00</span
   // >`;
 
   //when timer has ended run compare
-    //print % accurate
-    compare(facit, drawnPic);
-
+  //print % accurate
+  compare(facit, drawnPic);
 });
 
+// //find random pic function
+// function findRandomPic(randomPics) {
 
-//find random pic function
-function findRandomPic(randomPics) {
+//     let index = Math.floor(Math.random() * 5); //generate random number 0-5
+//     facit = [...randomPics[index]]; //user random number as index
+//     printImage(facitGrid, facit, 2, 2);
 
-    let index = Math.floor(Math.random() * 5); //generate random number 0-5
-    facit = [...randomPics[index]]; //user random number as index
-    printImage(facitGrid, facit, 2, 2);  
-
-};
-
+// };
 
 //generate grid/canvas
 createGrid(canvasGrid, 2, 2);
 
 //genereate a grid structure
 function createGrid(pixelCanvas, gridHeight, gridWidth) {
- 
-    // Creates rows 
-    for (let row = 1; row <= gridHeight; row++) {
-        
-        let gridRow = document.createElement('tr');
-        gridRow.id = "canvas" + row; 
-        pixelCanvas.appendChild(gridRow);
+  // Creates rows
+  for (let row = 1; row <= gridHeight; row++) {
+    let gridRow = document.createElement('tr');
+    gridRow.id = 'canvas' + row;
+    pixelCanvas.appendChild(gridRow);
 
-        //create cells
-        for (let cell = 1; cell <= gridWidth; cell++) {
-            
-            let gridCell = document.createElement('td');
-            gridCell.id = "row" + row + "cell" + cell;
-            gridRow.appendChild(gridCell);
+    //create cells
+    for (let cell = 1; cell <= gridWidth; cell++) {
+      let gridCell = document.createElement('td');
+      gridCell.id = 'row' + row + 'cell' + cell;
+      gridRow.appendChild(gridCell);
 
-            //push cell id and color to array
-            if(gridRow.id.includes("canvas")) {
-              savedPic.push({name: "canvas", id: gridCell.id, color: null});  
-            };
-        };
-    };
-};
+      //push cell id and color to array
+      if (gridRow.id.includes('canvas')) {
+        savedPic.push({ name: 'canvas', id: gridCell.id, color: null });
+      }
+    }
+  }
+}
 
 //pain
-paint.addEventListener('click', () =>  userColor = "purple" );
+paint.addEventListener('click', () => (userColor = 'purple'));
 
-//erase 
-erase.addEventListener('click', () => userColor = null);
+//erase
+erase.addEventListener('click', () => (userColor = null));
 
 //save drawn pic
-save.addEventListener("click", () => {
+save.addEventListener('click', () => {
+  //get string from input
+  let picName = saveArray.value;
+  // give new array name from input
+  let drawnPic = saveArray.value;
 
-    //get string from input
-    let picName = saveArray.value;
-    // give new array name from input
-    let drawnPic = saveArray.value;
-   
-    //spread array
-    drawnPic = [...savedPic];
-    //empty savedPic array
-    savedPic = [];
+  //spread array
+  drawnPic = [...savedPic];
+  //empty savedPic array
+  savedPic = [];
 
-    //push to array with all saved pics
-    allDrawnPics.push(drawnPic)
-    //empty drawn pic?? 
+  //push to array with all saved pics
+  allDrawnPics.push(drawnPic);
+  //empty drawn pic??
 
-    //repace "canvas" in name with input value
-    for (let obj in drawnPic) {
-        let newName = drawnPic[obj].name.replace("canvas", saveArray.value)
-        drawnPic[obj].name = newName;
-    };
+  //repace "canvas" in name with input value
+  for (let obj in drawnPic) {
+    let newName = drawnPic[obj].name.replace('canvas', saveArray.value);
+    drawnPic[obj].name = newName;
+  }
 
-    
-    //reprint the image (temporarily placed here)
-    //printImage(canvasGrid, drawnPic, 2, 2);
-
-
+  //reprint the image (temporarily placed here)
+  //printImage(canvasGrid, drawnPic, 2, 2);
 });
 
 //se saved images
-printSavedPics.addEventListener("click", ({target}) => {
+printSavedPics.addEventListener('click', ({ target }) => {
+  for (let index in allDrawnPics) {
+    printSavedPics.insertAdjacentHTML(
+      'beforeend',
+      `
+        <option id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</option>`
+    );
 
-    for (let index in allDrawnPics) {
- 
-        printSavedPics.insertAdjacentHTML("beforeend", `
-        <option id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</option>`);
+    //need this if there are more obj in array? :
 
-        //need this if there are more obj in array? :
-        
-        // for (let pic in allDrawnPics[index]) {
-        //     console.log('pic', allDrawnPics[index][pic].name);
-        //     printListContainer.insertAdjacentHTML("beforeend", `<li id="${allDrawnPics[index][pic].name}">${allDrawnPics[index][pic].name}</li>`)
-        // }
-    }; 
-    
-    //find index of target array in allDrawnPics 
-    if(target.id !== "optionsBtn") {
-        
-        let index = allDrawnPics.findIndex( (arr) => arr[0].name === target.id );
-   
-        //find array to print by index
-        let printArray = allDrawnPics[index];
-        //when resave pic make sure to either splice? or push to array (no duplicates!)
-        printImage(canvasGrid, printArray, 2, 2);
-    };
-    
+    // for (let pic in allDrawnPics[index]) {
+    //     console.log('pic', allDrawnPics[index][pic].name);
+    //     printListContainer.insertAdjacentHTML("beforeend", `<li id="${allDrawnPics[index][pic].name}">${allDrawnPics[index][pic].name}</li>`)
+    // }
+  }
+
+  //find index of target array in allDrawnPics
+  if (target.id !== 'optionsBtn') {
+    let index = allDrawnPics.findIndex((arr) => arr[0].name === target.id);
+
+    //find array to print by index
+    let printArray = allDrawnPics[index];
+    //when resave pic make sure to either splice? or push to array (no duplicates!)
+    printImage(canvasGrid, printArray, 2, 2);
+  }
 });
 
-
-//print selected image/facit 
+//print selected image/facit
 function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
-    
-    //canvas.innerHTML = "";
+  //canvas.innerHTML = "";
 
-    // creates rows 
-    for (let row = 1; row <= gridHeight; row++) {
-        
-        let gridRow = document.createElement('tr');
-        gridRow.id = "row" + row; 
-        gridRow.name = drawnPic[0].name;
-        canvasGrid.appendChild(gridRow);
+  // creates rows
+  for (let row = 1; row <= gridHeight; row++) {
+    let gridRow = document.createElement('tr');
+    gridRow.id = 'row' + row;
+    gridRow.name = drawnPic[0].name;
+    canvasGrid.appendChild(gridRow);
 
-        //create cells
-        for (let cell = 1; cell <= gridWidth; cell++) {
-            
-            let gridCell = document.createElement('td');
-            gridCell.id = gridRow.id + "cell" + cell;
-            gridRow.appendChild(gridCell);
+    //create cells
+    for (let cell = 1; cell <= gridWidth; cell++) {
+      let gridCell = document.createElement('td');
+      gridCell.id = gridRow.id + 'cell' + cell;
+      gridRow.appendChild(gridCell);
 
-            //find saved pics background color 
-            const foundCell = drawnPic.find( ({ id }) => id === gridCell.id );
+      //find saved pics background color
+      const foundCell = drawnPic.find(({ id }) => id === gridCell.id);
 
-            //apply color to new grid cell
-            gridCell.style.backgroundColor = foundCell.color;
-         
-        };
-    };
-};
-
+      //apply color to new grid cell
+      gridCell.style.backgroundColor = foundCell.color;
+    }
+  }
+}
 
 //compare images accuracy
-function compare (picToCopy, drawnPic) {
+function compare(picToCopy, drawnPic) {
+  let x = 0;
 
-    let x = 0;
-    
-    //loop through picToCopy
-    for (let obj in picToCopy) {
-      
-        //find obj in createdGrid through id
-        const foundObj = drawnPic.find( ({ id } ) => id === picToCopy[obj].id );
-     
-        //if picToCopy color == equivilant cell in createdGrid
-        if(picToCopy[obj].color === foundObj.color) x++; //add +1 to every equal
+  //loop through picToCopy
+  for (let obj in picToCopy) {
+    //find obj in createdGrid through id
+    const foundObj = drawnPic.find(({ id }) => id === picToCopy[obj].id);
 
-    };
+    //if picToCopy color == equivilant cell in createdGrid
+    if (picToCopy[obj].color === foundObj.color) x++; //add +1 to every equal
+  }
 
-    //print in right place later = % accuracy of picture
-    //print in id gameInfo
-    console.log(drawnPic[0].name + " is " + x / picToCopy.length * 100 + "% right");
-};
-
+  //print in right place later = % accuracy of picture
+  //print in id gameInfo
+  console.log(
+    drawnPic[0].name + ' is ' + (x / picToCopy.length) * 100 + '% right'
+  );
+}
 
 ///////////////////// MOUSE BEHAVIOUR ///////////////////
 //declare down as false before mousedown so mouseover does not pain
 let down = false;
 
 // mousedown => down = true
-canvas.addEventListener('mousedown', ({target}) => {
-    
-    //after mousedown => down == true so mouseover does pain
-    down = true;
+canvas.addEventListener('mousedown', ({ target }) => {
+  //after mousedown => down == true so mouseover does pain
+  down = true;
 
-    //mouseup => down = false
-    canvas.addEventListener('mouseup', () => down = false);
+  //mouseup => down = false
+  canvas.addEventListener('mouseup', () => (down = false));
 
-    //if mouse down and leaving grid => down = false
-    canvas.addEventListener('mouseleave', () => down = false);
-    
-    //colorCell on mousedown
-    colorCell(target, userColor);
-   
+  //if mouse down and leaving grid => down = false
+  canvas.addEventListener('mouseleave', () => (down = false));
+
+  //colorCell on mousedown
+  colorCell(target, userColor);
 });
 
-
 //colorCell on mouseover
-canvas.addEventListener('mouseover', ({target}) => colorCell(target, userColor));
-
+canvas.addEventListener('mouseover', ({ target }) =>
+  colorCell(target, userColor)
+);
 
 //to color cell
 function colorCell(target, userColor) {
+  //if down is true
+  if (down) {
+    //get current cell
+    let currentCell = document.getElementById(`${target.id}`);
 
-    //if down is true
-    if(down) {
-       
-        //get current cell 
-        let currentCell = document.getElementById(`${target.id}`);
-    
-        //change cells bg color
-        currentCell.style.backgroundColor = userColor; 
-        
-        //find cell and change color in array;
-        let foundCell = savedPic.find(i => i.id === target.id)
-        foundCell.color = userColor;
-        
-    };
-    
-};
+    //change cells bg color
+    currentCell.style.backgroundColor = userColor;
 
-
+    //find cell and change color in array;
+    let foundCell = savedPic.find((i) => i.id === target.id);
+    foundCell.color = userColor;
+  }
+}
 
 ///////////////////////////
-
-
-
-
-
-
-
 
 let root = document.getElementById('root');
 let chatMessages = document.getElementById('chatMessages');
@@ -305,40 +269,36 @@ let roomName = document.getElementById('roomName');
 let userList = document.getElementById('userList');
 const socket = io();
 
-
-// GET USERNAME AND COLOR FROM URL 
-const {username, color} = Qs.parse(location.search, {
-    ignoreQueryPrefix: true
+// GET USERNAME AND COLOR FROM URL
+const { username, color } = Qs.parse(location.search, {
+  ignoreQueryPrefix: true,
 });
 
 // JOIN GAME
-socket.emit('joinGame', {username, color});
-
+socket.emit('joinGame', { username, color });
 
 // MESSAGE FROM SERVER
-socket.on('message', message => {
-    console.log(message);
-    outputMessage(message);
+socket.on('message', (message) => {
+  console.log(message);
+  outputMessage(message);
 
-    // Scroll down to last message 
-    document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  // Scroll down to last message
+  document.getElementById('chatMessages').scrollTop =
+    document.getElementById('chatMessages').scrollHeight;
 });
 
+document.getElementById('btnMsg').addEventListener('click', function (e) {
+  e.preventDefault();
 
+  // Get message
+  let inputMsg = document.getElementById('inputMsg').value;
 
-document.getElementById('btnMsg').addEventListener('click', function(e){
-    e.preventDefault();
+  // Emit message to server
+  socket.emit('chatMessage', inputMsg);
 
-    // Get message
-    let inputMsg = document.getElementById('inputMsg').value;
-
-    // Emit message to server
-    socket.emit('chatMessage', inputMsg);
-
-    // Clear inputfield 
-    document.getElementById('inputMsg').value = "";
-
-})
+  // Clear inputfield
+  document.getElementById('inputMsg').value = '';
+});
 
 // // MESSAGE SUBMIT
 // function getMessage(e){
@@ -350,26 +310,19 @@ document.getElementById('btnMsg').addEventListener('click', function(e){
 //     // Emit message to server
 //     socket.emit('chatMessage', inputMsg);
 
-//     // Clear inputfield 
+//     // Clear inputfield
 //     document.getElementById('inputMsg').value = "";
 // };
 
-// OUTPUT MESSAGE 
-function outputMessage(message){
-
-    document.getElementById('chatMessages').innerHTML += `<div class="message" style="background-color:${message.color};">
+// OUTPUT MESSAGE
+function outputMessage(message) {
+  document.getElementById(
+    'chatMessages'
+  ).innerHTML += `<div class="message" style="background-color:${message.color};">
                                                          <p class="message-info">${message.username} <span>${message.time}</span></p>
                                                          <p class="message-text">${message.text}</p>
-                                                         </div>`
-    
-};
-
-
-
-
-
-
-
+                                                         </div>`;
+}
 
 //TIMER functions
 let hour = 0;
@@ -378,8 +331,6 @@ let second = 0;
 let millisecond = 0;
 
 let cron;
-
-
 
 // // document.getElementById('doneBtn').addEventListener('click', () => {
 // //   pause();
@@ -421,3 +372,5 @@ function timer() {
 function returnData(input) {
   return input > 9 ? input : `0${input}`;
 }
+
+export { printImage };
