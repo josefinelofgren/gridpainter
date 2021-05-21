@@ -1,12 +1,8 @@
+import {username, color} from "./user.mjs";
+
 let root = document.getElementById('root');
 let chatMessages = document.getElementById('chatMessages');
 const socket = io();
-
-
-// GET USERNAME AND COLOR FROM URL 
-const {username, color} = Qs.parse(location.search, {
-    ignoreQueryPrefix: true
-});
 
 
 // JOIN GAME
@@ -45,6 +41,7 @@ function inputMessage(){
     // Clear inputfield 
     document.getElementById('inputMsg').value = "";
 }
+
 
 
 

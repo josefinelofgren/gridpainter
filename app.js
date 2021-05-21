@@ -35,8 +35,10 @@ io.on('connection', function(socket){
     socket.on('joinGame', ({username, color}) => {
 
         // Join user 
-        const user = userJoin(socket.id, username, randomColor({luminosity: 'light'}));
+        const user = userJoin(socket.id, username, color);
         socket.join(user);
+
+        console.log(user);
 
         // Welcome message 
         socket.emit('message', formatMessage(botName, 'Welcome to Pixel-art!'));
@@ -52,6 +54,7 @@ io.on('connection', function(socket){
         io.emit('message', formatMessage(user.username, inputMsg, user.color));
         console.log(inputMsg);
     });
+
 
     // USER DISCONNECTS 
     socket.on('disconnect', () => {

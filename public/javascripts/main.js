@@ -1,7 +1,5 @@
-// GET USERNAME AND COLOR FROM URL 
-const {username, color} = Qs.parse(location.search, {
-    ignoreQueryPrefix: true
-});
+const socket = io();
+
 
 //////////////////////////
 const facitGrid = document.querySelector('#facit');
@@ -293,8 +291,6 @@ function colorCell(target, userColor) {
 
 /////////////////////////// CHAT FUNCTION /////////////////////////// 
 import {inputMessage} from "./modules/chat.mjs";
-
-const socket = io();
 
 // SEND CHAT MESSAGE 
 document.getElementById('btnMsg').addEventListener('click', function(e){
