@@ -13,12 +13,8 @@ const {username, color} = Qs.parse(location.search, {
 // JOIN GAME
 socket.emit('joinGame', {username, color});
 
-// Get users
-socket.on('users', ({users}) => {
-    outputUsers(users);
-})
 
-// Message from server
+// MESSAGE FROM SERVER
 socket.on('message', message => {
     console.log(message);
     outputMessage(message);
@@ -26,7 +22,6 @@ socket.on('message', message => {
     // Scroll down to last message 
     document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
 });
-
 
 
 // MESSAGE SUBMIT
@@ -43,9 +38,6 @@ function getMessage(e){
     document.getElementById('inputMsg').value = "";
 };
 
-
-
-
 // OUTPUT MESSAGE 
 function outputMessage(message){
 
@@ -55,17 +47,3 @@ function outputMessage(message){
                                                          </div>`
     
 };
-
-
-
-// // Add users to DOM
-// function outputUsers(users){
-    
-//     userList.innerHTML = "";
-
-//     for (user in users){
-//         console.log(users[user]);
-//         userList.innerHTML += `<li>${users[user].username}</li>`
-//     }
-
-// };

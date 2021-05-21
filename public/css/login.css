@@ -1,6 +1,6 @@
 /* Join Page */
 .join-container {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   max-width: 500px;
   margin: 80px auto;
   color: rgb(255, 255, 255);
@@ -33,7 +33,7 @@
   margin-bottom: 5px;
 }
 
-.join-main input[type='text'] {
+.join-main input[type="text"] {
   font-size: 16px;
   padding: 5px;
   height: 40px;
@@ -50,4 +50,11 @@
 .join-main .btn {
   margin-top: 20px;
   width: 100%;
+}
+
+.join-main .color-box {
+  width: 100%;
+  padding: 5px;
+  height: 40px;
+  background-color: white;
 }

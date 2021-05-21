@@ -4,8 +4,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const formatMessage = require('./utils/messages');
 const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
-const randomColor = require('randomcolor');
 const socketio = require('socket.io');
+const randomColor = require('randomcolor');
 let color = randomColor();
 
 var indexRouter = require('./routes/index');
@@ -28,7 +28,7 @@ const botName = 'Admin'
 
 io.on('connection', function(socket){
 
-    console.log('connected');
+    console.log('Socket.io connected');
 
 
     // WHEN USER JOIN GAME 
@@ -39,10 +39,10 @@ io.on('connection', function(socket){
         socket.join(user);
 
         // Welcome message 
-        socket.emit('message', formatMessage(botName, 'Welcome'));
+        socket.emit('message', formatMessage(botName, 'Welcome to Pixel-art!'));
 
         // Broadcast when user connects
-        socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} has joined the chat`));
+        socket.broadcast.emit('message', formatMessage(botName, `${user.username} has joined the chat`));
     });
 
     // CHAT MESSAGES 
