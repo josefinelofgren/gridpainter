@@ -1,9 +1,9 @@
 import { test } from './modules/templates.mjs';
-import { findRandomPic } from './modules/play.mjs';
+import { findRandomPic, compare, timer } from './modules/play.mjs';
 
 //////////////////////////
 
-// const facitGrid = document.querySelector('#facit');
+const facitGrid = document.querySelector('#facit');
 const canvasGrid = document.querySelector('#canvas');
 const paint = document.querySelector('#paint');
 const erase = document.querySelector('#erase');
@@ -61,8 +61,12 @@ let facit;
 //on click "play"
 document.getElementById('playBtn').addEventListener('click', () => {
   //find random image to copy
-  findRandomPic(randomPics, facit);
+  let newFacit = findRandomPic(randomPics, facit);
+  printImage(facitGrid, newFacit, 2, 2);
 
+  let cron = setInterval(() => {
+    timer(cron);
+  }, 10);
   //print timer stuff inid =  gameInfo
 
   // pause();
@@ -75,10 +79,10 @@ document.getElementById('playBtn').addEventListener('click', () => {
   // id="second"
   // >00</span
   // >`;
-
   //when timer has ended run compare
+
   //print % accurate
-  compare(facit, drawnPic);
+  compare(newFacit);
 });
 
 // //find random pic function
@@ -115,7 +119,7 @@ function createGrid(pixelCanvas, gridHeight, gridWidth) {
   }
 }
 
-//pain
+//paint
 paint.addEventListener('click', () => (userColor = 'purple'));
 
 //erase
@@ -201,25 +205,25 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
   }
 }
 
-//compare images accuracy
-function compare(picToCopy, drawnPic) {
-  let x = 0;
+// //compare images accuracy
+// function compare(picToCopy, drawnPic) {
+//   let x = 0;
 
-  //loop through picToCopy
-  for (let obj in picToCopy) {
-    //find obj in createdGrid through id
-    const foundObj = drawnPic.find(({ id }) => id === picToCopy[obj].id);
+//   //loop through picToCopy
+//   for (let obj in picToCopy) {
+//     //find obj in createdGrid through id
+//     const foundObj = drawnPic.find(({ id }) => id === picToCopy[obj].id);
 
-    //if picToCopy color == equivilant cell in createdGrid
-    if (picToCopy[obj].color === foundObj.color) x++; //add +1 to every equal
-  }
+//     //if picToCopy color == equivilant cell in createdGrid
+//     if (picToCopy[obj].color === foundObj.color) x++; //add +1 to every equal
+//   }
 
-  //print in right place later = % accuracy of picture
-  //print in id gameInfo
-  console.log(
-    drawnPic[0].name + ' is ' + (x / picToCopy.length) * 100 + '% right'
-  );
-}
+//   //print in right place later = % accuracy of picture
+//   //print in id gameInfo
+//   console.log(
+//     drawnPic[0].name + ' is ' + (x / picToCopy.length) * 100 + '% right'
+//   );
+// }
 
 ///////////////////// MOUSE BEHAVIOUR ///////////////////
 //declare down as false before mousedown so mouseover does not pain
@@ -324,53 +328,51 @@ function outputMessage(message) {
                                                          </div>`;
 }
 
-//TIMER functions
-let hour = 0;
-let minute = 0;
-let second = 0;
-let millisecond = 0;
+// //TIMER functions
+// let hour = 0;
+// let minute = 0;
+// let second = 0;
+// let millisecond = 0;
 
-let cron;
+// let cron;
 
-// // document.getElementById('doneBtn').addEventListener('click', () => {
-// //   pause();
-// // });
+// // // document.getElementById('doneBtn').addEventListener('click', () => {
+// // //   pause();
+// // // });
 
-function pause() {
-  clearInterval(cron);
-}
+// function pause() {
+//   clearInterval(cron);
+// }
 
-function reset() {
-  hour = 0;
-  minute = 0;
-  second = 0;
-  millisecond = 0;
+// function reset() {
+//   hour = 0;
+//   minute = 0;
+//   second = 0;
+//   millisecond = 0;
 
-  document.getElementById('hour').innerText = '00';
-  document.getElementById('minute').innerText = '00';
-  document.getElementById('second').innerText = '00';
-}
+//   document.getElementById('hour').innerText = '00';
+//   document.getElementById('minute').innerText = '00';
+//   document.getElementById('second').innerText = '00';
+// }
 
-function timer() {
-  if ((millisecond += 10) == 1000) {
-    millisecond = 0;
-    second++;
-  }
-  if (second == 60) {
-    second = 0;
-    minute++;
-  }
-  if (minute == 60) {
-    minute = 0;
-    hour++;
-  }
-  document.getElementById('hour').innerText = returnData(hour);
-  document.getElementById('minute').innerText = returnData(minute);
-  document.getElementById('second').innerText = returnData(second);
-}
+// function timer() {
+//   if ((millisecond += 10) == 1000) {
+//     millisecond = 0;
+//     second++;
+//   }
+//   if (second == 60) {
+//     second = 0;
+//     minute++;
+//   }
+//   if (minute == 60) {
+//     minute = 0;
+//     hour++;
+//   }
+//   document.getElementById('hour').innerText = returnData(hour);
+//   document.getElementById('minute').innerText = returnData(minute);
+//   document.getElementById('second').innerText = returnData(second);
+// }
 
-function returnData(input) {
-  return input > 9 ? input : `0${input}`;
-}
-
-export { printImage };
+// function returnData(input) {
+//   return input > 9 ? input : `0${input}`;
+// }
