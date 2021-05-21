@@ -1,4 +1,6 @@
 const socket = io();
+import {inputMessage} from "./modules/chat.mjs";
+import {inputPressPlay} from "./modules/play.mjs";
 
 
 //////////////////////////
@@ -59,10 +61,16 @@ const allDrawnPics = [];
 //declare var
 let facit;
 
+
+
+
+
 //on click "play"
 document.getElementById('playBtn').addEventListener('click', () => {
   //find random image to copy
   findRandomPic(randomPics);
+  inputPressPlay();
+
 
 //print timer stuff inid =  gameInfo
 
@@ -79,7 +87,7 @@ document.getElementById('playBtn').addEventListener('click', () => {
 
   //when timer has ended run compare
     //print % accurate
-    compare(facit, drawnPic);
+    // compare(facit, drawnPic);
 
 });
 
@@ -289,8 +297,7 @@ function colorCell(target, userColor) {
 
 
 
-/////////////////////////// CHAT FUNCTION /////////////////////////// 
-import {inputMessage} from "./modules/chat.mjs";
+/////////////////////////// CHAT /////////////////////////// 
 
 // SEND CHAT MESSAGE 
 document.getElementById('btnMsg').addEventListener('click', function(e){

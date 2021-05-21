@@ -64,6 +64,22 @@ io.on('connection', function(socket){
           io.emit('message', formatMessage(botName, `${user.username} has left the chat`));
         };
     });
+
+
+
+    // PLAY GAME 
+    socket.on('playGame', ({username, color}) => {
+        const user = userJoin(socket.id, username, color);
+        socket.join(user);
+    });
+
+    // WHEN USER PRESS PLAY
+    socket.on('play', () => {
+        const user = getCurrentUser(socket.id);
+
+        io.emit('ready', formatMessage(user.username, `${user.username}is ready to play`));
+    });
+
 });
 
 module.exports = {app: app, server: server};

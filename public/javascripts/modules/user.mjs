@@ -38,4 +38,5 @@ function inputColor(color){
 inputUser(username);
 inputColor(color);
 
+
 export {username, color}
