@@ -77,7 +77,7 @@ io.on('connection', function(socket){
     socket.on('play', () => {
         const user = getCurrentUser(socket.id);
 
-        io.emit('ready', formatMessage(user.username, `${user.username}is ready to play`));
+        io.emit('ready', formatMessage(user.username, `${user.username} is ready to play`));
     });
 
 });
