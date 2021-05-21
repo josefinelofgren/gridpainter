@@ -62,6 +62,7 @@ h2 {
 .canvas-btn {
   padding: 7px;
   margin: 10px;
+  width: 20%;
   border: none;
   outline: none;
   background-color: #fdfade;
