@@ -86,3 +86,8 @@ function renderTemplates(element, template) {
 function addTemplate(element, template) {
   element.insertAdjacentHTML('afterbegin', template);
 }
+function test() {
+  console.log('test msjs');
+};
+
+export {test}

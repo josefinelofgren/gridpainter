@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
       rel="stylesheet"
     />
+    <script src="./javascripts/main.js" type="module"></script>
   </head>
   <body>
     <div id="root" class="root">
@@ -27,6 +28,7 @@
               <i class="fas fa-eraser"></i>
               Erase
             </button>
+            <input type="text" id="saveArray" placeholder="Enter name.." require/>
             <button id="save" class="canvas-btn">
               <i class="fas fa-save"></i>
               Save
@@ -38,11 +40,7 @@
                 Picture menu
                 <i class="fa fa-caret-down"></i>
               </button>
-              <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-              </div>
+              <ul id="printList"></ul>
             </div>
             <footer class="user-info">
               <h3>Username</h3>
@@ -109,7 +107,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="socket.io/socket.io.js"></script>
-    <script src="./javascripts/main.js"></script>
+    
     <script
       src="https://kit.fontawesome.com/8b4585210b.js"
       crossorigin="anonymous"
