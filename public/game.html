@@ -18,30 +18,38 @@
         <h2 class="column-title">Paint</h2>
         <main class="column-container">
           <article class="canvas-control">
-            <table id="canvas"></table>
-            <button id="paint" class="canvasBtn">
+            <table class="painting-canvas" id="canvas"></table>
+            <button id="paint" class="canvas-btn">
               <i class="fas fa-paint-brush"></i>
+              Paint
             </button>
-            <button id="erase" class="canvasBtn">
+            <button id="erase" class="canvas-btn">
               <i class="fas fa-eraser"></i>
+              Erase
             </button>
-            <button id="save" class="canvasBtn">
+            <input
+              type="text"
+              id="saveArray"
+              placeholder="Enter name.."
+              require
+            />
+            <button id="save" class="canvas-btn">
               <i class="fas fa-save"></i>
+              Save
             </button>
           </article>
           <article class="options-control">
             <div class="dropdown">
-              <button class="dropbtn">
+              <button id="optionsBtn" class="canvas-btn">
                 Picture menu
                 <i class="fa fa-caret-down"></i>
               </button>
-              <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-              </div>
+              <ul id="printList"></ul>
             </div>
-            <h3>Username<span id="colorBox"></span></h3>
+            <footer class="user-info">
+              <h3 id="getUserName">Username</h3>
+              <div id="getUserColor"></div>
+            </footer>
           </article>
         </main>
       </section>
@@ -54,12 +62,18 @@
             <table id="facit"></table>
           </article>
 
-          <article class="options-control">
-            <button id="playBtn"><i class="fas fa-play"></i>Play</button>
-            <!--Added when playing-->
-            <button id="doneBtn">
-              <i class="fas fa-check-circle"></i>Done
+          <article id="btnBox">
+            <button id="playBtn" class="canvas-btn">
+              <i class="fas fa-play"></i>Play
             </button>
+            <!--Btn Done added when playing-->
+            <!--Paragraf added while waiting for players-->
+            <div>
+              <span id="hour">00</span>:<span id="minute">01</span>:<span
+                id="second"
+                >00</span
+              >
+            </div>
           </article>
         </main>
       </section>
@@ -78,12 +92,7 @@
                 required
                 autocomplete="off"
               />
-              <button
-                onclick="getMessage(event);"
-                id="btnMsg"
-                class="btn"
-                type="submit"
-              >
+              <button id="btnMsg" class="btn" type="submit">
                 <i class="fas fa-paper-plane"></i> Send
               </button>
             </form>
@@ -97,7 +106,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="socket.io/socket.io.js"></script>
-    <script src="./javascripts/main.js"></script>
+    <script src="./javascripts/main.js" type="module"></script>
     <script
       src="https://kit.fontawesome.com/8b4585210b.js"
       crossorigin="anonymous"
