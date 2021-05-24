@@ -27,7 +27,7 @@ function inputPressPlay(){
     socket.emit('play');
 
     document.getElementById('playBtn').innerHTML = `<i class="fa-spin fas fa-spinner"></i>Waiting for the other players..`
-}
+};
 
 
 
