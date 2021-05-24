@@ -9,28 +9,14 @@ const allDrawnPics = [];
 let savedPic = [];
 
 
-// MESSAGE FROM SERVER
+// get foundCell with new color from server
 socket.on('paintedCell', foundCell => {
-    console.log('foundcellColor', foundCell.color);
-    let b = document.getElementById(foundCell.id);
-    console.log('b', b);
-    console.log('save', savedPic);
-    b.style.backgroundColor = foundCell.color;
-   // printImage(canvasGrid, savedPic, 2, 2);
 
-    // let changeCellColor = savedPic.find(i => i.id === target.id);
-    // console.log('changecell', changeCellColor.color);
-    // currentCell.style.backgroundColor = changeCellColor.color;
-    // for (let cell in savedPic) {
+    //find element with same id as foundCell
+    let cellElement = document.getElementById(foundCell.id);
+    //change elements bg-color
+    cellElement.style.backgroundColor = foundCell.color;
 
-    //     console.log('cell', savedPic[cell].color);
-        
-    //     //savedPic[cell].style.backgroundColor = savedPic[cell].color
-    // }
-    // outputMessage(message);
-
-    // // Scroll down to last message 
-    // document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
 });
 
 
@@ -59,10 +45,6 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
         };
     };
 };
-
-
-
-
 
 
 //save drawn pic
@@ -163,7 +145,7 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
 let down = false;
 
 // change state of "down" on mouse actions
-function downState(target) { 
+function downState(target, color) { 
  
     //after mousedown => down == true so mouseover does pain
     down = true;
@@ -175,40 +157,25 @@ function downState(target) {
     canvas.addEventListener('mouseleave', () => down = false);
     
     //colorCell on mousedown
-    colorCell(target);
+    colorCell(target, color);
 
 };    
  
 
 //to color cell
-function colorCell(target) {
-
-// MESSAGE FROM SERVER
+function colorCell(target, color) {
 
     //if down is true
     if(down && target.id !== "canvas") {
     
-        //get current cell 
-        let currentCell = document.getElementById(`${target.id}`);
-
-        //change cells bg color
-        //currentCell.style.backgroundColor = color; 
-console.log('saabe1', savedPic);
         //find cell and change color in array;
         let foundCell = savedPic.find(i => i.id === target.id)
         foundCell.color = color;
-        console.log('foundCell', foundCell);
-        //console.log('savedPic', savedPic);
+
+        //send foundCell with new color to server
         socket.emit('paint', foundCell);
-        // // Emit message to server
-        // socket.emit('paint', savedPic);
-            
-     
-
-
 
     };
-
     
 };
 

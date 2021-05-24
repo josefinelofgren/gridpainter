@@ -49,10 +49,10 @@ io.on('connection', function(socket){
     });
 
     // recieve savedPic from client
-    socket.on("paint", (savedPic) => {
-        console.log('savedPiccc', savedPic);
-        //send changed array to client
-        io.emit('paintedCell', savedPic);
+    socket.on("paint", (foundCell) => {
+
+        //send changed array obj to client
+        io.emit('paintedCell', foundCell);
        
     });
 
