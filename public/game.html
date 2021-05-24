@@ -18,7 +18,7 @@
         <h2 class="column-title">Paint</h2>
         <main class="column-container">
           <article class="canvas-control">
-            <table id="canvas"></table>
+            <table class="painting-canvas" id="canvas"></table>
             <button id="paint" class="canvas-btn">
               <i class="fas fa-paint-brush"></i>
               Paint
@@ -27,7 +27,12 @@
               <i class="fas fa-eraser"></i>
               Erase
             </button>
-            <input type="text" id="saveArray" placeholder="Enter name.." require/>
+            <input
+              type="text"
+              id="saveArray"
+              placeholder="Enter name.."
+              require
+            />
             <button id="save" class="canvas-btn">
               <i class="fas fa-save"></i>
               Save
@@ -59,12 +64,17 @@
 
           <article id="btnBox">
             <button id="playBtn" class="canvas-btn">
-              <i class="fas fa-play"></i>Play
+            Play
             </button>
             <!--Btn Done added when playing-->
             <!--Paragraf added while waiting for players-->
+<<<<<<< HEAD
             <div id="gameInfo">
               <span id="hour">00</span>:<span id="minute">00</span>:<span
+=======
+            <div id="timer">
+              <span id="hour">00</span>:<span id="minute">01</span>:<span
+>>>>>>> origin/main
                 id="second"
                 >00</span
               >
@@ -87,11 +97,7 @@
                 required
                 autocomplete="off"
               />
-              <button
-                id="btnMsg"
-                class="btn"
-                type="submit"
-              >
+              <button id="btnMsg" class="btn" type="submit">
                 <i class="fas fa-paper-plane"></i> Send
               </button>
             </form>
