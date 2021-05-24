@@ -35,8 +35,10 @@ io.on('connection', function(socket){
     socket.on('joinGame', ({username, color}) => {
 
         // Join user 
-        const user = userJoin(socket.id, username, randomColor({luminosity: 'light'}));
+        const user = userJoin(socket.id, username, color);
         socket.join(user);
+
+        console.log(user);
 
         // Welcome message 
         socket.emit('message', formatMessage(botName, 'Welcome to Pixel-art!'));
@@ -53,6 +55,7 @@ io.on('connection', function(socket){
         console.log(inputMsg);
     });
 
+
     // USER DISCONNECTS 
     socket.on('disconnect', () => {
         const user = userLeave(socket.id);
@@ -61,6 +64,22 @@ io.on('connection', function(socket){
           io.emit('message', formatMessage(botName, `${user.username} has left the chat`));
         };
     });
+
+
+
+    // PLAY GAME 
+    socket.on('playGame', ({username, color}) => {
+        const user = userJoin(socket.id, username, color);
+        socket.join(user);
+    });
+
+    // WHEN USER PRESS PLAY
+    socket.on('play', () => {
+        const user = getCurrentUser(socket.id);
+
+        io.emit('ready', formatMessage(user.username, `${user.username} is ready to play`));
+    });
+
 });
 
 module.exports = {app: app, server: server};

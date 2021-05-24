@@ -9,4 +9,5 @@ function formatMessage(username, text, color){
     }
 }
 
+
 module.exports = formatMessage;

@@ -1,7 +1,8 @@
+import {username, color} from "./user.mjs";
 import { randomPics } from '../modules/array.mjs';
 import { printImage, saveDrawnPic, savedPic } from '../modules/paint.mjs';
 
-
+const socket = io();
 const facitGrid = document.querySelector('#facit');
 
 
@@ -11,7 +12,7 @@ function findRandomPic(randomPics, facit) {
   facit = [...randomPics[index]]; //user random number as index
   //printImage(facitGrid, facit, 2, 2);
   return facit;
-}
+};
 
 
 //playBtn => start or stop game
@@ -61,6 +62,7 @@ function endTimer(button, setTimer) {
 
 
 
+
 // //compare images accuracy
 function compare(randomPic, savedPic) {
 
@@ -84,4 +86,33 @@ function compare(randomPic, savedPic) {
 
 
 
-export { findRandomPic, playBtnAction, compare };
+// PLAY GAME
+socket.emit('playGame', {username, color});
+
+// MESSAGE FROM SERVER
+socket.on('ready', message => {
+    outputPressPlay(message)
+});
+
+// OUTPUT USER IF USER PRESS PLAY 
+function outputPressPlay(message){
+
+    let usersReadyToPlay = document.createElement('ul');
+    usersReadyToPlay.setAttribute("id", "usersReadyToPlay");
+
+    document.getElementById('gameInfo').appendChild(usersReadyToPlay);
+
+    usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
+};
+
+// INPUT USER IF USER PRESS PLAY 
+function inputPressPlay(){
+    
+    // Emit message to server
+    socket.emit('play');
+
+    document.getElementById('playBtn').innerHTML = `<i class="fa-spin fas fa-spinner"></i>Waiting for the other players..`
+};
+
+
+export { findRandomPic, playBtnAction, compare, inputPressPlay};

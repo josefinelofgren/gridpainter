@@ -12,7 +12,7 @@ body {
 }
 
 .root {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
@@ -91,7 +91,7 @@ i {
   align-items: center;
 }
 
-#userColor {
+#getUserColor {
   width: 50px;
   height: 20px;
   background-color: teal;
@@ -191,7 +191,7 @@ a {
   flex-flow: row nowrap;
 }
 
-.chat-form-container input[type='text'] {
+.chat-form-container input[type="text"] {
   font-size: 16px;
   padding: 5px;
   height: 40px;
