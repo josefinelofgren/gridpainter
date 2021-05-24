@@ -1,85 +1,87 @@
+import { randomPics } from '../modules/array.mjs';
+import { printImage, saveDrawnPic, savedPic } from '../modules/paint.mjs';
+
+
+const facitGrid = document.querySelector('#facit');
+
+
 //find random pic function
 function findRandomPic(randomPics, facit) {
   let index = Math.floor(Math.random() * 5); //generate random number 0-5
   facit = [...randomPics[index]]; //user random number as index
-  //   printImage(facitGrid, facit, 2, 2);
+  //printImage(facitGrid, facit, 2, 2);
   return facit;
 }
 
+
+//playBtn => start or stop game
+function playBtnAction(target, savedPic) {
+
+  const button = document.getElementById(`${target.id}`);
+  const timer = document.getElementById("timer");
+  let counter = 60;
+    
+  if(button.innerText === "Play") {
+    button.innerText = "Stop";
+    
+    //find random image to copy
+    let randomPic = findRandomPic(randomPics, facit);
+    printImage(facitGrid, randomPic, 2, 2);
+
+    //start timer
+    const setTimer = setInterval(function(){
+      
+      counter--;
+      
+      timer.innerHTML = `00:00:${counter}`;
+      
+      if(counter < 10) timer.innerHTML = `00:00:0${counter}`;
+        
+      if (counter <= 0) {
+        endTimer(button, setTimer);
+        timer.innerHTML = `00:01:00`;
+      
+      };
+
+      button.addEventListener("click", () =>  {
+        endTimer(button, setTimer);
+      });
+
+    }, 1000);
+  };
+}; 
+
+//end timer
+function endTimer(button, setTimer) {
+  clearInterval(setTimer);
+  button.innerText = "Play";  
+  //get randomPic & savedPic, database?
+  //compare(randomPic, savedPic);
+};
+
+
+
 // //compare images accuracy
-function compare(drawnPic) {
+function compare(randomPic, savedPic) {
+
   let x = 0;
 
-  //Getting the current pixelart id
-  let picToCopy = document.querySelector('.painting-canvas').id;
-  console.log(picToCopy);
-
   //loop through picToCopy
-  for (let obj in picToCopy) {
+  for (let obj in randomPic) {
     //find obj in createdGrid through id
-    const foundObj = drawnPic.find(({ id }) => id === picToCopy[obj].id);
+    const foundObj = savedPic.find(({ id }) => id === randomPic[obj].id);
 
     //if picToCopy color == equivilant cell in createdGrid
-    if (picToCopy[obj].color === foundObj.color) x++; //add +1 to every equal
+    if (randomPic[obj].color === foundObj.color) x++; //add +1 to every equal
   }
 
   //print in right place later = % accuracy of picture
   //print in id gameInfo
   console.log(
-    drawnPic[0].name + ' is ' + (x / picToCopy.length) * 100 + '% right'
+    savedPic[0].name + ' is ' + (x / randomPic.length) * 100 + '% right'
   );
-}
+};
 
-//TIMER
 
-// //Running function on time
-// let cron = setInterval(() => {
 
-//   timer();
-// }, 10);
-
-// function pause() {
-//   clearInterval(cron);
-// }
-
-// //Running function on time
-// function startTimer () {
-//    let cron = setInterval(() => {
-//     timer(cron);
-//   }, 10);
-// }
-
-function reset() {
-  minute = 1;
-  second = 60;
-  millisecond = 1000;
-
-  document.getElementById('hour').innerText = '00';
-  document.getElementById('minute').innerText = '01';
-  document.getElementById('second').innerText = '00';
-}
-
-let minute = 1;
-let second = 60;
-let millisecond = 1000;
-
-function timer(cron) {
-  minute = 0;
-  if ((millisecond -= 10) <= 0) {
-    millisecond = 1000;
-    second--;
-  }
-  if (second == 0) {
-    console.log('Time up');
-    clearInterval(cron);
-    reset();
-  }
-  document.getElementById('minute').innerText = returnData(minute);
-  document.getElementById('second').innerText = returnData(second);
-}
-
-function returnData(input) {
-  return input > 9 ? input : `0${input}`;
-}
-
-export { findRandomPic, compare, timer };
+export { findRandomPic, playBtnAction, compare };
