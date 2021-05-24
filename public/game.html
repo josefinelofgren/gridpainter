@@ -10,7 +10,6 @@
       href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
       rel="stylesheet"
     />
-    <script src="./javascripts/main.js" type="module"></script>
   </head>
   <body>
     <div id="root" class="root">
@@ -19,7 +18,7 @@
         <h2 class="column-title">Paint</h2>
         <main class="column-container">
           <article class="canvas-control">
-            <table id="canvas"></table>
+            <table class="painting-canvas" id="canvas"></table>
             <button id="paint" class="canvas-btn">
               <i class="fas fa-paint-brush"></i>
               Paint
@@ -28,7 +27,12 @@
               <i class="fas fa-eraser"></i>
               Erase
             </button>
-            <input type="text" id="saveArray" placeholder="Enter name.." require/>
+            <input
+              type="text"
+              id="saveArray"
+              placeholder="Enter name.."
+              require
+            />
             <button id="save" class="canvas-btn">
               <i class="fas fa-save"></i>
               Save
@@ -44,8 +48,8 @@
               
             </div>
             <footer class="user-info">
-              <h3>Username</h3>
-              <div id="userColor"></div>
+              <h3 id="getUserName">Username</h3>
+              <div id="getUserColor"></div>
             </footer>
           </article>
         </main>
@@ -61,12 +65,20 @@
 
           <article id="btnBox">
             <button id="playBtn" class="canvas-btn">
-              <i class="fas fa-play"></i>Play
+            Play
             </button>
             <!--Btn Done added when playing-->
             <!--Paragraf added while waiting for players-->
+<<<<<<< HEAD
             <div id="gameInfo">
             
+=======
+            <div id="timer">
+              <span id="hour">00</span>:<span id="minute">01</span>:<span
+                id="second"
+                >00</span
+              >
+>>>>>>> main
             </div>
           </article>
         </main>
@@ -86,12 +98,7 @@
                 required
                 autocomplete="off"
               />
-              <button
-                onclick="getMessage(event);"
-                id="btnMsg"
-                class="btn"
-                type="submit"
-              >
+              <button id="btnMsg" class="btn" type="submit">
                 <i class="fas fa-paper-plane"></i> Send
               </button>
             </form>
@@ -105,7 +112,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="socket.io/socket.io.js"></script>
-    
+    <script src="./javascripts/main.js" type="module"></script>
     <script
       src="https://kit.fontawesome.com/8b4585210b.js"
       crossorigin="anonymous"

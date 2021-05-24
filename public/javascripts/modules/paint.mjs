@@ -1,4 +1,6 @@
+//PAINT.MJS
 const printSavedPicsBtn = document.querySelector('#optionsBtn');
+const canvasGrid = document.querySelector('#canvas');
 
 // //initial array for drawing pic
 let savedPic = [];
@@ -26,7 +28,7 @@ function createGrid(pixelCanvas, gridHeight, gridWidth) {
 
             //push name, cell id and color to array
             if(gridRow.id.includes("canvas")) {
-              savedPic.push({name: "canvas", id: gridCell.id, color: null});  
+              savedPic.push({name: "canvas", id: gridCell.id, color: null}); 
             };
         };
     };
@@ -35,26 +37,37 @@ function createGrid(pixelCanvas, gridHeight, gridWidth) {
 
 
 //save drawn pic
-function saveDrawnPic(chosenName) {
-
-    // //replace "canvas" in name with input value
+function saveDrawnPic(input) {
+ 
+    // replace "canvas" in name with input value
     for (let obj in savedPic) {
-        let newName = savedPic[obj].name.replace("canvas", chosenName)
+        let newName = savedPic[obj].name.replace("canvas", input.value)
         savedPic[obj].name = newName;
     };
 
-    //push to array with all saved pics
+    //push or replace to array with all saved 
+    //not finished!
+    // let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === newName );
+    // if (checkDoublet == undefind/-1) {
+    //     allDrawnPics.push(savedPic);
+    // } else {
+    //     allDrawnPics.splice(1, checkDoublet, savedPic)
+    // }
     allDrawnPics.push(savedPic);
    
     //empty savedPic for next time 
     savedPic = [];
+    
+    input.value = "";
 
 };
 
 
-
 //se saved images
 function printSavedPics(target) {
+    
+    printSavedPicsBtn.innerHTML = "";
+
     for (let index in allDrawnPics) {
 
         printSavedPicsBtn.insertAdjacentHTML("beforeend", `
@@ -71,11 +84,11 @@ function printSavedPics(target) {
     //find index of target array in allDrawnPics 
     if(target.id !== "optionsBtn") {
         
-        let index = allDrawnPics.findIndex( (arr) => arr[0].name === evt.target.id );
+        let index = allDrawnPics.findIndex( (arr) => arr[0].name === target.id );
 
         //find array to print by index
         let printArray = allDrawnPics[index];
-
+        console.log('printArray', printArray);
         //when resave pic make sure to either splice? or push to array (no duplicates!)
         printImage(canvasGrid, printArray, 2, 2);
 
@@ -84,10 +97,12 @@ function printSavedPics(target) {
    
 
 
+
+
 //print selected image/facit 
 function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
-    
-    //canvas.innerHTML = "";
+
+    canvasGrid.innerHTML = "";
 
     // creates rows 
     for (let row = 1; row <= gridHeight; row++) {
@@ -153,10 +168,9 @@ function colorCell(target, userColor) {
         //find cell and change color in array;
         let foundCell = savedPic.find(i => i.id === target.id)
         foundCell.color = userColor;
-        
     };
     
 };
 
 
-export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell};
+export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, savedPic};
