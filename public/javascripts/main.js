@@ -2,8 +2,6 @@ const socket = io();
 import {inputMessage} from "./modules/chat.mjs";
 import {inputPressPlay} from "./modules/play.mjs";
 
-
-//////////////////////////
 import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
 import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
 import { randomPics } from './modules/array.mjs';
@@ -34,15 +32,6 @@ let facit;
 
 
 
-//on click "play"
-document.getElementById('playBtn').addEventListener('click', () => {
-  //find random image to copy
-  findRandomPic(randomPics);
-  inputPressPlay();
-
-});
-
-
 //generate grid/canvas
 createGrid(canvasGrid, 2, 2);
 
@@ -66,7 +55,10 @@ canvas.addEventListener('mousedown', ({target}) => downState(target, userColor))
 
 
 //on click "play/stop"
-document.getElementById('playBtn').addEventListener('click', ({target}) => playBtnAction(target, savedPic));
+document.getElementById('playBtn').addEventListener('click', ({target}) => {
+  playBtnAction(target, savedPic);
+  inputPressPlay();
+});
 
 
 
