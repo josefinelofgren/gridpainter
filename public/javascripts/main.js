@@ -2,6 +2,7 @@ const socket = io();
 import {inputMessage} from "./modules/chat.mjs";
 import {inputPressPlay} from "./modules/play.mjs";
 
+
 import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
 import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
 import { randomPics } from './modules/array.mjs';
@@ -48,10 +49,10 @@ save.addEventListener("click", () => saveDrawnPic(saveArray)); // name from inpu
 printSavedPicsBtn.addEventListener("click", ({target}) => printSavedPics(target));
 
 //colorCell on mouseover
-canvas.addEventListener('mouseover', ({target}) =>  colorCell(target, userColor));
+canvas.addEventListener('mouseover', ({target}) =>  colorCell(target));
 
 // mousedown => down = true
-canvas.addEventListener('mousedown', ({target}) => downState(target, userColor));
+canvas.addEventListener('mousedown', ({target}) => downState(target));
 
 
 //on click "play/stop"

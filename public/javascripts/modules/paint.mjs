@@ -1,38 +1,67 @@
-//PAINT.MJS
+import {color} from "./user.mjs";
+const socket = io();
 const printSavedPicsBtn = document.querySelector('#optionsBtn');
 const canvasGrid = document.querySelector('#canvas');
 
-// //initial array for drawing pic
-let savedPic = [];
 
 //array to store all saved pics
 const allDrawnPics = [];
+let savedPic = [];
+
+
+// MESSAGE FROM SERVER
+socket.on('paintedCell', foundCell => {
+    console.log('foundcellColor', foundCell.color);
+    let b = document.getElementById(foundCell.id);
+    console.log('b', b);
+    console.log('save', savedPic);
+    b.style.backgroundColor = foundCell.color;
+   // printImage(canvasGrid, savedPic, 2, 2);
+
+    // let changeCellColor = savedPic.find(i => i.id === target.id);
+    // console.log('changecell', changeCellColor.color);
+    // currentCell.style.backgroundColor = changeCellColor.color;
+    // for (let cell in savedPic) {
+
+    //     console.log('cell', savedPic[cell].color);
+        
+    //     //savedPic[cell].style.backgroundColor = savedPic[cell].color
+    // }
+    // outputMessage(message);
+
+    // // Scroll down to last message 
+    // document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+});
+
 
 
 //genereate a grid structure
-function createGrid(pixelCanvas, gridHeight, gridWidth) {
- 
+function createGrid(canvasGrid, gridHeight, gridWidth) {
+    //get savedPic from app.js
+
     // Creates rows 
     for (let row = 1; row <= gridHeight; row++) {
         
         let gridRow = document.createElement('tr');
-        gridRow.id = "canvas" + row; 
-        pixelCanvas.appendChild(gridRow);
+        gridRow.id = "row" + row; 
+        canvasGrid.appendChild(gridRow);
 
         //create cells
         for (let cell = 1; cell <= gridWidth; cell++) {
             
             let gridCell = document.createElement('td');
-            gridCell.id = "row" + row + "cell" + cell;
+            gridCell.id = gridRow.id + "cell" + cell;
             gridRow.appendChild(gridCell);
 
             //push name, cell id and color to array
-            if(gridRow.id.includes("canvas")) {
-              savedPic.push({name: "canvas", id: gridCell.id, color: null}); 
-            };
+            savedPic.push({name: "", id: gridCell.id, color: null}); 
+           
         };
     };
 };
+
+
+
 
 
 
@@ -41,7 +70,7 @@ function saveDrawnPic(input) {
  
     // replace "canvas" in name with input value
     for (let obj in savedPic) {
-        let newName = savedPic[obj].name.replace("canvas", input.value)
+        let newName = savedPic[obj].name.replace("", input.value)
         savedPic[obj].name = newName;
     };
 
@@ -124,7 +153,6 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
 
             //apply color to new grid cell
             gridCell.style.backgroundColor = foundCell.color;
-         
         };
     };
 };
@@ -135,7 +163,7 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
 let down = false;
 
 // change state of "down" on mouse actions
-function downState(target, userColor) { 
+function downState(target) { 
  
     //after mousedown => down == true so mouseover does pain
     down = true;
@@ -147,32 +175,44 @@ function downState(target, userColor) {
     canvas.addEventListener('mouseleave', () => down = false);
     
     //colorCell on mousedown
-    colorCell(target, userColor);
+    colorCell(target);
 
 };    
  
 
-
-
 //to color cell
-function colorCell(target, userColor) {
+function colorCell(target) {
+
+// MESSAGE FROM SERVER
 
     //if down is true
     if(down && target.id !== "canvas") {
-       
+    
         //get current cell 
         let currentCell = document.getElementById(`${target.id}`);
 
         //change cells bg color
-        currentCell.style.backgroundColor = userColor; 
-
+        //currentCell.style.backgroundColor = color; 
+console.log('saabe1', savedPic);
         //find cell and change color in array;
         let foundCell = savedPic.find(i => i.id === target.id)
-        foundCell.color = userColor;
+        foundCell.color = color;
+        console.log('foundCell', foundCell);
+        //console.log('savedPic', savedPic);
+        socket.emit('paint', foundCell);
+        // // Emit message to server
+        // socket.emit('paint', savedPic);
+            
+     
+
+
 
     };
+
     
 };
 
 
-export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, savedPic};
+
+
+export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell};

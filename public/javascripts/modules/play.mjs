@@ -1,6 +1,6 @@
 import {username, color} from "./user.mjs";
 import { randomPics } from '../modules/array.mjs';
-import { printImage, saveDrawnPic, savedPic } from '../modules/paint.mjs';
+import { printImage, saveDrawnPic } from '../modules/paint.mjs';
 
 const socket = io();
 const facitGrid = document.querySelector('#facit');
@@ -21,7 +21,14 @@ function playBtnAction(target, savedPic) {
   const button = document.getElementById(`${target.id}`);
   const timer = document.getElementById("timer");
   let counter = 60;
-    
+  //push players to array. When index is <=3 run timer
+  const players = []
+  
+  // players.push(username);
+  // if (players[3] != undefined/-1?) {
+  //   run the below
+  // }
+
   if(button.innerText === "Play") {
     button.innerText = "Stop";
     

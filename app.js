@@ -24,6 +24,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+//initial array for drawing pic
+//let savedPic = [];
+
 const botName = 'Admin'
 
 io.on('connection', function(socket){
@@ -37,15 +40,23 @@ io.on('connection', function(socket){
         // Join user 
         const user = userJoin(socket.id, username, color);
         socket.join(user);
-
-        console.log(user);
-
+        
         // Welcome message 
         socket.emit('message', formatMessage(botName, 'Welcome to Pixel-art!'));
 
         // Broadcast when user connects
         socket.broadcast.emit('message', formatMessage(botName, `${user.username} has joined the chat`));
     });
+
+    // recieve savedPic from client
+    socket.on("paint", (savedPic) => {
+        console.log('savedPiccc', savedPic);
+        //send changed array to client
+        io.emit('paintedCell', savedPic);
+       
+    });
+
+
 
     // CHAT MESSAGES 
     socket.on('chatMessage', (inputMsg) => {
@@ -54,6 +65,7 @@ io.on('connection', function(socket){
         io.emit('message', formatMessage(user.username, inputMsg, user.color));
         console.log(inputMsg);
     });
+
 
 
     // USER DISCONNECTS 
