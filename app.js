@@ -27,29 +27,28 @@ const fs = require("fs");
 
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
 app.post('/', jsonParser, (req, res, next) => {
-console.log('req body', req.body[0].name);
- 
+
+    
     fs.readFile("allDrawnPics.json", (err, data) => {
         if(err) console.log('err', err);
 
         const allDrawnPics = JSON.parse(data);
-        // for (let arr in allDrawnPics) {
-        //     console.log('allDrawnPics[arr].name', allDrawnPics[arr][0].name);
-        // }
-        //push or replace to array with all saved 
-        //not finished!
+     
+        //check for pic in allDrawnPics with same name as incoming
         let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === req.body[0].name);
-        console.log('cechDoulert', checkDoublet);
-        console.log('allDrawnPics[checkDoublet]', allDrawnPics[checkDoublet]);
+        
+        //if pic doesnt already exist => push, else => replace
         if (checkDoublet === -1) {
             allDrawnPics.push(req.body);
         } else {
             allDrawnPics.splice(checkDoublet, 1, req.body)
-        }
+        };
 
+        //resave updated file
         fs.writeFile("allDrawnPics.json", JSON.stringify(allDrawnPics, null, 2), (err) => {
             if(err) console.log('err', err);
         });
+
         //dont want to send anything?
         res.send("nothingToSend");
 
@@ -58,19 +57,19 @@ console.log('req body', req.body[0].name);
   
 });
 
-// //GET ALLDRAWNPICS FROM ALLDRAWNPICS.JSON
-// app.get('/', function(req, res, next) {
+//GET ALLDRAWNPICS FROM ALLDRAWNPICS.JSON
+app.get('/', function(req, res, next) {
 
-//     fs.readFile("allDrawnPics.json", (err, data) => {
-//         if(err) console.log('err', err);
+    fs.readFile("allDrawnPics.json", (err, data) => {
+        if(err) console.log('err', err);
 
-//         const allDrawnPics = JSON.parse(data);
+        const allDrawnPics = JSON.parse(data);
 
-//         res.send(allDrawnPics);
+        res.send(allDrawnPics);
 
-//     });
+    });
 
-// });
+});
 
 
 

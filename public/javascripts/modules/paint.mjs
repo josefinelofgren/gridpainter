@@ -79,10 +79,10 @@ function printSavedPics(target) {
     
     printSavedPicsBtn.innerHTML = "";
     
-    // //fetch allDrawnPics from .json
-    // fetch("http://localhost:3000")
-    // .then(res => res.json())
-    // .then(allDrawnPics => {
+    //fetch allDrawnPics from .json
+    fetch("http://localhost:3000")
+    .then(res => res.json())
+    .then(allDrawnPics => {
 
         for (let index in allDrawnPics) {
 
@@ -109,7 +109,7 @@ function printSavedPics(target) {
             printImage(canvasGrid, printArray, 2, 2);
 
         };
-    // });
+    });
 };        
    
 
