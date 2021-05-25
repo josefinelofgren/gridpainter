@@ -91,8 +91,13 @@ function printSavedPics(target) {
         let printArray = allDrawnPics[index];
         console.log(printArray);
 
+        printArray.forEach((cell) => {
+          //send foundCell with new color to server
+          console.log(cell);
+          socket.emit('paint', cell);
+        });
         // //when resave pic make sure to either splice? or push to array (no duplicates!)
-        printImage(canvasGrid, printArray, 2, 2);
+        // printImage(canvasGrid, printArray, 2, 2);
       });
     });
 }
