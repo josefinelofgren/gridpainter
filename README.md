@@ -36,4 +36,4 @@ Get started:
 
 ### Launch-demo
 
-We have launched the server with Heroku. Follow the link too see it live -> [Heroku app]().
+We have launched the server with Heroku. Follow the link too see it live -> [Heroku app](https://gridpainter-josefinelofgren.herokuapp.com/).
