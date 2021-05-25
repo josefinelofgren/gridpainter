@@ -1,10 +1,11 @@
 const socket = io();
-import {username, color} from "./modules/user.mjs";
 import {inputMessage} from "./modules/chat.mjs";
 import {inputPressPlay} from "./modules/play.mjs";
+import {color} from "./modules/user.mjs";
 
+console.log('color', color);
 import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
-import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, userColor} from "./modules/paint.mjs";
+import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
 import { randomPics } from './modules/array.mjs';
 
 
@@ -17,26 +18,29 @@ const save = document.querySelector('#save');
 const saveArray = document.querySelector('#saveArray');
 const printSavedPicsBtn = document.querySelector('#optionsBtn');
 
-let currentUserColor;
-let userArray = [];
 
 //initial array for drawing pic
 //do we still need this one here?
 let savedPic = [];
 
+//user color
+let userColor;
 //array to store all saved pics
 const allDrawnPics = [];
 
 //declare var
 let facit;
 
+
+
 //generate grid/canvas
 createGrid(canvasGrid, 2, 2);
 
+//set userColor as a color
+paint.addEventListener('click', () =>  userColor = color );
 
-// const erase = document.querySelector('#erase');
-// //set userColor as cull
-// erase.addEventListener('click', () => userColor = null);
+//set userColor as cull
+erase.addEventListener('click', () => userColor = null);
 
 //save drawn pic
 save.addEventListener("click", () => saveDrawnPic(saveArray)); // name from input to array 
@@ -48,47 +52,14 @@ printSavedPicsBtn.addEventListener("click", ({target}) => printSavedPics(target)
 canvas.addEventListener('mouseover', ({target}) =>  colorCell(target, userColor));
 
 // mousedown => down = true
-canvas.addEventListener('mousedown', ({target}) => {
-  
-  // Send cell info to server
-  let id = target.id;
-  socket.emit('paintCell', {id, userColor});
-
-  downState(target, userColor);
-});
-
-
-// Paint cell for everyone 
-socket.on('paintCell', cell => {
-
-  // Find cell id and change background 
-  document.getElementById(`${cell.id}`).style.backgroundColor = cell.userColor;
-
-});
-
-// function findpaintedCell(){
-//   //get current cell 
-//   let currentCell = document.getElementById(`${target.id}`);
-
-//   //change cells bg color
-//   currentCell.style.backgroundColor = userColor; 
-
-//   //find cell and change color in array;
-//   let foundCell = savedPic.find(i => i.id === target.id)
-
-//   foundCell.color = userColor;
-// }
-
-
-
+canvas.addEventListener('mousedown', ({target}) => downState(target, userColor));
 
 
 //on click "play/stop"
 document.getElementById('playBtn').addEventListener('click', ({target}) => {
-
-  inputPressPlay();
-  playBtnAction(target, savedPic);
-
+    
+    playBtnAction(target, savedPic);
+    inputPressPlay();
 });
 
 

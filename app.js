@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const {formatMessage} = require('./utils/messages');
@@ -12,6 +13,67 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+ 
+//if we go with .json
+//istallera fs
+const fs = require("fs");
+
+
+//GET DOCUMENT FOR EDITING
+
+
+//GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
+app.post('/pic', jsonParser, (req, res, next) => {
+
+    
+    fs.readFile("allDrawnPics.json", (err, data) => {
+        if(err) console.log('err', err);
+
+        const allDrawnPics = JSON.parse(data);
+     
+        //check for pic in allDrawnPics with same name as incoming
+        let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === req.body[0].name);
+        
+        //if pic doesnt already exist => push, else => replace
+        if (checkDoublet === -1) {
+            allDrawnPics.push(req.body);
+        } else {
+            allDrawnPics.splice(checkDoublet, 1, req.body)
+        };
+
+        //resave updated file
+        fs.writeFile("allDrawnPics.json", JSON.stringify(allDrawnPics, null, 2), (err) => {
+            if(err) console.log('err', err);
+        });
+
+        //dont want to send anything?
+        res.send("nothingToSend");
+
+    });
+
+  
+});
+
+//GET ALLDRAWNPICS FROM ALLDRAWNPICS.JSON
+app.get('/pic', function(req, res, next) {
+
+    fs.readFile("allDrawnPics.json", (err, data) => {
+        if(err) console.log('err', err);
+
+        const allDrawnPics = JSON.parse(data);
+
+        res.send(allDrawnPics);
+
+    });
+
+});
+
+
+
+
 const server = require('http').Server(app);
 const io = socketio(server);
 
@@ -23,6 +85,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+//initial array for drawing pic
+//let savedPic = [];
 
 const botName = 'Admin'
 
@@ -37,15 +102,23 @@ io.on('connection', function(socket){
         // Join user 
         const user = userJoin(socket.id, username, color);
         socket.join(user);
-
-        console.log(user);
-
+        
         // Welcome message 
         socket.emit('message', formatMessage(botName, 'Welcome to Pixel-art!'));
 
         // Broadcast when user connects
         socket.broadcast.emit('message', formatMessage(botName, `${user.username} has joined the chat`));
     });
+
+    // recieve savedPic from client
+    socket.on("paint", (foundCell) => {
+
+        //send changed array obj to client
+        io.emit('paintedCell', foundCell);
+       
+    });
+
+
 
     // CHAT MESSAGES 
     socket.on('chatMessage', (inputMsg) => {
@@ -56,6 +129,7 @@ io.on('connection', function(socket){
     });
 
 
+
     // USER DISCONNECTS 
     socket.on('disconnect', () => {
         const user = userLeave(socket.id);
@@ -63,39 +137,24 @@ io.on('connection', function(socket){
         if(user){
           io.emit('message', formatMessage(botName, `${user.username} has left the chat`));
         };
+
     });
 
     socket.on('joinGame', ({username, color}) => {
-        
         // Join user 
         const user = userJoin(socket.id, username, color);
         socket.join(user);
     });
+    
 
-
+    const players = [];
     // WHEN USER PRESS PLAY
     socket.on('play', () => {
         const user = getCurrentUser(socket.id);
-
-        io.emit('ready', formatMessage(user.username, `${user.username} is ready to play`));
+        io.emit('play', formatMessage(user.username, `${user.username} is ready to play!`));
     });
 
 
-
-
-    socket.on('paintingColor', ({username, color}) => {
-        // get user
-        const user = userJoin(socket.id, username, color);
-        socket.join(user);
-
-    });
-
-
-    // CHAT MESSAGES 
-    socket.on('paintCell', (cell) => {
-        io.emit('paintCell', cell);
-        console.log(cell.id + cell.userColor);
-    });
 });
 
 module.exports = {app: app, server: server};

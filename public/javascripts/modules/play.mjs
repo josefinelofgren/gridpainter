@@ -1,6 +1,6 @@
 import {username, color} from "./user.mjs";
 import { randomPics } from '../modules/array.mjs';
-import { printImage, saveDrawnPic, savedPic } from '../modules/paint.mjs';
+import { printImage, saveDrawnPic } from '../modules/paint.mjs';
 
 const socket = io();
 const facitGrid = document.querySelector('#facit');
@@ -8,6 +8,9 @@ const facitGrid = document.querySelector('#facit');
 // JOIN GAME
 socket.emit('joinGame', {username, color});
 
+socket.on('players', players => {
+  console.log('players', players);
+});
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
@@ -24,7 +27,13 @@ function playBtnAction(target, savedPic) {
   const button = document.getElementById(`${target.id}`);
   const timer = document.getElementById("timer");
   let counter = 60;
-    
+  //push players to array. When index is <=3 run timer
+  // socket.emit('pushPlayer', "add");
+
+  // if (players[3] != undefined/-1?) {
+  //   run the below
+  // }
+
   if(button.innerText === "Play") {
     button.innerText = "Stop";
     
@@ -90,7 +99,7 @@ function compare(randomPic, savedPic) {
 
 
 // MESSAGE FROM SERVER
-socket.on('ready', message => {
+socket.on('play', message => {
     outputPressPlay(message)
 });
 
@@ -104,6 +113,7 @@ function outputPressPlay(message){
     document.getElementById('gameInfo').appendChild(usersReadyToPlay);
 
     usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
+
 };
 
 
