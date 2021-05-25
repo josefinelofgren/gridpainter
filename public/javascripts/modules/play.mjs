@@ -5,6 +5,10 @@ import { printImage, saveDrawnPic } from '../modules/paint.mjs';
 const socket = io();
 const facitGrid = document.querySelector('#facit');
 
+socket.on('players', players => {
+console.log('players', players);
+
+});
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
@@ -22,9 +26,8 @@ function playBtnAction(target, savedPic) {
   const timer = document.getElementById("timer");
   let counter = 60;
   //push players to array. When index is <=3 run timer
-  const players = []
-  
-  // players.push(username);
+  // socket.emit('pushPlayer', "add");
+
   // if (players[3] != undefined/-1?) {
   //   run the below
   // }

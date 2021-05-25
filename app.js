@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const formatMessage = require('./utils/messages');
@@ -12,6 +13,66 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+ 
+//if we go with .json
+//istallera fs
+const fs = require("fs");
+
+
+//GET DOCUMENT FOR EDITING
+
+
+//GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
+app.post('/', jsonParser, (req, res, next) => {
+console.log('req body', req.body);
+ 
+    fs.readFile("allDrawnPics.json", (err, data) => {
+        if(err) console.log('err', err);
+
+        const allDrawnPics = JSON.parse(data);
+
+        //push or replace to array with all saved 
+        //not finished!
+        // let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === newName );
+        // if (checkDoublet == undefind/-1) {
+        //     allDrawnPics.push(req.body);
+        // } else {
+        //     allDrawnPics.splice(1, checkDoublet, req.body)
+        // }
+
+        allDrawnPics.push(req.body);
+
+        fs.writeFile("allDrawnPics.json", JSON.stringify(allDrawnPics, null, 2), (err) => {
+            if(err) console.log('err', err);
+        });
+        //dont want to send anything?
+        res.send("nothingToSend");
+
+    });
+
+  
+});
+
+// //GET ALLDRAWNPICS FROM ALLDRAWNPICS.JSON
+// app.get('/', function(req, res, next) {
+
+//     fs.readFile("allDrawnPics.json", (err, data) => {
+//         if(err) console.log('err', err);
+
+//         const allDrawnPics = JSON.parse(data);
+
+//         res.send(allDrawnPics);
+
+//     });
+
+// });
+
+
+
+
 const server = require('http').Server(app);
 const io = socketio(server);
 
@@ -75,6 +136,7 @@ io.on('connection', function(socket){
         if(user){
           io.emit('message', formatMessage(botName, `${user.username} has left the chat`));
         };
+
     });
 
 
@@ -84,13 +146,14 @@ io.on('connection', function(socket){
         const user = userJoin(socket.id, username, color);
         socket.join(user);
     });
-
+    
+    const players = [];
     // WHEN USER PRESS PLAY
     socket.on('play', () => {
         const user = getCurrentUser(socket.id);
-
         io.emit('ready', formatMessage(user.username, `${user.username} is ready to play`));
     });
+
 
 });
 

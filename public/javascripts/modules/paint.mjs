@@ -47,7 +47,7 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
 };
 
 
-//save drawn pic
+//save drawn pic 
 function saveDrawnPic(input) {
  
     // replace "canvas" in name with input value
@@ -56,19 +56,19 @@ function saveDrawnPic(input) {
         savedPic[obj].name = newName;
     };
 
-    //push or replace to array with all saved 
-    //not finished!
-    // let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === newName );
-    // if (checkDoublet == undefind/-1) {
-    //     allDrawnPics.push(savedPic);
-    // } else {
-    //     allDrawnPics.splice(1, checkDoublet, savedPic)
-    // }
-    allDrawnPics.push(savedPic);
-   
+    //send savedPic to server =>  allDrawnPics.json
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(savedPic)
+    });
+
     //empty savedPic for next time 
     savedPic = [];
     
+    //clear input field
     input.value = "";
 
 };
@@ -78,32 +78,38 @@ function saveDrawnPic(input) {
 function printSavedPics(target) {
     
     printSavedPicsBtn.innerHTML = "";
-
-    for (let index in allDrawnPics) {
-
-        printSavedPicsBtn.insertAdjacentHTML("beforeend", `
-        <option id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</option>`);
-
-        //need this if there are more obj in array? :
-        
-        // for (let pic in allDrawnPics[index]) {
-        //     console.log('pic', allDrawnPics[index][pic].name);
-        //     printListContainer.insertAdjacentHTML("beforeend", `<li id="${allDrawnPics[index][pic].name}">${allDrawnPics[index][pic].name}</li>`)
-        // }
-    }; 
     
-    //find index of target array in allDrawnPics 
-    if(target.id !== "optionsBtn") {
+    // //fetch allDrawnPics from .json
+    // fetch("http://localhost:3000")
+    // .then(res => res.json())
+    // .then(allDrawnPics => {
+
+        for (let index in allDrawnPics) {
+
+            printSavedPicsBtn.insertAdjacentHTML("beforeend", `
+            <option id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</option>`);
+
+            //need this if there are more obj in array? :
+            
+            // for (let pic in allDrawnPics[index]) {
+            //     console.log('pic', allDrawnPics[index][pic].name);
+            //     printListContainer.insertAdjacentHTML("beforeend", `<li id="${allDrawnPics[index][pic].name}">${allDrawnPics[index][pic].name}</li>`)
+            // }
+        }; 
         
-        let index = allDrawnPics.findIndex( (arr) => arr[0].name === target.id );
+        //find index of target array in allDrawnPics 
+        if(target.id !== "optionsBtn") {
+            
+            let index = allDrawnPics.findIndex( (arr) => arr[0].name === target.id );
 
-        //find array to print by index
-        let printArray = allDrawnPics[index];
-        console.log('printArray', printArray);
-        //when resave pic make sure to either splice? or push to array (no duplicates!)
-        printImage(canvasGrid, printArray, 2, 2);
+            //find array to print by index
+            let printArray = allDrawnPics[index];
 
-    };
+            //when resave pic make sure to either splice? or push to array (no duplicates!)
+            printImage(canvasGrid, printArray, 2, 2);
+
+        };
+    // });
 };        
    
 
@@ -178,7 +184,6 @@ function colorCell(target, color) {
     };
     
 };
-
 
 
 
