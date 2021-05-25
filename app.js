@@ -26,7 +26,7 @@ const fs = require("fs");
 
 
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
-app.post('/', jsonParser, (req, res, next) => {
+app.post('/pic', jsonParser, (req, res, next) => {
 
     
     fs.readFile("allDrawnPics.json", (err, data) => {
@@ -58,7 +58,7 @@ app.post('/', jsonParser, (req, res, next) => {
 });
 
 //GET ALLDRAWNPICS FROM ALLDRAWNPICS.JSON
-app.get('/', function(req, res, next) {
+app.get('/pic', function(req, res, next) {
 
     fs.readFile("allDrawnPics.json", (err, data) => {
         if(err) console.log('err', err);

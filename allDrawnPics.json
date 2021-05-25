@@ -218,5 +218,181 @@
       "id": "row2cell2",
       "color": null
     }
+  ],
+  [
+    {
+      "name": "sdf§s",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "sdf§s",
+      "id": "row1cell2",
+      "color": "#CBCBBD"
+    },
+    {
+      "name": "sdf§s",
+      "id": "row2cell1",
+      "color": "#CBCBBD"
+    },
+    {
+      "name": "sdf§s",
+      "id": "row2cell2",
+      "color": null
+    }
+  ],
+  [
+    {
+      "name": "rtew",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "rtew",
+      "id": "row1cell2",
+      "color": "#EEFBDE"
+    },
+    {
+      "name": "rtew",
+      "id": "row2cell1",
+      "color": "#EEFBDE"
+    },
+    {
+      "name": "rtew",
+      "id": "row2cell2",
+      "color": null
+    }
+  ],
+  [
+    {
+      "name": "nytt",
+      "id": "row1cell1",
+      "color": "#ECECBF"
+    },
+    {
+      "name": "nytt",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "nytt",
+      "id": "row2cell1",
+      "color": null
+    },
+    {
+      "name": "nytt",
+      "id": "row2cell2",
+      "color": "#ECECBF"
+    }
+  ],
+  [
+    {
+      "name": "senaste",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "senaste",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "senaste",
+      "id": "row2cell1",
+      "color": null
+    },
+    {
+      "name": "senaste",
+      "id": "row2cell2",
+      "color": null
+    }
+  ],
+  [
+    {
+      "name": "sisstta",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "sisstta",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "sisstta",
+      "id": "row2cell1",
+      "color": null
+    },
+    {
+      "name": "sisstta",
+      "id": "row2cell2",
+      "color": null
+    }
+  ],
+  [
+    {
+      "name": "rödvit",
+      "id": "row1cell1",
+      "color": "#FECFBF"
+    },
+    {
+      "name": "rödvit",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "rödvit",
+      "id": "row2cell1",
+      "color": null
+    },
+    {
+      "name": "rödvit",
+      "id": "row2cell2",
+      "color": "#FECFBF"
+    }
+  ],
+  [
+    {
+      "name": "",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "",
+      "id": "row2cell1",
+      "color": null
+    },
+    {
+      "name": "",
+      "id": "row2cell2",
+      "color": null
+    }
+  ],
+  [
+    {
+      "name": "jk",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "jk",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "jk",
+      "id": "row2cell1",
+      "color": null
+    },
+    {
+      "name": "jk",
+      "id": "row2cell2",
+      "color": null
+    }
   ]
 ]
