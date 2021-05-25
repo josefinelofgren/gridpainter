@@ -1,7 +1,9 @@
 const socket = io();
 import {inputMessage} from "./modules/chat.mjs";
 import {inputPressPlay} from "./modules/play.mjs";
+import {color} from "./modules/user.mjs";
 
+console.log('color', color);
 import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
 import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
 import { randomPics } from './modules/array.mjs';
@@ -36,7 +38,7 @@ let facit;
 createGrid(canvasGrid, 2, 2);
 
 //set userColor as a color
-paint.addEventListener('click', () =>  userColor = "purple" );
+paint.addEventListener('click', () =>  userColor = color );
 
 //set userColor as cull
 erase.addEventListener('click', () => userColor = null);

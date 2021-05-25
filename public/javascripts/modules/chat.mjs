@@ -1,9 +1,10 @@
 import {username, color} from "./user.mjs";
 
 let root = document.getElementById('root');
-let chatMessages = document.getElementById('chatMessages');
 const socket = io();
 
+//gör detta i paint med savedPic. kommer från import och skickas till server
+//socket.emit('paint', savedPic);
 
 // JOIN GAME
 socket.emit('joinGame', {username, color});
@@ -28,6 +29,7 @@ function outputMessage(message){
                                                          </div>`
     
 };
+
 
 // INPUT MESSAGE 
 function inputMessage(){
