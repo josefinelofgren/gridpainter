@@ -27,23 +27,25 @@ const fs = require("fs");
 
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
 app.post('/', jsonParser, (req, res, next) => {
-console.log('req body', req.body);
+console.log('req body', req.body[0].name);
  
     fs.readFile("allDrawnPics.json", (err, data) => {
         if(err) console.log('err', err);
 
         const allDrawnPics = JSON.parse(data);
-
+        // for (let arr in allDrawnPics) {
+        //     console.log('allDrawnPics[arr].name', allDrawnPics[arr][0].name);
+        // }
         //push or replace to array with all saved 
         //not finished!
-        // let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === newName );
-        // if (checkDoublet == undefind/-1) {
-        //     allDrawnPics.push(req.body);
-        // } else {
-        //     allDrawnPics.splice(1, checkDoublet, req.body)
-        // }
-
-        allDrawnPics.push(req.body);
+        let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === req.body[0].name);
+        console.log('cechDoulert', checkDoublet);
+        console.log('allDrawnPics[checkDoublet]', allDrawnPics[checkDoublet]);
+        if (checkDoublet === -1) {
+            allDrawnPics.push(req.body);
+        } else {
+            allDrawnPics.splice(checkDoublet, 1, req.body)
+        }
 
         fs.writeFile("allDrawnPics.json", JSON.stringify(allDrawnPics, null, 2), (err) => {
             if(err) console.log('err', err);
