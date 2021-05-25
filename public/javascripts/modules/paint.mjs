@@ -84,6 +84,17 @@ function printSavedPics(target) {
         //     printListContainer.insertAdjacentHTML("beforeend", `<li id="${allDrawnPics[index][pic].name}">${allDrawnPics[index][pic].name}</li>`)
         // }
       }
+      // let printList = document.querySelector('#printList');
+      // printList.addEventListener('click', (evt) => {
+      //   console.log(evt.target.id);
+      //   let index = allDrawnPics.findIndex((arr) => arr[0].name === target.id);
+
+      //   //find array to print by index
+      //   let printArray = allDrawnPics[index];
+
+      //   //when resave pic make sure to either splice? or push to array (no duplicates!)
+      //   printImage(canvasGrid, printArray, 2, 2);
+      // });
 
       //find index of target array in allDrawnPics
       if (target.id !== 'optionsBtn') {
