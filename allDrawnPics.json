@@ -218,5 +218,27 @@
       "id": "row2cell2",
       "color": null
     }
+  ],
+  [
+    {
+      "name": "dfn",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "dfn",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "dfn",
+      "id": "row2cell1",
+      "color": null
+    },
+    {
+      "name": "dfn",
+      "id": "row2cell2",
+      "color": null
+    }
   ]
 ]
