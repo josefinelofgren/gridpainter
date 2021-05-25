@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const formatMessage = require('./utils/messages');
+const {formatMessage} = require('./utils/messages');
 const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
 const socketio = require('socket.io');
 const randomColor = require('randomcolor');
@@ -32,7 +32,7 @@ io.on('connection', function(socket){
 
 
     // WHEN USER JOIN GAME 
-    socket.on('joinGame', ({username, color}) => {
+    socket.on('joinChat', ({username, color}) => {
 
         // Join user 
         const user = userJoin(socket.id, username, color);
@@ -65,13 +65,13 @@ io.on('connection', function(socket){
         };
     });
 
-
-
-    // PLAY GAME 
-    socket.on('playGame', ({username, color}) => {
+    socket.on('joinGame', ({username, color}) => {
+        
+        // Join user 
         const user = userJoin(socket.id, username, color);
         socket.join(user);
     });
+
 
     // WHEN USER PRESS PLAY
     socket.on('play', () => {
@@ -80,6 +80,22 @@ io.on('connection', function(socket){
         io.emit('ready', formatMessage(user.username, `${user.username} is ready to play`));
     });
 
+
+
+
+    socket.on('paintingColor', ({username, color}) => {
+        // get user
+        const user = userJoin(socket.id, username, color);
+        socket.join(user);
+
+    });
+
+
+    // CHAT MESSAGES 
+    socket.on('paintCell', (cell) => {
+        io.emit('paintCell', cell);
+        console.log(cell.id + cell.userColor);
+    });
 });
 
 module.exports = {app: app, server: server};

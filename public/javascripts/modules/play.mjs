@@ -5,6 +5,9 @@ import { printImage, saveDrawnPic, savedPic } from '../modules/paint.mjs';
 const socket = io();
 const facitGrid = document.querySelector('#facit');
 
+// JOIN GAME
+socket.emit('joinGame', {username, color});
+
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
@@ -86,13 +89,11 @@ function compare(randomPic, savedPic) {
 
 
 
-// PLAY GAME
-socket.emit('playGame', {username, color});
-
 // MESSAGE FROM SERVER
 socket.on('ready', message => {
     outputPressPlay(message)
 });
+
 
 // OUTPUT USER IF USER PRESS PLAY 
 function outputPressPlay(message){
@@ -104,6 +105,7 @@ function outputPressPlay(message){
 
     usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
 };
+
 
 // INPUT USER IF USER PRESS PLAY 
 function inputPressPlay(){

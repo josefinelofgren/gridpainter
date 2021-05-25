@@ -4,9 +4,8 @@ let root = document.getElementById('root');
 let chatMessages = document.getElementById('chatMessages');
 const socket = io();
 
-
 // JOIN GAME
-socket.emit('joinGame', {username, color});
+socket.emit('joinChat', {username, color});
 
 
 // MESSAGE FROM SERVER
@@ -41,41 +40,6 @@ function inputMessage(){
     // Clear inputfield 
     document.getElementById('inputMsg').value = "";
 }
-
-
-
-// // MESSAGE FROM SERVER
-// socket.on('ready', message => {
-//     outputPressPlay(message)
-// });
-
-// // OUTPUT USER IF USER PRESS PLAY 
-// function outputPressPlay(message){
-
-//     let usersReadyToPlay = document.createElement('ul');
-//     usersReadyToPlay.setAttribute("id", "usersReadyToPlay");
-
-//     document.getElementById('gameInfo').appendChild(usersReadyToPlay);
-
-//     usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
-// };
-
-// // INPUT USER IF USER PRESS PLAY 
-// function inputPressPlay(){
-    
-//     // Emit message to server
-//     socket.emit('play');
-
-//     document.getElementById('playBtn').innerHTML = `<i class="fa-spin fas fa-spinner"></i>Waiting for the other players..`
-// }
-
-
-// function play(){
-
-//     if(document.getElementById('usersReadyToPlay').innerHTML)
-
-//     document.getElementById('usersReadyToPlay').innerHTML
-// }
 
 
 

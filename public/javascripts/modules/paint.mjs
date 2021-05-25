@@ -1,12 +1,40 @@
+import {username, color} from "./user.mjs";
+const socket = io();
+
 //PAINT.MJS
 const printSavedPicsBtn = document.querySelector('#optionsBtn');
 const canvasGrid = document.querySelector('#canvas');
+const paint = document.querySelector('#paint');
+const erase = document.querySelector('#erase');
 
 // //initial array for drawing pic
 let savedPic = [];
 
 //array to store all saved pics
 const allDrawnPics = [];
+
+
+let userColor; 
+let currentUserColor; 
+
+// get color from current user
+socket.emit('paintingColor', {username, color});
+currentUserColor = color;
+
+console.log(currentUserColor);
+
+
+
+//set userColor as cull
+erase.addEventListener('click', () => userColor = null);
+
+
+//set userColor as a color
+paint.addEventListener('click', () =>  {
+    userColor = currentUserColor;
+    console.log(userColor); 
+});
+
 
 
 //genereate a grid structure
@@ -134,9 +162,11 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
 //declare down as false before mousedown so mouseover does not pain
 let down = false;
 
+
+
 // change state of "down" on mouse actions
-function downState(target, userColor) { 
- 
+function downState(target, color) { 
+
     //after mousedown => down == true so mouseover does pain
     down = true;
 
@@ -145,21 +175,19 @@ function downState(target, userColor) {
 
     //if mouse down and leaving grid => down = false
     canvas.addEventListener('mouseleave', () => down = false);
-    
+
     //colorCell on mousedown
     colorCell(target, userColor);
 
 };    
+
  
 
-
-
-//to color cell
 function colorCell(target, userColor) {
 
     //if down is true
     if(down && target.id !== "canvas") {
-       
+    
         //get current cell 
         let currentCell = document.getElementById(`${target.id}`);
 
@@ -168,11 +196,10 @@ function colorCell(target, userColor) {
 
         //find cell and change color in array;
         let foundCell = savedPic.find(i => i.id === target.id)
+
         foundCell.color = userColor;
 
-    };
-    
+    };    
 };
 
-
-export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, savedPic};
+export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, savedPic, userColor};

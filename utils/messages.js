@@ -7,7 +7,14 @@ function formatMessage(username, text, color){
         color,
         time: moment().format('h:mm a')
     }
-}
+};
+
+function playerPaint(username, color){
+    return {
+        username,
+        color,
+    }
+};
 
 
-module.exports = formatMessage;
+module.exports = {formatMessage, playerPaint};
