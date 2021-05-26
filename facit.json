@@ -1,0 +1,112 @@
+[
+    [
+      {
+        "name": "facit",
+        "id": "row1cell1",
+        "color": "#BDCBFF"
+      },
+      {
+        "name": "facit",
+        "id": "row1cell2",
+        "color": null
+      },
+      {
+        "name": "facit",
+        "id": "row2cell1",
+        "color": null
+      },
+      {
+        "name": "facit",
+        "id": "row2cell2",
+        "color": "#BDCBFF"
+      }
+    ],
+    [
+        {
+          "name": "facit",
+          "id": "row1cell1",
+          "color": "#CCCBFF"
+        },
+        {
+          "name": "facit",
+          "id": "row1cell2",
+          "color": null
+        },
+        {
+          "name": "facit",
+          "id": "row2cell1",
+          "color": null
+        },
+        {
+          "name": "facit",
+          "id": "row2cell2",
+          "color": "#BDCBFF"
+        }
+      ],
+      [
+        {
+          "name": "facit",
+          "id": "row1cell1",
+          "color": "#BDCBFF"
+        },
+        {
+          "name": "facit",
+          "id": "row1cell2",
+          "color": "#BDCBFF"
+        },
+        {
+          "name": "facit",
+          "id": "row2cell1",
+          "color": null
+        },
+        {
+          "name": "facit",
+          "id": "row2cell2",
+          "color": null
+        }
+      ],
+      [
+        {
+          "name": "facit",
+          "id": "row1cell1",
+          "color": "#BDCBFF"
+        },
+        {
+          "name": "facit",
+          "id": "row1cell2",
+          "color": "#BDCBFF"
+        },
+        {
+          "name": "facit",
+          "id": "row2cell1",
+          "color": null
+        },
+        {
+          "name": "facit",
+          "id": "row2cell2",
+          "color": "#BDCBFF"
+        }
+      ],
+      [
+        {
+          "name": "facit",
+          "id": "row1cell1",
+          "color": null
+        },
+        {
+          "name": "facit",
+          "id": "row1cell2",
+          "color": null
+        },
+        {
+          "name": "facit",
+          "id": "row2cell1",
+          "color": null
+        },
+        {
+          "name": "facit",
+          "id": "row2cell2",
+          "color": "#BDCBFF"
+        }
+      ]
+]
