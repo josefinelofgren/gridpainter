@@ -180,4 +180,5 @@ export {
   printImage,
   downState,
   colorCell,
+  savedPic
 };
