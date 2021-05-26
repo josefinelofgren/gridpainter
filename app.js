@@ -157,7 +157,7 @@ socket.on("timeUp", (player) => {
         if(players.length === 0) {
       
             io.emit('leaveGame', players);
-        
+
         };
 
     });

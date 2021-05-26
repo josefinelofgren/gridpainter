@@ -136,12 +136,8 @@ function compare(randomPic, savedPic) {
     if (randomPic[obj].color === foundObj.color) x++; //add +1 to every equal
   }
 
-  //print in right place later = % accuracy of picture
-  //print in id gameInfo
 
-
-  document.getElementById("timer").insertAdjacentHTML("afterend", `
-  <span>Your picture is ${x / randomPic.length * 100}% correct!</span>`);
+  document.getElementById("waitingForPlayers").innerText = `Your picture is ${x / randomPic.length * 100}% correct!`;
 
 };
 
