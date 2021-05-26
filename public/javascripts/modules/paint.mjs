@@ -4,6 +4,7 @@ const printSavedPicsBtn = document.querySelector('#optionsBtn');
 const canvasGrid = document.querySelector('#canvas');
 
 //array to store all saved pics
+//need this one? allDrawnPics
 const allDrawnPics = [];
 let savedPic = [];
 
@@ -39,47 +40,55 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
 
 //save drawn pic
 function saveDrawnPic(input) {
-  // replace "canvas" in name with input value
-  for (let obj in savedPic) {
-    let newName = savedPic[obj].name.replace('', input.value);
-    savedPic[obj].name = newName;
-  }
 
-  //send savedPic to server =>  allDrawnPics.json
-  fetch('http://localhost:3000/pic', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(savedPic),
-  });
+    if(input.value !== "") {
+        // replace "canvas" in name with input value
+        for (let obj in savedPic) {
+            let newName = savedPic[obj].name.replace('', input.value);
+            savedPic[obj].name = newName;
+        }
 
-  //empty savedPic for next time
-  savedPic = [];
+        //send savedPic to server =>  allDrawnPics.json
+        fetch('http://localhost:3000/pic', {
+            method: 'post',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(savedPic),
+        });
 
-  //clear input field
-  input.value = '';
+        //empty savedPic for next time
+        savedPic = [];
+
+        //clear input field
+        input.value = '';
+    }else {
+        alert("Please enter a name")
+    };
+
 }
 
 //se saved images
 function printSavedPics(target) {
   // printSavedPicsBtn.innerHTML = '';
-  document.getElementById('printList').innerHTML = '';
+  const printList = document.getElementById('printList');
+  printList.innerHTML = '';
 
   //fetch allDrawnPics from .json
   fetch('http://localhost:3000/pic')
     .then((res) => res.json())
     .then((allDrawnPics) => {
       for (let index in allDrawnPics) {
-        document.getElementById('printList').insertAdjacentHTML(
+        printList.insertAdjacentHTML(
           'beforeend',
           `
             <li class="listItems" id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</li>`
         );
       }
-      let printList = document.querySelector('#printList');
+
       printList.addEventListener('click', (evt) => {
         let clickedPic = evt.target.id;
+        
         console.log(clickedPic);
 
         let index = allDrawnPics.findIndex(
@@ -89,6 +98,10 @@ function printSavedPics(target) {
 
         //find array to print by index
         let printArray = allDrawnPics[index];
+
+        //give input value of picture name
+        document.getElementById("saveArray").value = allDrawnPics[index][0].name;
+
         console.log(printArray);
 
         printArray.forEach((cell) => {
@@ -96,7 +109,7 @@ function printSavedPics(target) {
           console.log(cell);
           socket.emit('paint', cell);
         });
-        // //when resave pic make sure to either splice? or push to array (no duplicates!)
+       
         // printImage(canvasGrid, printArray, 2, 2);
       });
     });
@@ -143,29 +156,6 @@ function downState(target, color) {
   //if mouse down and leaving grid => down = false
   canvas.addEventListener('mouseleave', () => (down = false));
 
-<<<<<<< HEAD
-//to color cell
-function colorCell(target, userColor) {
-
-    //if down is true
-    if(down && target.id !== "canvas") {
-       
-        //get current cell 
-        let currentCell = document.getElementById(`${target.id}`);
-
-        //change cells bg color
-        currentCell.style.backgroundColor = userColor; 
-
-        //find cell and change color in array;
-        let foundCell = savedPic.find(i => i.id === target.id)
-        foundCell.color = userColor;
-    };
-    
-};
-
-
-export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, savedPic};
-=======
   //colorCell on mousedown
   colorCell(target, color);
 }
@@ -191,4 +181,3 @@ export {
   downState,
   colorCell,
 };
->>>>>>> 26fb3999e46767d5577906c51c79c31d54f37e6c

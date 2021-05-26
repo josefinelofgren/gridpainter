@@ -4,7 +4,8 @@ import {inputPressPlay} from "./modules/play.mjs";
 import {color} from "./modules/user.mjs";
 
 console.log('color', color);
-import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
+// import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
+import { findRandomPic, awaitPlayers, runTimer, compare } from './modules/play.mjs';
 import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
 import { randomPics } from './modules/array.mjs';
 
@@ -28,21 +29,14 @@ let userColor;
 //array to store all saved pics
 const allDrawnPics = [];
 
+const players = []
 //declare var
 let facit;
 
 
-//DO WE NEED ANY OF THESE THINGS ANYMORE?? 
-//export to paint /////////
-// //initial array for drawing pic
-// let savedPic = [];
-
-<<<<<<< HEAD
-=======
 
 //generate grid/canvas
 createGrid(canvasGrid, 2, 2);
->>>>>>> 26fb3999e46767d5577906c51c79c31d54f37e6c
 
 //set userColor as a color
 paint.addEventListener('click', () =>  userColor = color );
@@ -63,24 +57,13 @@ canvas.addEventListener('mouseover', ({target}) =>  colorCell(target, userColor)
 canvas.addEventListener('mousedown', ({target}) => downState(target, userColor));
 
 
+// //on click "play/stop"
+// document.getElementById('playBtn').addEventListener('click', ({target}) => {
+//   playBtnAction(target, savedPic);
+//   inputPressPlay();
+// });
 //on click "play/stop"
-<<<<<<< HEAD
-document.getElementById('playBtn').addEventListener('click', ({target}) => playBtnAction(target, savedPic));
-
-
-
-///////////////////////////
-
-
-// GET USERNAME AND COLOR FROM URL
-const { username, color } = Qs.parse(location.search, {
-  ignoreQueryPrefix: true,
-=======
-document.getElementById('playBtn').addEventListener('click', ({target}) => {
-  playBtnAction(target, savedPic);
-  inputPressPlay();
->>>>>>> 26fb3999e46767d5577906c51c79c31d54f37e6c
-});
+document.getElementById('btnBox').addEventListener('click', ({target}) => awaitPlayers(target));
 
 
 
