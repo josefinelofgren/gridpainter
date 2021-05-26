@@ -36,7 +36,7 @@ let facit;
 
 
 //generate grid/canvas
-createGrid(canvasGrid, 2, 2);
+createGrid(canvasGrid, 25, 25);
 
 //set userColor as a color
 paint.addEventListener('click', () =>  userColor = color );

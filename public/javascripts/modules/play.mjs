@@ -24,9 +24,9 @@ socket.on('printPlayers', players => {
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
-  let index = Math.floor(Math.random() * 5); //generate random number 0-5
+  let index = Math.floor(Math.random() * 5); //generate random number 0-4
   facit = [...randomPics[index]]; //user random number as index
-  //printImage(facitGrid, facit, 2, 2);
+
   return facit;
 };
 
@@ -53,7 +53,7 @@ function awaitPlayers(target) {
         socket.on('printFacit', picture => {
           document.getElementById("waitingForPlayers").innerHTML = null;
           const facitGrid = document.getElementById("facit");
-          printImage(facitGrid, picture, 2, 2)
+          printImage(facitGrid, picture, 25, 25)
         });
 
       } else {
@@ -76,7 +76,7 @@ function runTimer() {
 
   //find random image to copy
   let randomPic = findRandomPic(randomPics, facit);
-  printImage(facitGrid, randomPic, 2, 2);
+  printImage(facitGrid, randomPic, 25, 25);
 
   //start timer
   const setTimer = setInterval(function(){
