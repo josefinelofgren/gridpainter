@@ -1,9 +1,14 @@
+import {username, color} from "./user.mjs";
 import { randomPics } from '../modules/array.mjs';
-import { printImage, saveDrawnPic, savedPic } from '../modules/paint.mjs';
+import { printImage, saveDrawnPic } from '../modules/paint.mjs';
 
-
+const socket = io();
 const facitGrid = document.querySelector('#facit');
 
+socket.on('players', players => {
+console.log('players', players);
+
+});
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
@@ -11,7 +16,7 @@ function findRandomPic(randomPics, facit) {
   facit = [...randomPics[index]]; //user random number as index
   //printImage(facitGrid, facit, 2, 2);
   return facit;
-}
+};
 
 
 //playBtn => start or stop game
@@ -20,7 +25,13 @@ function playBtnAction(target, savedPic) {
   const button = document.getElementById(`${target.id}`);
   const timer = document.getElementById("timer");
   let counter = 60;
-    
+  //push players to array. When index is <=3 run timer
+  // socket.emit('pushPlayer', "add");
+
+  // if (players[3] != undefined/-1?) {
+  //   run the below
+  // }
+
   if(button.innerText === "Play") {
     button.innerText = "Stop";
     
@@ -61,6 +72,7 @@ function endTimer(button, setTimer) {
 
 
 
+
 // //compare images accuracy
 function compare(randomPic, savedPic) {
 
@@ -84,4 +96,29 @@ function compare(randomPic, savedPic) {
 
 
 
-export { findRandomPic, playBtnAction, compare };
+// PLAY GAME
+socket.emit('playGame', {username, color});
+
+// MESSAGE FROM SERVER
+socket.on('ready', message => {
+    outputPressPlay(message)
+});
+
+// OUTPUT USER IF USER PRESS PLAY 
+function outputPressPlay(message){
+
+  let usersReadyToPlay = document.getElementById('usersReadyToPlay');
+  usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
+};
+
+// INPUT USER IF USER PRESS PLAY 
+function inputPressPlay(){
+    
+    // Emit message to server
+    socket.emit('play');
+
+    document.getElementById('playBtn').innerHTML = `<i class="fa-spin fas fa-spinner"></i>Waiting for the other players..`
+};
+
+
+export { findRandomPic, playBtnAction, compare, inputPressPlay};

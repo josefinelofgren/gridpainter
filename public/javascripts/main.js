@@ -1,3 +1,9 @@
+const socket = io();
+import {inputMessage} from "./modules/chat.mjs";
+import {inputPressPlay} from "./modules/play.mjs";
+import {color} from "./modules/user.mjs";
+
+console.log('color', color);
 import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
 import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
 import { randomPics } from './modules/array.mjs';
@@ -31,9 +37,15 @@ let facit;
 // //initial array for drawing pic
 // let savedPic = [];
 
+<<<<<<< HEAD
+=======
+
+//generate grid/canvas
+createGrid(canvasGrid, 2, 2);
+>>>>>>> 26fb3999e46767d5577906c51c79c31d54f37e6c
 
 //set userColor as a color
-paint.addEventListener('click', () =>  userColor = "purple" );
+paint.addEventListener('click', () =>  userColor = color );
 
 //set userColor as cull
 erase.addEventListener('click', () => userColor = null);
@@ -52,6 +64,7 @@ canvas.addEventListener('mousedown', ({target}) => downState(target, userColor))
 
 
 //on click "play/stop"
+<<<<<<< HEAD
 document.getElementById('playBtn').addEventListener('click', ({target}) => playBtnAction(target, savedPic));
 
 
@@ -62,54 +75,19 @@ document.getElementById('playBtn').addEventListener('click', ({target}) => playB
 // GET USERNAME AND COLOR FROM URL
 const { username, color } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
+=======
+document.getElementById('playBtn').addEventListener('click', ({target}) => {
+  playBtnAction(target, savedPic);
+  inputPressPlay();
+>>>>>>> 26fb3999e46767d5577906c51c79c31d54f37e6c
 });
 
-// JOIN GAME
-socket.emit('joinGame', { username, color });
 
-// MESSAGE FROM SERVER
-socket.on('message', (message) => {
-  console.log(message);
-  outputMessage(message);
 
-  // Scroll down to last message
-  document.getElementById('chatMessages').scrollTop =
-    document.getElementById('chatMessages').scrollHeight;
+/////////////////////////// CHAT /////////////////////////// 
+
+// SEND CHAT MESSAGE 
+document.getElementById('btnMsg').addEventListener('click', function(e){
+    e.preventDefault();
+    inputMessage();
 });
-
-document.getElementById('btnMsg').addEventListener('click', function (e) {
-  e.preventDefault();
-
-  // Get message
-  let inputMsg = document.getElementById('inputMsg').value;
-
-  // Emit message to server
-  socket.emit('chatMessage', inputMsg);
-
-  // Clear inputfield
-  document.getElementById('inputMsg').value = '';
-});
-
-// // MESSAGE SUBMIT
-// function getMessage(e){
-//     e.preventDefault();
-
-//     // Get message
-//     let inputMsg = document.getElementById('inputMsg').value;
-
-//     // Emit message to server
-//     socket.emit('chatMessage', inputMsg);
-
-//     // Clear inputfield
-//     document.getElementById('inputMsg').value = "";
-// };
-
-// OUTPUT MESSAGE
-function outputMessage(message) {
-  document.getElementById(
-    'chatMessages'
-  ).innerHTML += `<div class="message" style="background-color:${message.color};">
-                                                         <p class="message-info">${message.username} <span>${message.time}</span></p>
-                                                         <p class="message-text">${message.text}</p>
-                                                         </div>`;
-}

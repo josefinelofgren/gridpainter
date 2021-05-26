@@ -1,158 +1,149 @@
-//PAINT.MJS
+import { color } from './user.mjs';
+const socket = io();
 const printSavedPicsBtn = document.querySelector('#optionsBtn');
 const canvasGrid = document.querySelector('#canvas');
 
-// //initial array for drawing pic
-let savedPic = [];
-
 //array to store all saved pics
 const allDrawnPics = [];
+let savedPic = [];
 
+// get foundCell with new color from server
+socket.on('paintedCell', (foundCell) => {
+  //find element with same id as foundCell
+  let cellElement = document.getElementById(foundCell.id);
+  //change elements bg-color
+  cellElement.style.backgroundColor = foundCell.color;
+});
 
 //genereate a grid structure
-function createGrid(pixelCanvas, gridHeight, gridWidth) {
- 
-    // Creates rows 
-    for (let row = 1; row <= gridHeight; row++) {
-        
-        let gridRow = document.createElement('tr');
-        gridRow.id = "canvas" + row; 
-        pixelCanvas.appendChild(gridRow);
+function createGrid(canvasGrid, gridHeight, gridWidth) {
+  //get savedPic from app.js
 
-        //create cells
-        for (let cell = 1; cell <= gridWidth; cell++) {
-            
-            let gridCell = document.createElement('td');
-            gridCell.id = "row" + row + "cell" + cell;
-            gridRow.appendChild(gridCell);
+  // Creates rows
+  for (let row = 1; row <= gridHeight; row++) {
+    let gridRow = document.createElement('tr');
+    gridRow.id = 'row' + row;
+    canvasGrid.appendChild(gridRow);
 
-            //push name, cell id and color to array
-            if(gridRow.id.includes("canvas")) {
-              savedPic.push({name: "canvas", id: gridCell.id, color: null}); 
-            };
-        };
-    };
-};
+    //create cells
+    for (let cell = 1; cell <= gridWidth; cell++) {
+      let gridCell = document.createElement('td');
+      gridCell.id = gridRow.id + 'cell' + cell;
+      gridRow.appendChild(gridCell);
 
-
+      //push name, cell id and color to array
+      savedPic.push({ name: '', id: gridCell.id, color: null });
+    }
+  }
+}
 
 //save drawn pic
 function saveDrawnPic(input) {
- 
-    // replace "canvas" in name with input value
-    for (let obj in savedPic) {
-        let newName = savedPic[obj].name.replace("canvas", input.value)
-        savedPic[obj].name = newName;
-    };
+  // replace "canvas" in name with input value
+  for (let obj in savedPic) {
+    let newName = savedPic[obj].name.replace('', input.value);
+    savedPic[obj].name = newName;
+  }
 
-    //push or replace to array with all saved 
-    //not finished!
-    // let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === newName );
-    // if (checkDoublet == undefind/-1) {
-    //     allDrawnPics.push(savedPic);
-    // } else {
-    //     allDrawnPics.splice(1, checkDoublet, savedPic)
-    // }
-    allDrawnPics.push(savedPic);
-   
-    //empty savedPic for next time 
-    savedPic = [];
-    
-    input.value = "";
+  //send savedPic to server =>  allDrawnPics.json
+  fetch('http://localhost:3000/pic', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(savedPic),
+  });
 
-};
+  //empty savedPic for next time
+  savedPic = [];
 
+  //clear input field
+  input.value = '';
+}
 
 //se saved images
 function printSavedPics(target) {
-    
-    printSavedPicsBtn.innerHTML = "";
+  // printSavedPicsBtn.innerHTML = '';
+  document.getElementById('printList').innerHTML = '';
 
-    for (let index in allDrawnPics) {
+  //fetch allDrawnPics from .json
+  fetch('http://localhost:3000/pic')
+    .then((res) => res.json())
+    .then((allDrawnPics) => {
+      for (let index in allDrawnPics) {
+        document.getElementById('printList').insertAdjacentHTML(
+          'beforeend',
+          `
+            <li class="listItems" id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</li>`
+        );
+      }
+      let printList = document.querySelector('#printList');
+      printList.addEventListener('click', (evt) => {
+        let clickedPic = evt.target.id;
+        console.log(clickedPic);
 
-        printSavedPicsBtn.insertAdjacentHTML("beforeend", `
-        <option id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</option>`);
-
-        //need this if there are more obj in array? :
-        
-        // for (let pic in allDrawnPics[index]) {
-        //     console.log('pic', allDrawnPics[index][pic].name);
-        //     printListContainer.insertAdjacentHTML("beforeend", `<li id="${allDrawnPics[index][pic].name}">${allDrawnPics[index][pic].name}</li>`)
-        // }
-    }; 
-    
-    //find index of target array in allDrawnPics 
-    if(target.id !== "optionsBtn") {
-        
-        let index = allDrawnPics.findIndex( (arr) => arr[0].name === target.id );
+        let index = allDrawnPics.findIndex(
+          (allDrawnPics) => allDrawnPics[0].name === clickedPic
+        );
+        console.log(index);
 
         //find array to print by index
         let printArray = allDrawnPics[index];
-        console.log('printArray', printArray);
-        //when resave pic make sure to either splice? or push to array (no duplicates!)
-        printImage(canvasGrid, printArray, 2, 2);
+        console.log(printArray);
 
-    };
-};        
-   
+        printArray.forEach((cell) => {
+          //send foundCell with new color to server
+          console.log(cell);
+          socket.emit('paint', cell);
+        });
+        // //when resave pic make sure to either splice? or push to array (no duplicates!)
+        // printImage(canvasGrid, printArray, 2, 2);
+      });
+    });
+}
 
-
-
-
-//print selected image/facit 
+//print selected image/facit
 function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
+  canvasGrid.innerHTML = '';
 
-    canvasGrid.innerHTML = "";
+  // creates rows
+  for (let row = 1; row <= gridHeight; row++) {
+    let gridRow = document.createElement('tr');
+    gridRow.id = 'row' + row;
+    gridRow.name = drawnPic[0].name;
+    canvasGrid.appendChild(gridRow);
 
-    // creates rows 
-    for (let row = 1; row <= gridHeight; row++) {
-        
-        let gridRow = document.createElement('tr');
-        gridRow.id = "row" + row; 
-        gridRow.name = drawnPic[0].name;
-        canvasGrid.appendChild(gridRow);
+    //create cells
+    for (let cell = 1; cell <= gridWidth; cell++) {
+      let gridCell = document.createElement('td');
+      gridCell.id = gridRow.id + 'cell' + cell;
+      gridRow.appendChild(gridCell);
 
-        //create cells
-        for (let cell = 1; cell <= gridWidth; cell++) {
-            
-            let gridCell = document.createElement('td');
-            gridCell.id = gridRow.id + "cell" + cell;
-            gridRow.appendChild(gridCell);
+      //find saved pics background color
+      const foundCell = drawnPic.find(({ id }) => id === gridCell.id);
 
-            //find saved pics background color 
-            const foundCell = drawnPic.find( ({ id }) => id === gridCell.id );
-
-            //apply color to new grid cell
-            gridCell.style.backgroundColor = foundCell.color;
-         
-        };
-    };
-};
-
+      //apply color to new grid cell
+      gridCell.style.backgroundColor = foundCell.color;
+    }
+  }
+}
 
 ///////////////////// MOUSE BEHAVIOUR ///////////////////
 //declare down as false before mousedown so mouseover does not pain
 let down = false;
 
 // change state of "down" on mouse actions
-function downState(target, userColor) { 
- 
-    //after mousedown => down == true so mouseover does pain
-    down = true;
+function downState(target, color) {
+  //after mousedown => down == true so mouseover does pain
+  down = true;
 
-    //mouseup => down = false
-    canvas.addEventListener('mouseup', () => down = false);
+  //mouseup => down = false
+  canvas.addEventListener('mouseup', () => (down = false));
 
-    //if mouse down and leaving grid => down = false
-    canvas.addEventListener('mouseleave', () => down = false);
-    
-    //colorCell on mousedown
-    colorCell(target, userColor);
+  //if mouse down and leaving grid => down = false
+  canvas.addEventListener('mouseleave', () => (down = false));
 
-};    
- 
-
-
+<<<<<<< HEAD
 //to color cell
 function colorCell(target, userColor) {
 
@@ -174,3 +165,30 @@ function colorCell(target, userColor) {
 
 
 export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, savedPic};
+=======
+  //colorCell on mousedown
+  colorCell(target, color);
+}
+
+//to color cell
+function colorCell(target, color) {
+  //if down is true
+  if (down && target.id !== 'canvas') {
+    //find cell and change color in array;
+    let foundCell = savedPic.find((i) => i.id === target.id);
+    foundCell.color = color;
+
+    //send foundCell with new color to server
+    socket.emit('paint', foundCell);
+  }
+}
+
+export {
+  createGrid,
+  saveDrawnPic,
+  printSavedPics,
+  printImage,
+  downState,
+  colorCell,
+};
+>>>>>>> 26fb3999e46767d5577906c51c79c31d54f37e6c
