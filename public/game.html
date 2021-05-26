@@ -28,6 +28,7 @@
               Erase
             </button>
             <input
+            class="input-field"
               type="text"
               id="saveArray"
               placeholder="Enter name.."
@@ -44,7 +45,7 @@
                 Picture menu
                 <i class="fa fa-caret-down"></i>
               </button>
-              <ul id="printList"></ul>
+              <ul class="dropdown-content" id="printList"></ul>
             </div>
             <footer class="user-info">
               <h3 id="getUserName">Username</h3>
@@ -64,7 +65,7 @@
 
           <article id="btnBox">
             <button id="playBtn" class="canvas-btn">
-            Play
+              <i class="fas fa-play"></i>Play
             </button>
             <!--Btn Done added when playing-->
             <!--Paragraf added while waiting for players-->
@@ -90,7 +91,7 @@
           <div class="chat-messages" id="chatMessages"></div>
           <div class="chat-form-container">
             <form id="chatForm">
-              <input
+              <input 
                 id="inputMsg"
                 type="text"
                 placeholder="Enter Message"
