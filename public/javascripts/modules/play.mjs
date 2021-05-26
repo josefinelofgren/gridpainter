@@ -108,7 +108,6 @@ socket.on('ready', message => {
 function outputPressPlay(message){
 
   let usersReadyToPlay = document.getElementById('usersReadyToPlay');
-
   usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
 };
 
