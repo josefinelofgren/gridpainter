@@ -44,6 +44,14 @@ h2 {
 h3 {
   margin: 6px;
 }
+.painting-canvas th,
+.painting-canvas td {
+  border: 1.2px solid black;
+}
+
+.painting-canvas {
+  border-collapse: collapse;
+}
 
 .input-field {
   margin-top: 10px;
@@ -93,7 +101,7 @@ h3 {
 }
 
 #playBtn,
-#doneBtn,
+#stopBtn,
 #optionsBtn {
   width: 100%;
   margin: 10px 0px;

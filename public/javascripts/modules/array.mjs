@@ -3,32 +3,32 @@ const randomPics = [
   [
     { name: 'facit', id: 'row2cell1', color: 'purple' },
     { name: 'facit', id: 'row2cell2', color: 'purple' },
-    { name: 'facit', id: 'row3cell1', color: colorWhite },
-    { name: 'facit', id: 'row3cell2', color: colorWhite },
+    { name: 'facit', id: 'row3cell1', color: 'white' },
+    { name: 'facit', id: 'row3cell2', color: 'white' },
   ],
   [
     { name: 'facit', id: 'row2cell1', color: 'green' },
     { name: 'facit', id: 'row2cell2', color: 'green' },
-    { name: 'facit', id: 'row3cell1', color: 'colorBlack' },
+    { name: 'facit', id: 'row3cell1', color: 'black' },
     { name: 'facit', id: 'row3cell2', color: 'green' },
   ],
   [
-    { name: 'facit', id: 'row2cell1', color: 'colorBlue' },
+    { name: 'facit', id: 'row2cell1', color: 'blue' },
     { name: 'facit', id: 'row2cell2', color: 'green' },
     { name: 'facit', id: 'row3cell1', color: 'orange' },
     { name: 'facit', id: 'row3cell2', color: 'green' },
   ],
   [
-    { name: 'facit', id: 'row2cell1', color: 'colorBlue' },
+    { name: 'facit', id: 'row2cell1', color: 'blue' },
     { name: 'facit', id: 'row2cell2', color: 'green' },
     { name: 'facit', id: 'row3cell1', color: 'orange' },
     { name: 'facit', id: 'row3cell2', color: 'pink' },
   ],
   [
-    { name: 'facit', id: 'row2cell1', color: 'colorBlue' },
+    { name: 'facit', id: 'row2cell1', color: 'blue' },
     { name: 'facit', id: 'row2cell2', color: 'green' },
-    { name: 'facit', id: 'row3cell1', color: colorWhite },
-    { name: 'facit', id: 'row3cell2', color: colorWhite },
+    { name: 'facit', id: 'row3cell1', color: 'white' },
+    { name: 'facit', id: 'row3cell2', color: 'white' },
   ],
 ];
 
