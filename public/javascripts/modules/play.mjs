@@ -107,12 +107,8 @@ socket.on('ready', message => {
 // OUTPUT USER IF USER PRESS PLAY 
 function outputPressPlay(message){
 
-    let usersReadyToPlay = document.createElement('ul');
-    usersReadyToPlay.setAttribute("id", "usersReadyToPlay");
-
-    document.getElementById('gameInfo').appendChild(usersReadyToPlay);
-
-    usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
+  let usersReadyToPlay = document.getElementById('usersReadyToPlay');
+  usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
 };
 
 // INPUT USER IF USER PRESS PLAY 
