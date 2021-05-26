@@ -12,9 +12,10 @@ const facitGrid = document.querySelector('#facit');
 
 //print players that are in the game
 socket.on('printPlayers', players => {
-console.log('hit players', players);
+
   const printPlayers = document.getElementById("usersReadyToPlay");
   printPlayers.innerHTML = '';
+
   for (let player in players) {
     printPlayers.insertAdjacentHTML("beforeend", `<li>${players[player]}</li>`);
   };
@@ -47,7 +48,14 @@ function awaitPlayers(target) {
 
       if(players.length === 4) {
         runTimer();
-        document.getElementById("waitingForPlayers").innerHTML = null;
+        socket.emit('getFacitPic', username);
+        
+        socket.on('printFacit', picture => {
+          document.getElementById("waitingForPlayers").innerHTML = null;
+          const facitGrid = document.getElementById("facit");
+          printImage(facitGrid, picture, 2, 2)
+        });
+
       } else {
         inputPressPlay();
       };
@@ -159,7 +167,7 @@ function inputPressPlay(){
   
   // Emit message to server
   socket.emit('play');
-console.log('waitingForPlayers');
+
   document.getElementById('waitingForPlayers').innerHTML = `<i class="fa-spin fas fa-spinner"></i>Waiting for the other players..`
 };
 

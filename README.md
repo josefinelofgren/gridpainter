@@ -34,7 +34,7 @@ Get started:
  npm start
 ```
 
-In root folder, create file allDrawnPics.json containing: [];
+In root folder, create file allDrawnPics.json containing: []
 
 ### Launch-demo
 

@@ -112,7 +112,7 @@ io.on('connection', function (socket) {
 
   //waiting for players to join
   socket.on("gameAwait", (player) => {
-console.log('hit');
+
     //push player when click on "play"
     players.push(player);
 
@@ -126,7 +126,7 @@ console.log('hit');
 
 //when time is up
 socket.on("timeUp", (player) => {
-    
+
     //empty players array 
     players.splice(0,players.length);
     
@@ -155,12 +155,33 @@ socket.on("timeUp", (player) => {
 
         //if players.length === 0  => leaveGame
         if(players.length === 0) {
-
+      
             io.emit('leaveGame', players);
         
         };
 
     });
+
+    //GET PIC TO COPY
+    socket.on("getFacitPic", (player) => {
+        
+        //get .json file
+        fs.readFile('facit.json', (err, data) => {
+            if (err) console.log('err', err);
+        
+            const facit = JSON.parse(data);
+            
+            //generate random index
+            let randomIndex = Math.floor(Math.random() * 5) 
+            let printFacit = facit[randomIndex];
+
+            //send random pic array
+            io.emit('printFacit', printFacit);
+
+        });
+
+    });
+
 
   // CHAT MESSAGES
   socket.on('chatMessage', (inputMsg) => {
