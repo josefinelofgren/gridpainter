@@ -2,7 +2,6 @@ const socket = io();
 import {inputMessage} from "./modules/chat.mjs";
 import {inputPressPlay} from "./modules/play.mjs";
 import {color} from "./modules/user.mjs";
-
 console.log('color', color);
 import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
 import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
@@ -31,8 +30,6 @@ const allDrawnPics = [];
 //declare var
 let facit;
 
-
-
 //generate grid/canvas
 createGrid(canvasGrid, 2, 2);
 
@@ -55,13 +52,12 @@ canvas.addEventListener('mouseover', ({target}) =>  colorCell(target, userColor)
 canvas.addEventListener('mousedown', ({target}) => downState(target, userColor));
 
 
-//on click "play/stop"
 document.getElementById('playBtn').addEventListener('click', ({target}) => {
-    
-    playBtnAction(target, savedPic);
-    inputPressPlay();
-});
 
+    inputPressPlay();
+    playBtnAction(target, savedPic);
+  
+});
 
 
 /////////////////////////// CHAT /////////////////////////// 
@@ -71,3 +67,4 @@ document.getElementById('btnMsg').addEventListener('click', function(e){
     e.preventDefault();
     inputMessage();
 });
+

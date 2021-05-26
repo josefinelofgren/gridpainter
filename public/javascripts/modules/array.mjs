@@ -1,8 +1,14 @@
 //array of random pic-arrays
+
+let A;
+let B; 
+let C; 
+let D; 
+
 const randomPics = [
     [
-      { name: 'facit', id: 'row1cell1', color: 'purple' },
-      { name: 'facit', id: 'row1cell2', color: 'purple' },
+      { name: 'facit', id: 'row1cell1', color: A },
+      { name: 'facit', id: 'row1cell2', color: A },
       { name: 'facit', id: 'row2cell1', color: null },
       { name: 'facit', id: 'row2cell2', color: null },
     ],

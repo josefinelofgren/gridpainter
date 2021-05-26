@@ -20,6 +20,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 //if we go with .json
 //istallera fs
 const fs = require("fs");
+const { isPrimitive } = require('util');
 
 
 //GET DOCUMENT FOR EDITING
@@ -90,6 +91,7 @@ app.use('/users', usersRouter);
 //let savedPic = [];
 
 const botName = 'Admin'
+let onlineUsers = {};
 
 io.on('connection', function(socket){
 
@@ -102,7 +104,7 @@ io.on('connection', function(socket){
         // Join user 
         const user = userJoin(socket.id, username, color);
         socket.join(user);
-        
+         
         // Welcome message 
         socket.emit('message', formatMessage(botName, 'Welcome to Pixel-art!'));
 
@@ -144,16 +146,39 @@ io.on('connection', function(socket){
         // Join user 
         const user = userJoin(socket.id, username, color);
         socket.join(user);
+
+        socket["color"] = color;
     });
+
+
+    socket.on('new user', (color) => {
+        
+        onlineUsers[color] = socket.id;
+
+        socket["color"] = color;
+        io.emit("new user", color);
+    });
+
+    socket.on('get online users', () => {
+        //Send over the onlineUsers
+        socket.emit('get online users', onlineUsers);
+      })
     
 
     const players = [];
+
     // WHEN USER PRESS PLAY
-    socket.on('play', () => {
+    socket.on('ready', () => {
         const user = getCurrentUser(socket.id);
-        io.emit('play', formatMessage(user.username, `${user.username} is ready to play!`));
+
+        io.emit('ready', formatMessage(user.username, `${user.username} is ready to play!`));
     });
 
+    // WHEN USER PRESS PLAY
+    socket.on('getColors', (color) => {
+    
+        io.emit('getColors', color);
+     });
 
 });
 

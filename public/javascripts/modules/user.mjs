@@ -17,9 +17,16 @@ function getRandomColor() {
     return color;
 };
 
-
 // GIVE USER A RANDOM COLOR 
 const color = getRandomColor();
+
+let colorArray = [];
+
+localStorage.setItem("colors", JSON.stringify(colorArray));
+
+colorArray = JSON.parse(localStorage.getItem("colors") || "[]");
+
+console.log(colorArray)
 
 
 // PRINT CURRENT USERS USERNAME
