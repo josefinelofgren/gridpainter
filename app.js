@@ -8,6 +8,7 @@ const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/use
 const socketio = require('socket.io');
 const randomColor = require('randomcolor');
 let color = randomColor();
+const fs = require("fs");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,15 +16,8 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+// var urlencodedParser = bodyParser.urlencoded({ extended: false })
  
-//if we go with .json
-//istallera fs
-const fs = require("fs");
-
-
-//GET DOCUMENT FOR EDITING
-
 
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
 app.post('/pic', jsonParser, (req, res, next) => {
@@ -73,7 +67,6 @@ app.get('/pic', function(req, res, next) {
 
 
 
-
 const server = require('http').Server(app);
 const io = socketio(server);
 
@@ -90,7 +83,7 @@ app.use('/users', usersRouter);
 //let savedPic = [];
 
 const botName = 'Admin'
-
+const players = [];
 io.on('connection', function(socket){
 
     console.log('Socket.io connected');
@@ -118,6 +111,57 @@ io.on('connection', function(socket){
        
     });
 
+    //waiting for players to join
+    socket.on("gameAwait", (player) => {
+
+        //push player when click on "play"
+        players.push(player);
+    
+        //move if(length === 3)here? 
+        io.emit('beginGame', players);
+
+        //print players in client
+        io.emit('printPlayers', players)
+    
+    });
+
+    //when time is up
+    socket.on("timeUp", (player) => {
+        
+        //empty players array 
+        players.splice(0,players.length);
+        
+        // print players in client 
+        io.emit('printPlayers', players);
+        
+        //leaveGame
+        io.emit('leaveGame', players);
+
+    });
+
+
+    //remove player on "stopBtn" 
+    socket.on("playerLeaving", (player) => {
+     
+        for( let i = 0; i < players.length; i++){ 
+                                   
+            if ( players[i] === player) { 
+                players.splice(i, 1); 
+        
+            };
+        };
+        
+        // print players in client 
+        io.emit('printPlayers', players);
+
+        //if players.length === 0  => leaveGame
+        if(players.length === 0) {
+
+            io.emit('leaveGame', players);
+        
+        };
+
+    });
 
 
     // CHAT MESSAGES 
@@ -148,12 +192,12 @@ io.on('connection', function(socket){
         socket.join(user);
     });
     
-    const players = [];
-    // WHEN USER PRESS PLAY
-    socket.on('play', () => {
-        const user = getCurrentUser(socket.id);
-        io.emit('ready', formatMessage(user.username, `${user.username} is ready to play`));
-    });
+
+    // // WHEN USER PRESS PLAY
+    // socket.on('play', () => {
+    //     const user = getCurrentUser(socket.id);
+    //     io.emit('ready', formatMessage(user.username, `${user.username} is ready to play`));
+    // });
 
 
 });

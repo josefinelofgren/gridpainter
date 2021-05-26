@@ -394,5 +394,49 @@
       "id": "row2cell2",
       "color": null
     }
+  ],
+  [
+    {
+      "name": "brr",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "brr",
+      "id": "row1cell2",
+      "color": null
+    },
+    {
+      "name": "brr",
+      "id": "row2cell1",
+      "color": "#CDBBBB"
+    },
+    {
+      "name": "brr",
+      "id": "row2cell2",
+      "color": "#CDBBBB"
+    }
+  ],
+  [
+    {
+      "name": "yt",
+      "id": "row1cell1",
+      "color": null
+    },
+    {
+      "name": "yt",
+      "id": "row1cell2",
+      "color": "#FBBECC"
+    },
+    {
+      "name": "yt",
+      "id": "row2cell1",
+      "color": "#FBBECC"
+    },
+    {
+      "name": "yt",
+      "id": "row2cell2",
+      "color": null
+    }
   ]
 ]

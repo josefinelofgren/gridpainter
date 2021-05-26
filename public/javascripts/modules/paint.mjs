@@ -5,7 +5,7 @@ const canvasGrid = document.querySelector('#canvas');
 
 
 //array to store all saved pics
-const allDrawnPics = [];
+// const allDrawnPics = [];
 let savedPic = [];
 
 
@@ -18,7 +18,6 @@ socket.on('paintedCell', foundCell => {
     cellElement.style.backgroundColor = foundCell.color;
 
 });
-
 
 
 //genereate a grid structure
@@ -72,6 +71,7 @@ function saveDrawnPic(input) {
         
         //clear input field
         input.value = "";
+
     }else {
         alert("Please enter a name")
     };
@@ -189,4 +189,4 @@ function colorCell(target, color) {
 
 
 
-export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell};
+export {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell, savedPic};

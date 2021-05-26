@@ -1,10 +1,10 @@
 const socket = io();
 import {inputMessage} from "./modules/chat.mjs";
 import {inputPressPlay} from "./modules/play.mjs";
-import {color} from "./modules/user.mjs";
+import {color, username} from "./modules/user.mjs";
 
 console.log('color', color);
-import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
+import { findRandomPic, awaitPlayers, runTimer, compare } from './modules/play.mjs';
 import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
 import { randomPics } from './modules/array.mjs';
 
@@ -55,12 +55,9 @@ canvas.addEventListener('mouseover', ({target}) =>  colorCell(target, userColor)
 // mousedown => down = true
 canvas.addEventListener('mousedown', ({target}) => downState(target, userColor));
 
-
+const players = []
 //on click "play/stop"
-document.getElementById('playBtn').addEventListener('click', ({target}) => {
-  playBtnAction(target, savedPic);
-  inputPressPlay();
-});
+document.getElementById('btnBox').addEventListener('click', ({target}) => awaitPlayers(target));
 
 
 
