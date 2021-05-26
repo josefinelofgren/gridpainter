@@ -9,12 +9,5 @@ function formatMessage(username, text, color){
     }
 };
 
-function playerPaint(username, color){
-    return {
-        username,
-        color,
-    }
-};
 
-
-module.exports = {formatMessage, playerPaint};
+module.exports = {formatMessage};

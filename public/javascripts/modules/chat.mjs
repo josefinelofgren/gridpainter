@@ -7,7 +7,7 @@ const socket = io();
 //socket.emit('paint', savedPic);
 
 // JOIN GAME
-socket.emit('joinChat', {username, color});
+socket.emit('joinGame', {username, color});
 
 
 // MESSAGE FROM SERVER
@@ -43,7 +43,6 @@ function inputMessage(){
     // Clear inputfield 
     document.getElementById('inputMsg').value = "";
 }
-
 
 
 export {inputMessage}

@@ -3,10 +3,6 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-<<<<<<< HEAD
-const {formatMessage} = require('./utils/messages');
-const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
-=======
 const formatMessage = require('./utils/messages');
 const {
   userJoin,
@@ -14,7 +10,6 @@ const {
   userLeave,
   getRoomUsers,
 } = require('./utils/users');
->>>>>>> origin/main
 const socketio = require('socket.io');
 const randomColor = require('randomcolor');
 let color = randomColor();
@@ -29,55 +24,12 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //if we go with .json
 //istallera fs
-<<<<<<< HEAD
-const fs = require("fs");
-const { isPrimitive } = require('util');
-
-=======
 const fs = require('fs');
->>>>>>> origin/main
 
 //GET DOCUMENT FOR EDITING
 
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
 app.post('/pic', jsonParser, (req, res, next) => {
-<<<<<<< HEAD
-
-    
-    fs.readFile("allDrawnPics.json", (err, data) => {
-        if(err) console.log('err', err);
-
-        const allDrawnPics = JSON.parse(data);
-     
-        //check for pic in allDrawnPics with same name as incoming
-        let checkDoublet = allDrawnPics.findIndex( (arr) => arr[0].name === req.body[0].name);
-        
-        //if pic doesnt already exist => push, else => replace
-        if (checkDoublet === -1) {
-            allDrawnPics.push(req.body);
-        } else {
-            allDrawnPics.splice(checkDoublet, 1, req.body)
-        };
-
-        //resave updated file
-        fs.writeFile("allDrawnPics.json", JSON.stringify(allDrawnPics, null, 2), (err) => {
-            if(err) console.log('err', err);
-        });
-
-        //dont want to send anything?
-        res.send("nothingToSend");
-
-    });
-
-  
-});
-
-//GET ALLDRAWNPICS FROM ALLDRAWNPICS.JSON
-app.get('/pic', function(req, res, next) {
-
-    fs.readFile("allDrawnPics.json", (err, data) => {
-        if(err) console.log('err', err);
-=======
   fs.readFile('allDrawnPics.json', (err, data) => {
     if (err) console.log('err', err);
 
@@ -113,7 +65,6 @@ app.get('/pic', function(req, res, next) {
 app.get('/pic', function (req, res, next) {
   fs.readFile('allDrawnPics.json', (err, data) => {
     if (err) console.log('err', err);
->>>>>>> origin/main
 
     const allDrawnPics = JSON.parse(data);
 
@@ -151,10 +102,7 @@ io.on('connection', function (socket) {
     socket.emit('message', formatMessage(botName, 'Welcome to Pixel-art!'));
 
     // Broadcast when user connects
-    socket.broadcast.emit(
-      'message',
-      formatMessage(botName, `${user.username} has joined the chat`)
-    );
+    socket.broadcast.emit('message', formatMessage(botName, `${user.username} has joined the chat`));
   });
 
   // recieve savedPic from client
@@ -183,11 +131,15 @@ io.on('connection', function (socket) {
     }
   });
 
+
+
   // PLAY GAME
   socket.on('playGame', ({ username, color }) => {
     const user = userJoin(socket.id, username, color);
     socket.join(user);
   });
+
+
 
   const players = [];
   // WHEN USER PRESS PLAY

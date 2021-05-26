@@ -5,9 +5,10 @@ import { printImage, saveDrawnPic } from '../modules/paint.mjs';
 const socket = io();
 const facitGrid = document.querySelector('#facit');
 
-// JOIN GAME
-socket.emit('joinGame', {username, color});
+socket.on('players', players => {
+console.log('players', players);
 
+});
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
@@ -95,32 +96,33 @@ function compare(randomPic, savedPic) {
 
 
 
+// PLAY GAME
+socket.emit('playGame', {username, color});
+
 // MESSAGE FROM SERVER
 socket.on('ready', message => {
-    outputPressPlay(message);
-
+    outputPressPlay(message)
 });
-
 
 // OUTPUT USER IF USER PRESS PLAY 
 function outputPressPlay(message){
 
-    let usersReadyToPlay = document.getElementById('usersReadyToPlay');
+  let usersReadyToPlay = document.getElementById('usersReadyToPlay');
 
-    usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
+  usersReadyToPlay.innerHTML += `<li>${message.text}</li>`
 };
-
-
 
 
 // INPUT USER IF USER PRESS PLAY 
 function inputPressPlay(){
-
+    
     // Emit message to server
-    socket.emit('ready', );
+    socket.emit('play');
 
     document.getElementById('playBtn').innerHTML = `<i class="fa-spin fas fa-spinner"></i>Waiting for the other players..`
 };
 
 
 export { findRandomPic, playBtnAction, compare, inputPressPlay};
+
+
