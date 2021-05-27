@@ -91,6 +91,19 @@ io.on('connection', function (socket) {
   // WHEN USER JOIN GAME
   socket.on('joinGame', ({ username, color }) => {
     // Join user
+
+
+    // function getRandomLetter() {
+    //     const letters = ["a", "b", "c", "d"];
+        
+    //     return letter;
+    // }
+    // console.log('letter', letter);
+
+
+
+
+
     const user = userJoin(socket.id, username, color);
     socket.join(user);
 
@@ -162,8 +175,6 @@ socket.on("timeUp", (player) => {
 
     });
 
-    let randomIndex = Math.floor(Math.random() * 5) 
-
     //GET PIC TO COPY
     socket.on("getFacitPic", (player) => {
         
@@ -174,40 +185,21 @@ socket.on("timeUp", (player) => {
             const facit = JSON.parse(data);
             
             //generate random index
+            let randomIndex = Math.floor(Math.random() * 5) 
             let printFacit = facit[randomIndex];
 
             //send random pic array
             io.emit('printFacit', printFacit);
 
         });
+
     });
 
-
-     //GET PIC TO COPY
-     socket.on("compareFacitPic", (player) => {
-        
-      //get .json file
-      fs.readFile('facit.json', (err, data) => {
-          if (err) console.log('err', err);
-      
-          const facit = JSON.parse(data);
-          
-          //generate random index
-          let printFacit = facit[randomIndex];
-
-          //send random pic array
-          io.emit('compareFacit', printFacit);
-
-      });
-
-  });
 
   // CHAT MESSAGES
   socket.on('chatMessage', (inputMsg) => {
     const user = getCurrentUser(socket.id);
-
     io.emit('message', formatMessage(user.username, inputMsg, user.color));
-    console.log(inputMsg);
   });
 
   // USER DISCONNECTS
