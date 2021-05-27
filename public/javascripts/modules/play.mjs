@@ -45,6 +45,7 @@ function awaitPlayers(target) {
         socket.emit('getFacitPic', username);
 
         socket.on('printFacit', (picture) => {
+          console.log(picture);
           document.getElementById('waitingForPlayers').innerHTML = null;
           const facitGrid = document.getElementById('facit');
           printImage(facitGrid, picture, 25, 25);
