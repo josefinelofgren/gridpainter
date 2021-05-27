@@ -36,8 +36,7 @@ function awaitPlayers(target) {
     target.style.display = 'none';
     target.parentNode.insertAdjacentHTML(
       'afterbegin',
-      `
-      <button class="canvas-btn" id="stopBtn">Stop</button>`
+      `<button class="canvas-btn" id="stopBtn">Stop</button>`
     );
 
     socket.on('beginGame', (players) => {
@@ -58,13 +57,15 @@ function awaitPlayers(target) {
 }
 
 //playBtn => start or stop game
-function runTimer() {
+function runTimer(picture) {
+  let randomPic = picture;
+
   const timer = document.getElementById('timer');
   let counter = 60;
 
-  //find random image to copy
-  let randomPic = findRandomPic(randomPics, facit);
-  printImage(facitGrid, randomPic, 25, 25);
+  // //find random image to copy
+  // let randomPic = findRandomPic(randomPics, facit);
+  // printImage(facitGrid, randomPic, 25, 25);
 
   //start timer
   const setTimer = setInterval(function () {
@@ -93,8 +94,11 @@ function runTimer() {
   //end game on timeup or all click on stop
   socket.on('leaveGame', (players) => {
     clearInterval(setTimer);
+
     //BUG!! PRINTING RESULT A MILLION TIMES
     compare(randomPic, savedPic);
+
+    console.log(randomPic);
   });
 }
 

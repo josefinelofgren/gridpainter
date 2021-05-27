@@ -162,6 +162,8 @@ socket.on("timeUp", (player) => {
 
     });
 
+    let randomIndex = Math.floor(Math.random() * 5) 
+
     //GET PIC TO COPY
     socket.on("getFacitPic", (player) => {
         
@@ -172,16 +174,33 @@ socket.on("timeUp", (player) => {
             const facit = JSON.parse(data);
             
             //generate random index
-            let randomIndex = Math.floor(Math.random() * 5) 
             let printFacit = facit[randomIndex];
 
             //send random pic array
             io.emit('printFacit', printFacit);
 
         });
-
     });
 
+
+     //GET PIC TO COPY
+     socket.on("compareFacitPic", (player) => {
+        
+      //get .json file
+      fs.readFile('facit.json', (err, data) => {
+          if (err) console.log('err', err);
+      
+          const facit = JSON.parse(data);
+          
+          //generate random index
+          let printFacit = facit[randomIndex];
+
+          //send random pic array
+          io.emit('compareFacit', printFacit);
+
+      });
+
+  });
 
   // CHAT MESSAGES
   socket.on('chatMessage', (inputMsg) => {

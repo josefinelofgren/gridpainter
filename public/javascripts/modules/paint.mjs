@@ -44,7 +44,7 @@ function saveDrawnPic(input) {
     if(input.value !== "") {
         // replace "canvas" in name with input value
         for (let obj in savedPic) {
-            let newName = savedPic[obj].name.replace('', input.value);
+            let newName = document.getElementById('saveArray').value;
             savedPic[obj].name = newName;
         }
 
@@ -57,11 +57,11 @@ function saveDrawnPic(input) {
             body: JSON.stringify(savedPic),
         });
 
-        //empty savedPic for next time
-        savedPic = [];
+        // //empty savedPic for next time
+        // savedPic = [];
 
         //clear input field
-        input.value = '';
+        document.getElementById('saveArray').value = '';
     }else {
         alert("Please enter a name")
     };
