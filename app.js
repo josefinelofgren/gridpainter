@@ -199,9 +199,7 @@ socket.on("timeUp", (player) => {
   // CHAT MESSAGES
   socket.on('chatMessage', (inputMsg) => {
     const user = getCurrentUser(socket.id);
-
     io.emit('message', formatMessage(user.username, inputMsg, user.color));
-    console.log(inputMsg);
   });
 
   // USER DISCONNECTS
