@@ -1,36 +1,36 @@
-//array of random pic-arrays
-const randomPics = [
-  [
-    { name: 'facit', id: 'row2cell1', color: 'purple' },
-    { name: 'facit', id: 'row2cell2', color: 'purple' },
-    { name: 'facit', id: 'row3cell1', color: 'white' },
-    { name: 'facit', id: 'row3cell2', color: 'white' },
-  ],
-  [
-    { name: 'facit', id: 'row2cell1', color: 'green' },
-    { name: 'facit', id: 'row2cell2', color: 'green' },
-    { name: 'facit', id: 'row3cell1', color: 'black' },
-    { name: 'facit', id: 'row3cell2', color: 'green' },
-  ],
-  [
-    { name: 'facit', id: 'row2cell1', color: 'blue' },
-    { name: 'facit', id: 'row2cell2', color: 'green' },
-    { name: 'facit', id: 'row3cell1', color: 'orange' },
-    { name: 'facit', id: 'row3cell2', color: 'green' },
-  ],
-  [
-    { name: 'facit', id: 'row2cell1', color: 'blue' },
-    { name: 'facit', id: 'row2cell2', color: 'green' },
-    { name: 'facit', id: 'row3cell1', color: 'orange' },
-    { name: 'facit', id: 'row3cell2', color: 'pink' },
-  ],
-  [
-    { name: 'facit', id: 'row2cell1', color: 'blue' },
-    { name: 'facit', id: 'row2cell2', color: 'green' },
-    { name: 'facit', id: 'row3cell1', color: 'white' },
-    { name: 'facit', id: 'row3cell2', color: 'white' },
-  ],
-];
+// //array of random pic-arrays
+// const randomPics = [
+//   [
+//     { name: 'facit', id: 'row2cell1', color: 'purple' },
+//     { name: 'facit', id: 'row2cell2', color: 'purple' },
+//     { name: 'facit', id: 'row3cell1', color: 'white' },
+//     { name: 'facit', id: 'row3cell2', color: 'white' },
+//   ],
+//   [
+//     { name: 'facit', id: 'row2cell1', color: 'green' },
+//     { name: 'facit', id: 'row2cell2', color: 'green' },
+//     { name: 'facit', id: 'row3cell1', color: 'black' },
+//     { name: 'facit', id: 'row3cell2', color: 'green' },
+//   ],
+//   [
+//     { name: 'facit', id: 'row2cell1', color: 'blue' },
+//     { name: 'facit', id: 'row2cell2', color: 'green' },
+//     { name: 'facit', id: 'row3cell1', color: 'orange' },
+//     { name: 'facit', id: 'row3cell2', color: 'green' },
+//   ],
+//   [
+//     { name: 'facit', id: 'row2cell1', color: 'blue' },
+//     { name: 'facit', id: 'row2cell2', color: 'green' },
+//     { name: 'facit', id: 'row3cell1', color: 'orange' },
+//     { name: 'facit', id: 'row3cell2', color: 'pink' },
+//   ],
+//   [
+//     { name: 'facit', id: 'row2cell1', color: 'blue' },
+//     { name: 'facit', id: 'row2cell2', color: 'green' },
+//     { name: 'facit', id: 'row3cell1', color: 'white' },
+//     { name: 'facit', id: 'row3cell2', color: 'white' },
+//   ],
+// ];
 
 let colorWhite = null;
 let colorBlue = 'dark-blue';
@@ -40,7 +40,7 @@ let colorBeige = 'beige';
 let colorPink = 'pink';
 let colorRed = 'red';
 
-const facitPics = [
+const randomPics = [
   [
     { name: 'facit', id: 'row1cell1', color: colorWhite },
     { name: 'facit', id: 'row1cell2', color: colorWhite },
