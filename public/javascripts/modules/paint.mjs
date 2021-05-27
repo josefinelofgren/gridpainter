@@ -1,16 +1,19 @@
+
 const socket = io();
+
 
 //array to store all saved pics
 //need this one? allDrawnPics
 const allDrawnPics = [];
 let savedPic = [];
-
+let grid = [];
 // get foundCell with new color from server
 socket.on('paintedCell', (foundCell) => {
+
   //find element with same id as foundCell
-  let cellElement = document.getElementById(foundCell.id);
+ document.getElementById(foundCell.id).style.backgroundColor = foundCell.color;
   //change elements bg-color
-  cellElement.style.backgroundColor = foundCell.color;
+
 });
 
 //genereate a grid structure
@@ -29,8 +32,8 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
       gridCell.id = gridRow.id + 'cell' + cell;
       gridRow.appendChild(gridCell);
 
-      //push name, cell id and color to array
-      savedPic.push({ name: '', id: gridCell.id, color: null });
+      // //push name, cell id and color to array
+     grid.push({ name: '', id: gridCell.id, color: null });
     }
   }
 }
@@ -38,33 +41,28 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
 //save drawn pic
 function saveDrawnPic(input) {
 
-    if(input.value !== "") {
 
-        // replace "canvas" in name with input value
-        for (let obj in savedPic) {
-            let newName = savedPic[obj].name.replace("", input.value)
-            savedPic[obj].name = newName;
-        };
+    // replace "canvas" in name with input value
+    for (let cell in grid) {
+      let element = document.getElementById(grid[cell].id);
+      grid[cell].color = element.style.backgroundColor;
+      grid[cell].name = input.value;
 
-        //send savedPic to server =>  allDrawnPics.json
-        fetch("http://localhost:3000/pic", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(savedPic)
-        });
-
-        //empty savedPic for next time 
-        //savedPic = [];
-        
-        //clear input field
-        input.value = "";
-
-    }else {
-        alert("Please enter a name")
     };
 
+    //send savedPic to server =>  allDrawnPics.json
+    fetch("http://localhost:3000/pic", {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(grid)
+    });
+
+    grid = [];
+    
+    //clear input field
+    input.value = "";
 };
 
 
@@ -162,10 +160,9 @@ function colorCell(target, color) {
 
   if (down && target.id !== 'canvas') {
     //find cell and change color in array;
-    let foundCell = savedPic.find((i) => i.id === target.id);
-
-    foundCell.color = color;
-
+  
+    let foundCell = { name: '', id: target.id, color: color };
+    //document.getElementById(target.id).style.backgroundColor = color;
     //send foundCell with new color to server
     socket.emit('paint', foundCell);
   }

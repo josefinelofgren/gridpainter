@@ -28,14 +28,14 @@ var jsonParser = bodyParser.json();
 app.post('/pic', jsonParser, (req, res, next) => {
   fs.readFile('allDrawnPics.json', (err, data) => {
     if (err) console.log('err', err);
-
+console.log('ferwboyd', req.body);
     const allDrawnPics = JSON.parse(data);
 
     //check for pic in allDrawnPics with same name as incoming
     let checkDoublet = allDrawnPics.findIndex(
-      (arr) => arr[0].name === req.body[0].name
+      (allDrawnPics) => allDrawnPics[0].name === req.body[0].name
     );
-
+    console.log("fcheckDoublet", checkDoublet)
     //if pic doesnt already exist => push, else => replace
     if (checkDoublet === -1) {
       allDrawnPics.push(req.body);
@@ -63,7 +63,7 @@ app.get('/pic', function (req, res, next) {
     if (err) console.log('err', err);
 
     const allDrawnPics = JSON.parse(data);
-
+console.log('all rwain', allDrawnPics);
     res.send(allDrawnPics);
   });
 });
@@ -84,6 +84,7 @@ app.use('/users', usersRouter);
 
 const botName = 'Admin';
 const players = [];
+// let savedPic = [];
 
 io.on('connection', function (socket) {
   console.log('Socket.io connected');
@@ -91,18 +92,6 @@ io.on('connection', function (socket) {
   // WHEN USER JOIN GAME
   socket.on('joinGame', ({ username, color }) => {
     // Join user
-
-
-    // function getRandomLetter() {
-    //     const letters = ["a", "b", "c", "d"];
-        
-    //     return letter;
-    // }
-    // console.log('letter', letter);
-
-
-
-
 
     const user = userJoin(socket.id, username, color);
     socket.join(user);
@@ -117,11 +106,23 @@ io.on('connection', function (socket) {
     );
   });
 
+
   // recieve savedPic from client
   socket.on('paint', (foundCell) => {
+
+  
     //send changed array obj to client
     io.emit('paintedCell', foundCell);
+    
+    
+    io.emit('savedPic', foundCell);
+ 
+      
+
   });
+
+
+
 
   //waiting for players to join
   socket.on("gameAwait", (player) => {
@@ -200,6 +201,7 @@ socket.on("timeUp", (player) => {
   socket.on('chatMessage', (inputMsg) => {
     const user = getCurrentUser(socket.id);
     io.emit('message', formatMessage(user.username, inputMsg, user.color));
+
   });
 
   // USER DISCONNECTS

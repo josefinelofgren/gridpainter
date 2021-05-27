@@ -1,3 +1,6 @@
+
+const socket = io();
+
 import {inputMessage} from "./modules/chat.mjs";
 import {color} from "./modules/user.mjs";
 import { awaitPlayers} from './modules/play.mjs';
@@ -13,7 +16,7 @@ const printSavedPicsBtn = document.querySelector('#optionsBtn');
 
 //user color
 let userColor = color;
-
+let savedPic; 
 
 //generate grid/canvas
 createGrid(canvasGrid, 25, 25);
@@ -23,6 +26,18 @@ paint.addEventListener('click', () =>  userColor = color );
 
 //set userColor as cull
 erase.addEventListener('click', () => userColor = null);
+socket.on('savedPic', (foundCell) => {
+    console.log('found', found);
+    const found = savedPic.find(cell => cell.id === foundCell.id);
+
+    if(found === undefined) {
+      savedPic.push(foundCell)
+    } else {
+      found.color = foundCell.color;
+    };
+
+});
+
 
 //save drawn pic
 save.addEventListener("click", () => saveDrawnPic(saveArray)); // name from input to array 
