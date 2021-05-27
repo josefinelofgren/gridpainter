@@ -64,13 +64,8 @@ app.get('/pic', function(req, res, next) {
         if(err) console.log('err', err);
 =======
 var jsonParser = bodyParser.json();
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-//if we go with .json
-//istallera fs
-const fs = require('fs');
 
-//GET DOCUMENT FOR EDITING
 
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
 app.post('/pic', jsonParser, (req, res, next) => {
@@ -134,8 +129,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-//initial array for drawing pic
-//let savedPic = [];
+
 
 <<<<<<< HEAD
 const botName = 'Admin'
@@ -258,6 +252,7 @@ io.on('connection', function(socket){
 
 =======
 const botName = 'Admin';
+const players = [];
 
 io.on('connection', function (socket) {
   console.log('Socket.io connected');
@@ -282,6 +277,98 @@ io.on('connection', function (socket) {
   socket.on('paint', (foundCell) => {
     //send changed array obj to client
     io.emit('paintedCell', foundCell);
+  });
+
+  //waiting for players to join
+  socket.on("gameAwait", (player) => {
+
+    //push player when click on "play"
+    players.push(player);
+
+    //move if(length === 3)here? 
+    io.emit('beginGame', players);
+
+    //print players in client
+    io.emit('printPlayers', players)
+
+});
+
+//when time is up
+socket.on("timeUp", (player) => {
+
+    //empty players array 
+    players.splice(0,players.length);
+    
+    // print players in client 
+    io.emit('printPlayers', players);
+    
+    //leaveGame
+    io.emit('leaveGame', players);
+
+});
+
+
+    //remove player on "stopBtn" 
+    socket.on("playerLeaving", (player) => {
+    
+        for( let i = 0; i < players.length; i++){ 
+                                
+            if ( players[i] === player) { 
+                players.splice(i, 1); 
+        
+            };
+        };
+        
+        // print players in client 
+        io.emit('printPlayers', players);
+
+        //if players.length === 0  => leaveGame
+        if(players.length === 0) {
+      
+            io.emit('leaveGame', players);
+
+        };
+
+    });
+
+    let randomIndex = Math.floor(Math.random() * 5) 
+
+    //GET PIC TO COPY
+    socket.on("getFacitPic", (player) => {
+        
+        //get .json file
+        fs.readFile('facit.json', (err, data) => {
+            if (err) console.log('err', err);
+        
+            const facit = JSON.parse(data);
+            
+            //generate random index
+            let printFacit = facit[randomIndex];
+
+            //send random pic array
+            io.emit('printFacit', printFacit);
+
+        });
+    });
+
+
+     //GET PIC TO COPY
+     socket.on("compareFacitPic", (player) => {
+        
+      //get .json file
+      fs.readFile('facit.json', (err, data) => {
+          if (err) console.log('err', err);
+      
+          const facit = JSON.parse(data);
+          
+          //generate random index
+          let printFacit = facit[randomIndex];
+
+          //send random pic array
+          io.emit('compareFacit', printFacit);
+
+      });
+
   });
 
   // CHAT MESSAGES
@@ -310,8 +397,8 @@ io.on('connection', function (socket) {
     socket.join(user);
   });
 
-  const players = [];
   // WHEN USER PRESS PLAY
+<<<<<<< HEAD
   socket.on('play', () => {
     const user = getCurrentUser(socket.id);
     io.emit(
@@ -320,6 +407,15 @@ io.on('connection', function (socket) {
     );
   });
 >>>>>>> 26fb3999e46767d5577906c51c79c31d54f37e6c
+=======
+//   socket.on('play', () => {
+//     const user = getCurrentUser(socket.id);
+//     io.emit(
+//       'ready',
+//       formatMessage(user.username, `${user.username} is ready to play`)
+//     );
+//   });
+>>>>>>> f79caf556520c79c388b3755beed38f4be657e62
 });
 
 module.exports = { app: app, server: server };
