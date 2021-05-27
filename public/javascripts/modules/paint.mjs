@@ -1,7 +1,4 @@
-import { color } from './user.mjs';
 const socket = io();
-const printSavedPicsBtn = document.querySelector('#optionsBtn');
-const canvasGrid = document.querySelector('#canvas');
 
 //array to store all saved pics
 //need this one? allDrawnPics
@@ -42,35 +39,38 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
 function saveDrawnPic(input) {
 
     if(input.value !== "") {
+
         // replace "canvas" in name with input value
         for (let obj in savedPic) {
-            let newName = document.getElementById('saveArray').value;
+            let newName = savedPic[obj].name.replace("", input.value)
             savedPic[obj].name = newName;
-        }
+        };
 
         //send savedPic to server =>  allDrawnPics.json
-        fetch('http://localhost:3000/pic', {
-            method: 'post',
+        fetch("http://localhost:3000/pic", {
+            method: "post",
             headers: {
-            'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(savedPic),
+            body: JSON.stringify(savedPic)
         });
 
-        // //empty savedPic for next time
-        // savedPic = [];
-
+        //empty savedPic for next time 
+        //savedPic = [];
+        
         //clear input field
-        document.getElementById('saveArray').value = '';
+        input.value = "";
+
     }else {
         alert("Please enter a name")
     };
 
-}
+};
+
 
 //se saved images
 function printSavedPics(target) {
-  // printSavedPicsBtn.innerHTML = '';
+
   const printList = document.getElementById('printList');
   printList.innerHTML = '';
 
@@ -86,15 +86,13 @@ function printSavedPics(target) {
         );
       }
 
-      printList.addEventListener('click', (evt) => {
-        let clickedPic = evt.target.id;
+      printList.addEventListener('click', ({target}) => {
         
-        console.log(clickedPic);
-
+        let clickedPic = target.id;
+        
         let index = allDrawnPics.findIndex(
           (allDrawnPics) => allDrawnPics[0].name === clickedPic
         );
-        console.log(index);
 
         //find array to print by index
         let printArray = allDrawnPics[index];
@@ -102,16 +100,14 @@ function printSavedPics(target) {
         //give input value of picture name
         document.getElementById("saveArray").value = allDrawnPics[index][0].name;
 
-        console.log(printArray);
-
         printArray.forEach((cell) => {
           //send foundCell with new color to server
-          console.log(cell);
+       
           socket.emit('paint', cell);
         });
        
-        // printImage(canvasGrid, printArray, 2, 2);
       });
+      
     });
 }
 
@@ -163,9 +159,11 @@ function downState(target, color) {
 //to color cell
 function colorCell(target, color) {
   //if down is true
+
   if (down && target.id !== 'canvas') {
     //find cell and change color in array;
     let foundCell = savedPic.find((i) => i.id === target.id);
+
     foundCell.color = color;
 
     //send foundCell with new color to server

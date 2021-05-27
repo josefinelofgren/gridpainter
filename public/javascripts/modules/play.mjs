@@ -1,14 +1,8 @@
 import { username, color } from './user.mjs';
-import { randomPics } from '../modules/array.mjs';
-import { printImage, savedPic, saveDrawnPic } from '../modules/paint.mjs';
+import { printImage, savedPic } from '../modules/paint.mjs';
 
 const socket = io();
-const facitGrid = document.querySelector('#facit');
 
-// socket.on('players', players => {
-// console.log('players', players);
-
-// });
 
 //print players that are in the game
 socket.on('printPlayers', (players) => {
@@ -19,6 +13,7 @@ socket.on('printPlayers', (players) => {
     printPlayers.insertAdjacentHTML('beforeend', `<li>${players[player]}</li>`);
   }
 });
+
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
