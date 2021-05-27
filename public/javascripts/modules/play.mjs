@@ -47,10 +47,11 @@ function awaitPlayers(target) {
     
 
       if(players.length === 4) {
-        runTimer();
         socket.emit('getFacitPic', username);
         
         socket.on('printFacit', picture => {
+          runTimer(picture);
+
           document.getElementById("waitingForPlayers").innerHTML = null;
           const facitGrid = document.getElementById("facit");
           printImage(facitGrid, picture, 25, 25)
@@ -69,14 +70,16 @@ function awaitPlayers(target) {
 
 
 //playBtn => start or stop game
-function runTimer() {
+function runTimer(picture) {
+
+  let randomPic = picture;
 
   const timer = document.getElementById("timer");
   let counter = 60;
 
-  //find random image to copy
-  let randomPic = findRandomPic(randomPics, facit);
-  printImage(facitGrid, randomPic, 25, 25);
+  // //find random image to copy
+  // let randomPic = findRandomPic(randomPics, facit);
+  // printImage(facitGrid, randomPic, 25, 25);
 
   //start timer
   const setTimer = setInterval(function(){
@@ -113,8 +116,12 @@ function runTimer() {
   socket.on('leaveGame', players => {
 
     clearInterval(setTimer);
+
     //BUG!! PRINTING RESULT A MILLION TIMES
     compare(randomPic, savedPic);
+
+
+    console.log(randomPic);
   
   });
 

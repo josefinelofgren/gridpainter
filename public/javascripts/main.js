@@ -29,7 +29,6 @@ let userColor;
 //array to store all saved pics
 const allDrawnPics = [];
 
-const players = []
 //declare var
 let facit;
 
