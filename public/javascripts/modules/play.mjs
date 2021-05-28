@@ -3,7 +3,6 @@ import { printImage, savedPic } from '../modules/paint.mjs';
 
 const socket = io();
 
-
 //print players that are in the game
 socket.on('printPlayers', (players) => {
   const printPlayers = document.getElementById('usersReadyToPlay');
@@ -13,7 +12,6 @@ socket.on('printPlayers', (players) => {
     printPlayers.insertAdjacentHTML('beforeend', `<li>${players[player]}</li>`);
   }
 });
-
 
 //find random pic function
 function findRandomPic(randomPics, facit) {
@@ -29,27 +27,28 @@ function awaitPlayers(target) {
     socket.emit('gameAwait', username);
 
     target.style.display = 'none';
-    target.parentNode.insertAdjacentHTML("afterbegin", `
+    target.parentNode.insertAdjacentHTML(
+      'afterbegin',
+      `
       <button id="stopBtn">Stop</button>
-      <ul id="printPlayers"></ul>`)
+      <ul id="printPlayers"></ul>`
+    );
 
     // start game if 4 players have pressed start button
     socket.on('beginGame', (players) => {
-      if (players.length === 1) {
+      if (players.length === 4) {
         socket.emit('getFacitPic', username);
 
         socket.on('printFacit', (picture) => {
-
           // run timer, when time is up -> compare facit grid with painted grid
           runTimer(picture);
-          
-          // print facit grid 
+
+          // print facit grid
           document.getElementById('waitingForPlayers').innerHTML = null;
           const facitGrid = document.getElementById('facit');
 
-          printImage(facitGrid, picture, 25, 25)
+          printImage(facitGrid, picture, 25, 25);
         });
-
       } else {
         inputPressPlay();
       }
@@ -145,4 +144,3 @@ function inputPressPlay() {
 }
 
 export { findRandomPic, awaitPlayers, runTimer, compare, inputPressPlay };
-
