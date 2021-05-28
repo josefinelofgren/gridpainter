@@ -1,5 +1,5 @@
 import { username, color } from './user.mjs';
-import { printImage, savedPic } from '../modules/paint.mjs';
+import { printImage } from '../modules/paint.mjs';
 
 const socket = io();
 
@@ -37,19 +37,25 @@ function awaitPlayers(target) {
     socket.on('beginGame', (players) => {
       if (players.length === 4) {
         runTimer();
-        socket.emit('getFacitPic', username);
-
+        let index = Math.floor(Math.random() * 3);
+        socket.emit('getFacitPic', (index));
         socket.on('printFacit', (picture) => {
+        
           document.getElementById('waitingForPlayers').innerHTML = null;
           const facitGrid = document.getElementById('facit');
+          console.log('facitgrid', facitGrid, "picture", picture); 
           printImage(facitGrid, picture, 25, 25);
         });
+
       } else {
         inputPressPlay();
       }
     });
   }
 }
+
+
+
 
 //playBtn => start or stop game
 function runTimer(picture) {
@@ -91,19 +97,32 @@ function runTimer(picture) {
     clearInterval(setTimer);
 
     //BUG!! PRINTING RESULT A MILLION TIMES
-    compare(randomPic, savedPic);
+    //compare(randomPic);
 
     console.log(randomPic);
   });
 }
 
-function compare(randomPic, savedPic) {
+function compare(randomPic) {
   let x = 0;
+
+console.log('randomPic', randomPic);
+  socket.on('compare', (foundCell) => {
+    let index = compare.findIndex( ({ cell }) => cell.id === foundCell.id )
+
+    if(index === undefined) {
+      compare.push(foundCell)
+    } else {
+      compare.slice(index, 1)
+    }
+  //compare is one of the pics
+  });
+
 
   //loop through picToCopy
   for (let obj in randomPic) {
     //find obj in createdGrid through id
-    const foundObj = savedPic.find(({ id }) => id === randomPic[obj].id);
+    const foundObj = compare.find(({ id }) => id === randomPic[obj].id);
 
     //if picToCopy color == equivilant cell in createdGrid
     if (randomPic[obj].color === foundObj.color) x++; //add +1 to every equal

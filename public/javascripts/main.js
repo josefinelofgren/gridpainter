@@ -26,18 +26,6 @@ paint.addEventListener('click', () =>  userColor = color );
 
 //set userColor as cull
 erase.addEventListener('click', () => userColor = null);
-socket.on('savedPic', (foundCell) => {
-    console.log('found', found);
-    const found = savedPic.find(cell => cell.id === foundCell.id);
-
-    if(found === undefined) {
-      savedPic.push(foundCell)
-    } else {
-      found.color = foundCell.color;
-    };
-
-});
-
 
 //save drawn pic
 save.addEventListener("click", () => saveDrawnPic(saveArray)); // name from input to array 

@@ -24,18 +24,38 @@ var jsonParser = bodyParser.json();
 
 
 
+
+const server = require('http').Server(app);
+const io = socketio(server);
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+
+
+const botName = 'Admin';
+const players = [];
+// let savedPic = [];
+
+
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
 app.post('/pic', jsonParser, (req, res, next) => {
   fs.readFile('allDrawnPics.json', (err, data) => {
     if (err) console.log('err', err);
-console.log('ferwboyd', req.body);
+
     const allDrawnPics = JSON.parse(data);
 
     //check for pic in allDrawnPics with same name as incoming
     let checkDoublet = allDrawnPics.findIndex(
       (allDrawnPics) => allDrawnPics[0].name === req.body[0].name
     );
-    console.log("fcheckDoublet", checkDoublet)
+
     //if pic doesnt already exist => push, else => replace
     if (checkDoublet === -1) {
       allDrawnPics.push(req.body);
@@ -68,23 +88,7 @@ console.log('all rwain', allDrawnPics);
   });
 });
 
-const server = require('http').Server(app);
-const io = socketio(server);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-
-
-const botName = 'Admin';
-const players = [];
-// let savedPic = [];
 
 io.on('connection', function (socket) {
   console.log('Socket.io connected');
@@ -107,21 +111,13 @@ io.on('connection', function (socket) {
   });
 
 
-  // recieve savedPic from client
+  // recieve colored cell from client
   socket.on('paint', (foundCell) => {
-
   
-    //send changed array obj to client
+    //send back to everyone
     io.emit('paintedCell', foundCell);
-    
-    
-    io.emit('savedPic', foundCell);
- 
-      
-
+    io.emit('compare', foundCell)
   });
-
-
 
 
   //waiting for players to join
@@ -139,7 +135,7 @@ io.on('connection', function (socket) {
 });
 
 //when time is up
-socket.on("timeUp", (player) => {
+socket.on("timeUp", () => {
 
     //empty players array 
     players.splice(0,players.length);
@@ -177,7 +173,7 @@ socket.on("timeUp", (player) => {
     });
 
     //GET PIC TO COPY
-    socket.on("getFacitPic", (player) => {
+    socket.on("getFacitPic", (index) => {
         
         //get .json file
         fs.readFile('facit.json', (err, data) => {
@@ -186,9 +182,9 @@ socket.on("timeUp", (player) => {
             const facit = JSON.parse(data);
             
             //generate random index
-            let randomIndex = Math.floor(Math.random() * 5) 
-            let printFacit = facit[randomIndex];
-
+            //let randomIndex = Math.floor(Math.random() * 3) 
+            let printFacit = facit[index];
+console.log('facit picture:', printFacit);
             //send random pic array
             io.emit('printFacit', printFacit);
 
