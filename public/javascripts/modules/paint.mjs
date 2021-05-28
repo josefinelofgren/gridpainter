@@ -1,21 +1,15 @@
+
 const socket = io();
+let grid = [];
 
-//array to store all saved pics
-//need this one? allDrawnPics
-const allDrawnPics = [];
-let savedPic = [];
-
-// get foundCell with new color from server
+// get foundCell with new color from server and print
 socket.on('paintedCell', (foundCell) => {
-  //find element with same id as foundCell
-  let cellElement = document.getElementById(foundCell.id);
-  //change elements bg-color
-  cellElement.style.backgroundColor = foundCell.color;
+  //find element with same id as foundCell and change bg-color
+  document.getElementById(foundCell.id).style.backgroundColor = foundCell.color;
 });
 
 //genereate a grid structure
 function createGrid(canvasGrid, gridHeight, gridWidth) {
-  //get savedPic from app.js
 
   // Creates rows
   for (let row = 1; row <= gridHeight; row++) {
@@ -30,41 +24,37 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
       gridRow.appendChild(gridCell);
 
       //push name, cell id and color to array
-      savedPic.push({ name: '', id: gridCell.id, color: null });
-    }
-  }
-}
+     grid.push({ name: '', id: gridCell.id, color: null });
+    };
+  };
+};
 
 //save drawn pic
 function saveDrawnPic(input) {
 
-    if(input.value !== "") {
-
-        // replace "canvas" in name with input value
-        for (let obj in savedPic) {
-            let newName = input.value;
-            savedPic[obj].name = newName;
-        };
-
-        //send savedPic to server =>  allDrawnPics.json
-        fetch("http://localhost:3000/pic", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(savedPic)
-        });
-
-        //empty savedPic for next time 
-        // savedPic = [];
-        
-        //clear input field
-        input.value = "";
-
-    }else {
-        alert("Please enter a name")
+    // give grid array data
+    for (let cell in grid) {
+      let element = document.getElementById(grid[cell].id);
+      grid[cell].color = element.style.backgroundColor;
+      grid[cell].name = input.value; 
     };
 
+    console.log(grid);
+
+    //send grid to server =>  allDrawnPics.json
+    fetch("http://localhost:3000/pic", {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(grid)
+    });
+
+    // //empty grid for next time
+    // grid = [];
+    
+    //clear input field
+    input.value = "";
 };
 
 
@@ -85,11 +75,11 @@ function printSavedPics(target) {
             <li class="listItems" id="${allDrawnPics[index][0].name}">${allDrawnPics[index][0].name}</li>`
         );
       }
-
+      //click on chosen pic
       printList.addEventListener('click', ({target}) => {
         
         let clickedPic = target.id;
-        
+        //get index for array 
         let index = allDrawnPics.findIndex(
           (allDrawnPics) => allDrawnPics[0].name === clickedPic
         );
@@ -99,17 +89,17 @@ function printSavedPics(target) {
 
         //give input value of picture name
         document.getElementById("saveArray").value = allDrawnPics[index][0].name;
-
+        
+        //send array to server so it can send data back for print
         printArray.forEach((cell) => {
           //send foundCell with new color to server
-       
           socket.emit('paint', cell);
         });
        
       });
       
     });
-}
+};
 
 //print selected image/facit
 function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
@@ -117,6 +107,7 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
 
   // creates rows
   for (let row = 1; row <= gridHeight; row++) {
+  //  console.log('drawnPic[row]', drawnPic[row]);
     let gridRow = document.createElement('tr');
     gridRow.id = 'row' + row;
     gridRow.name = drawnPic[0].name;
@@ -131,7 +122,7 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
       console.log(gridCell);
 
       //find saved pics background color
-      const foundCell = drawnPic.find(({ id }) => id === gridCell.id);
+      const foundCell = drawnPic.find(( cell ) => cell.id === gridCell.id);
 
       console.log(foundCell);
 
@@ -163,18 +154,32 @@ function downState(target, color) {
 
 //to color cell
 function colorCell(target, color) {
+
   //if down is true
 
   if (down && target.id !== 'canvas') {
     //find cell and change color in array;
-    let foundCell = savedPic.find((i) => i.id === target.id);
-
-    foundCell.color = color;
-
+  
+    let foundCell = { name: '', id: target.id, color: color };
+    //document.getElementById(target.id).style.backgroundColor = color;
     //send foundCell with new color to server
     socket.emit('paint', foundCell);
   }
 }
+
+// Reset canvas for everyone
+socket.on('reset', () => {
+  
+  let gridCells = document.getElementsByTagName('td');
+  let item;
+
+  // set every gridcells backgroundcolor to null 
+  for(item of gridCells){
+    item.style.backgroundColor = null;
+  };
+});
+
+  
 
 export {
   createGrid,
@@ -183,5 +188,4 @@ export {
   printImage,
   downState,
   colorCell,
-  savedPic
 };

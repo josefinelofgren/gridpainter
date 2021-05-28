@@ -24,6 +24,23 @@ var jsonParser = bodyParser.json();
 
 
 
+
+const server = require('http').Server(app);
+const io = socketio(server);
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+const botName = 'Admin';
+const players = [];
+
+
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
 app.post('/pic', jsonParser, (req, res, next) => {
   fs.readFile('allDrawnPics.json', (err, data) => {
@@ -33,7 +50,7 @@ app.post('/pic', jsonParser, (req, res, next) => {
 
     //check for pic in allDrawnPics with same name as incoming
     let checkDoublet = allDrawnPics.findIndex(
-      (arr) => arr[0].name === req.body[0].name
+      (allDrawnPics) => allDrawnPics[0].name === req.body[0].name
     );
 
     //if pic doesnt already exist => push, else => replace
@@ -68,41 +85,13 @@ app.get('/pic', function (req, res, next) {
   });
 });
 
-const server = require('http').Server(app);
-const io = socketio(server);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-
-
-const botName = 'Admin';
-const players = [];
 
 io.on('connection', function (socket) {
-  console.log('Socket.io connected');
 
   // WHEN USER JOIN GAME
   socket.on('joinGame', ({ username, color }) => {
     // Join user
-
-
-    // function getRandomLetter() {
-    //     const letters = ["a", "b", "c", "d"];
-        
-    //     return letter;
-    // }
-    // console.log('letter', letter);
-
-
-
-
 
     const user = userJoin(socket.id, username, color);
     socket.join(user);
@@ -117,11 +106,22 @@ io.on('connection', function (socket) {
     );
   });
 
-  // recieve savedPic from client
+
+  // recieve colored cell from client
   socket.on('paint', (foundCell) => {
-    //send changed array obj to client
+  
+    //send back to everyone
     io.emit('paintedCell', foundCell);
+    io.emit('compare', foundCell)
   });
+
+ // reset canvas 
+  socket.on('reset', () => {
+
+    // send reseted canvas to everyone
+    io.emit('reset');
+  });
+
 
   //waiting for players to join
   socket.on("gameAwait", (player) => {
@@ -135,67 +135,57 @@ io.on('connection', function (socket) {
     //print players in client
     io.emit('printPlayers', players)
 
-});
+  });
 
-//when time is up
-socket.on("timeUp", (player) => {
+  //when time is up
+  socket.on("timeUp", () => {
 
-    //empty players array 
-    players.splice(0,players.length);
-    
-    // print players in client 
-    io.emit('printPlayers', players);
-    
-    //leaveGame
-    io.emit('leaveGame', players);
-
-});
-
-
-    //remove player on "stopBtn" 
-    socket.on("playerLeaving", (player) => {
-    
-        for( let i = 0; i < players.length; i++){ 
-                                
-            if ( players[i] === player) { 
-                players.splice(i, 1); 
-        
-            };
-        };
-        
-        // print players in client 
-        io.emit('printPlayers', players);
-
-        //if players.length === 0  => leaveGame
-        if(players.length === 0) {
+      //empty players array 
+      players.splice(0,players.length);
       
-            io.emit('leaveGame', players);
+      // print players in client 
+      io.emit('printPlayers', players);
+      
+      //leaveGame
+      io.emit('leaveGame', players);
 
-        };
+  });
+
+
+  //remove player on "stopBtn" 
+  socket.on("playerLeaving", (player) => {
+
+    //if player is in array, remove from array
+      for( let i = 0; i < players.length; i++){                
+        if ( players[i] === player) players.splice(i, 1); 
+      };
+      
+      // print players in client 
+      io.emit('printPlayers', players);
+
+      //if players.length === 0  => leaveGame
+      if(players.length === 0) io.emit('stopGame', players);
+
+  });
+
+  //GET PIC TO COPY
+  socket.on("getFacitPic", (index) => {
+      
+    //get .json file
+    fs.readFile('facit.json', (err, data) => {
+      if (err) console.log('err', err);
+
+      const facit = JSON.parse(data);
+      
+      //get random pic
+      let printFacit = facit[index];
+
+      //send random pic array
+      io.emit('printFacit', printFacit);
 
     });
 
-    let randomIndex = Math.floor(Math.random() * 5) 
-
-    //GET PIC TO COPY
-    socket.on("getFacitPic", (player) => {
-        
-        //get .json file
-        fs.readFile('facit.json', (err, data) => {
-            if (err) console.log('err', err);
-        
-            const facit = JSON.parse(data);
-            
-            //generate random index
-            let printFacit = facit[0];
-
-            //send random pic array
-            io.emit('printFacit', printFacit);
-
-        });
-
-    });
-
+  });
 
   // CHAT MESSAGES
   socket.on('chatMessage', (inputMsg) => {
@@ -215,11 +205,14 @@ socket.on("timeUp", (player) => {
     }
   });
 
+
   // PLAY GAME
   socket.on('playGame', ({ username, color }) => {
     const user = userJoin(socket.id, username, color);
     socket.join(user);
   });
+
+
 });
 
 module.exports = { app: app, server: server };

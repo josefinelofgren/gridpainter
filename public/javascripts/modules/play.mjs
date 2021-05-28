@@ -1,5 +1,5 @@
 import { username, color } from './user.mjs';
-import { printImage, savedPic } from '../modules/paint.mjs';
+import { printImage } from '../modules/paint.mjs';
 
 const socket = io();
 
@@ -11,7 +11,7 @@ socket.on('printPlayers', (players) => {
 
   for (let player in players) {
     printPlayers.insertAdjacentHTML('beforeend', `<li>${players[player]}</li>`);
-  }
+  };
 });
 
 
@@ -29,33 +29,34 @@ function awaitPlayers(target) {
     socket.emit('gameAwait', username);
 
     target.style.display = 'none';
-    target.parentNode.insertAdjacentHTML("afterbegin", `
-      <button id="stopBtn">Stop</button>
-      <ul id="printPlayers"></ul>`)
-
-    // start game if 4 players have pressed start button
+    target.parentNode.insertAdjacentHTML(
+      'afterbegin',
+      `<button class="canvas-btn" id="stopBtn">Stop</button>`
+    );
+      //if players are 4, begin game
     socket.on('beginGame', (players) => {
-      if (players.length === 1) {
-        socket.emit('getFacitPic', username);
-
+      if (players.length === 2) {
+        
+        //get a random nr for index and send with socket
+        let index = Math.floor(Math.random() * 3);
+        socket.emit('getFacitPic', (index));
+        //get picture arrya back
         socket.on('printFacit', (picture) => {
-
-          // run timer, when time is up -> compare facit grid with painted grid
-          runTimer(picture);
-          
-          // print facit grid 
+              
           document.getElementById('waitingForPlayers').innerHTML = null;
+         
           const facitGrid = document.getElementById('facit');
+          printImage(facitGrid, picture, 25, 25);
 
-          printImage(facitGrid, picture, 25, 25)
-        });
-
+          runTimer(picture);
+        });   
       } else {
         inputPressPlay();
-      }
+      };
     });
-  }
-}
+  };
+};
+
 
 //playBtn => start or stop game
 function runTimer(picture) {
@@ -63,10 +64,6 @@ function runTimer(picture) {
 
   const timer = document.getElementById('timer');
   let counter = 60;
-
-  // //find random image to copy
-  // let randomPic = findRandomPic(randomPics, facit);
-  // printImage(facitGrid, randomPic, 25, 25);
 
   //start timer
   const setTimer = setInterval(function () {
@@ -85,38 +82,52 @@ function runTimer(picture) {
 
     //run endTimer on click "Stop"
     document.getElementById('stopBtn').addEventListener('click', () => {
+      //swap play for stop button
       document.getElementById('stopBtn').style.display = 'none';
       document.getElementById('playBtn').style.display = 'block';
-
+      //send user that stopped to socket
       socket.emit('playerLeaving', username);
     });
   }, 1000);
 
   //end game on timeup or all click on stop
-  socket.on('leaveGame', (players) => {
+  socket.on('stopGame', (players) => {
+  
     clearInterval(setTimer);
-
-    //BUG!! PRINTING RESULT A MILLION TIMES
-    compare(randomPic, savedPic);
-
-    console.log(randomPic);
+    compare(randomPic);
   });
-}
+};
 
-function compare(randomPic, savedPic) {
+
+
+function compare(facitPic) {
   let x = 0;
+  let canvasPic = [];
+
+  //generate canvasPic from facitPic and with same id and length
+  for (let cell in facitPic) {
+    canvasPic.push({id: facitPic[cell].id, color: ""})
+  };
+
+  //get bg color from canvasGrid and push to canvasPic
+  for (let cell in canvasPic) {
+    let element = document.getElementById(canvasPic[cell].id);
+    canvasPic[cell].color = element.style.backgroundColor;
+  };
 
   //loop through picToCopy
-  for (let obj in randomPic) {
+  for (let cell in facitPic) {
     //find obj in createdGrid through id
-    const foundObj = savedPic.find(({ id }) => id === randomPic[obj].id);
+    const foundObj = canvasPic.find(({ id }) => id === facitPic[cell].id);
 
     //if picToCopy color == equivilant cell in createdGrid
-    if (randomPic[obj].color === foundObj.color) x++; //add +1 to every equal
-  }
-
+    if (facitPic[cell].color === foundObj.color) x++; //add +1 to every equal
+    if (facitPic[cell].color === null && foundObj.color === "") x++;// color is "" OR null - correct!
+  };
+  
+  //print result
   document.getElementById('waitingForPlayers').innerText = `Your picture is ${
-    (x / randomPic.length) * 100
+    (x / facitPic.length) * 100
   }% correct!`;
 }
 
