@@ -165,8 +165,8 @@ socket.on("timeUp", () => {
 
         //if players.length === 0  => leaveGame
         if(players.length === 0) {
-      
-            io.emit('leaveGame', players);
+      console.log('endgame');
+            io.emit('stopGame', players);
 
         };
 
@@ -184,7 +184,7 @@ socket.on("timeUp", () => {
             //generate random index
             //let randomIndex = Math.floor(Math.random() * 3) 
             let printFacit = facit[index];
-console.log('facit picture:', printFacit);
+
             //send random pic array
             io.emit('printFacit', printFacit);
 

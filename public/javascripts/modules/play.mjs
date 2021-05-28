@@ -36,17 +36,20 @@ function awaitPlayers(target) {
 
     socket.on('beginGame', (players) => {
       if (players.length === 4) {
-        runTimer();
+   
         let index = Math.floor(Math.random() * 3);
         socket.emit('getFacitPic', (index));
+
         socket.on('printFacit', (picture) => {
-        
+              
           document.getElementById('waitingForPlayers').innerHTML = null;
           const facitGrid = document.getElementById('facit');
-          console.log('facitgrid', facitGrid, "picture", picture); 
+          
           printImage(facitGrid, picture, 25, 25);
+          runTimer(picture);
         });
 
+      
       } else {
         inputPressPlay();
       }
@@ -55,12 +58,10 @@ function awaitPlayers(target) {
 }
 
 
-
-
 //playBtn => start or stop game
 function runTimer(picture) {
   let randomPic = picture;
-
+console.log('rand pic', randomPic);
   const timer = document.getElementById('timer');
   let counter = 60;
 
@@ -93,43 +94,46 @@ function runTimer(picture) {
   }, 1000);
 
   //end game on timeup or all click on stop
-  socket.on('leaveGame', (players) => {
-    clearInterval(setTimer);
+socket.on('stopGame', (players) => {
+  console.log('leabegaeme');
+  clearInterval(setTimer);
 
-    //BUG!! PRINTING RESULT A MILLION TIMES
-    //compare(randomPic);
+  //BUG!! PRINTING RESULT A MILLION TIMES
+  compare(randomPic);
+});
 
-    console.log(randomPic);
-  });
 }
 
-function compare(randomPic) {
+
+
+function compare(facitPic) {
   let x = 0;
+  let canvasPic = [];
+  console.log('canvasPic', canvasPic);
+  for (let cell in facitPic) {
+    canvasPic.push({id: facitPic[cell].id, color: ""})
+  };
 
-console.log('randomPic', randomPic);
-  socket.on('compare', (foundCell) => {
-    let index = compare.findIndex( ({ cell }) => cell.id === foundCell.id )
+  for (let cell in canvasPic) {
+    let element = document.getElementById(canvasPic[cell].id);
+    canvasPic[cell].color = element.style.backgroundColor;
 
-    if(index === undefined) {
-      compare.push(foundCell)
-    } else {
-      compare.slice(index, 1)
-    }
-  //compare is one of the pics
-  });
+  };
+  console.log('facitPic', facitPic);
 
 
   //loop through picToCopy
-  for (let obj in randomPic) {
+  for (let cell in facitPic) {
     //find obj in createdGrid through id
-    const foundObj = compare.find(({ id }) => id === randomPic[obj].id);
+    const foundObj = canvasPic.find(({ id }) => id === facitPic[cell].id);
 
     //if picToCopy color == equivilant cell in createdGrid
-    if (randomPic[obj].color === foundObj.color) x++; //add +1 to every equal
-  }
+    if (facitPic[cell].color === foundObj.color) x++; //add +1 to every equal
+    if (facitPic[cell].color === null && foundObj.color === "") x++;
+  };
 
   document.getElementById('waitingForPlayers').innerText = `Your picture is ${
-    (x / randomPic.length) * 100
+    (x / facitPic.length) * 100
   }% correct!`;
 }
 

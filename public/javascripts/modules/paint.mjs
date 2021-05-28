@@ -108,15 +108,14 @@ function printSavedPics(target) {
 //print selected image/facit
 function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
   canvasGrid.innerHTML = '';
-console.log('drawn pic in printImge', drawnPic);
-console.log('canvas', canvasGrid);
+
   // creates rows
   for (let row = 1; row <= gridHeight; row++) {
   //  console.log('drawnPic[row]', drawnPic[row]);
     let gridRow = document.createElement('tr');
     gridRow.id = 'row' + row;
     gridRow.name = drawnPic[0].name;
-    console.log('gridrowName', gridRow.name);
+
     canvasGrid.appendChild(gridRow);
 
     //create cells
@@ -127,11 +126,10 @@ console.log('canvas', canvasGrid);
 
       //find saved pics background color
       const foundCell = drawnPic.find(( cell ) => cell.id === gridCell.id);
-      console.log('drawnPic', foundCell);
-console.log('gridcell', gridCell);
+
       //apply color to new grid cell
       gridCell.style.backgroundColor = foundCell.color;
-      console.log('gridCell.style.backgroundColor', gridCell.style.backgroundColor);
+
     }
   }
 }
