@@ -11,7 +11,7 @@ socket.on('printPlayers', (players) => {
 
   for (let player in players) {
     printPlayers.insertAdjacentHTML('beforeend', `<li>${players[player]}</li>`);
-  }
+  };
 });
 
 
@@ -33,41 +33,37 @@ function awaitPlayers(target) {
       'afterbegin',
       `<button class="canvas-btn" id="stopBtn">Stop</button>`
     );
-
+      //if players are 4, begin game
     socket.on('beginGame', (players) => {
       if (players.length === 4) {
-   
+        
+        //get a random nr for index and send with socket
         let index = Math.floor(Math.random() * 3);
         socket.emit('getFacitPic', (index));
-
+        //get picture arrya back
         socket.on('printFacit', (picture) => {
               
           document.getElementById('waitingForPlayers').innerHTML = null;
+         
           const facitGrid = document.getElementById('facit');
-          
           printImage(facitGrid, picture, 25, 25);
-          runTimer(picture);
-        });
 
-      
+          runTimer(picture);
+        });   
       } else {
         inputPressPlay();
-      }
+      };
     });
-  }
-}
+  };
+};
 
 
 //playBtn => start or stop game
 function runTimer(picture) {
   let randomPic = picture;
-console.log('rand pic', randomPic);
+
   const timer = document.getElementById('timer');
   let counter = 60;
-
-  // //find random image to copy
-  // let randomPic = findRandomPic(randomPics, facit);
-  // printImage(facitGrid, randomPic, 25, 25);
 
   //start timer
   const setTimer = setInterval(function () {
@@ -86,41 +82,38 @@ console.log('rand pic', randomPic);
 
     //run endTimer on click "Stop"
     document.getElementById('stopBtn').addEventListener('click', () => {
+      //swap play for stop button
       document.getElementById('stopBtn').style.display = 'none';
       document.getElementById('playBtn').style.display = 'block';
-
+      //send user that stopped to socket
       socket.emit('playerLeaving', username);
     });
   }, 1000);
 
   //end game on timeup or all click on stop
-socket.on('stopGame', (players) => {
-  console.log('leabegaeme');
-  clearInterval(setTimer);
-
-  //BUG!! PRINTING RESULT A MILLION TIMES
-  compare(randomPic);
-});
-
-}
+  socket.on('stopGame', (players) => {
+  
+    clearInterval(setTimer);
+    compare(randomPic);
+  });
+};
 
 
 
 function compare(facitPic) {
   let x = 0;
   let canvasPic = [];
-  console.log('canvasPic', canvasPic);
+
+  //generate canvasPic from facitPic and with same id and length
   for (let cell in facitPic) {
     canvasPic.push({id: facitPic[cell].id, color: ""})
   };
 
+  //get bg color from canvasGrid and push to canvasPic
   for (let cell in canvasPic) {
     let element = document.getElementById(canvasPic[cell].id);
     canvasPic[cell].color = element.style.backgroundColor;
-
   };
-  console.log('facitPic', facitPic);
-
 
   //loop through picToCopy
   for (let cell in facitPic) {
@@ -129,9 +122,10 @@ function compare(facitPic) {
 
     //if picToCopy color == equivilant cell in createdGrid
     if (facitPic[cell].color === foundObj.color) x++; //add +1 to every equal
-    if (facitPic[cell].color === null && foundObj.color === "") x++;
+    if (facitPic[cell].color === null && foundObj.color === "") x++;// color is "" OR null - correct!
   };
-
+  
+  //print result
   document.getElementById('waitingForPlayers').innerText = `Your picture is ${
     (x / facitPic.length) * 100
   }% correct!`;

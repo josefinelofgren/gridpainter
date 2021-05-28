@@ -37,11 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
-
 const botName = 'Admin';
 const players = [];
-// let savedPic = [];
 
 
 //GET SAVEDPIC FROM CLIENT AND PUSH TO ALLDRAWNPICS.JSON
@@ -83,7 +80,7 @@ app.get('/pic', function (req, res, next) {
     if (err) console.log('err', err);
 
     const allDrawnPics = JSON.parse(data);
-console.log('all rwain', allDrawnPics);
+
     res.send(allDrawnPics);
   });
 });
@@ -91,7 +88,6 @@ console.log('all rwain', allDrawnPics);
 
 
 io.on('connection', function (socket) {
-  console.log('Socket.io connected');
 
   // WHEN USER JOIN GAME
   socket.on('joinGame', ({ username, color }) => {
@@ -132,72 +128,63 @@ io.on('connection', function (socket) {
     //print players in client
     io.emit('printPlayers', players)
 
-});
+  });
 
-//when time is up
-socket.on("timeUp", () => {
+  //when time is up
+  socket.on("timeUp", () => {
 
-    //empty players array 
-    players.splice(0,players.length);
-    
-    // print players in client 
-    io.emit('printPlayers', players);
-    
-    //leaveGame
-    io.emit('leaveGame', players);
+      //empty players array 
+      players.splice(0,players.length);
+      
+      // print players in client 
+      io.emit('printPlayers', players);
+      
+      //leaveGame
+      io.emit('leaveGame', players);
 
-});
+  });
 
 
-    //remove player on "stopBtn" 
-    socket.on("playerLeaving", (player) => {
-    
-        for( let i = 0; i < players.length; i++){ 
-                                
-            if ( players[i] === player) { 
-                players.splice(i, 1); 
-        
-            };
-        };
-        
-        // print players in client 
-        io.emit('printPlayers', players);
+  //remove player on "stopBtn" 
+  socket.on("playerLeaving", (player) => {
 
-        //if players.length === 0  => leaveGame
-        if(players.length === 0) {
-      console.log('endgame');
-            io.emit('stopGame', players);
+    //if player is in array, remove from array
+      for( let i = 0; i < players.length; i++){                
+        if ( players[i] === player) players.splice(i, 1); 
+      };
+      
+      // print players in client 
+      io.emit('printPlayers', players);
 
-        };
+      //if players.length === 0  => leaveGame
+      if(players.length === 0) io.emit('stopGame', players);
 
-    });
+  });
 
-    //GET PIC TO COPY
-    socket.on("getFacitPic", (index) => {
-        
-        //get .json file
-        fs.readFile('facit.json', (err, data) => {
-            if (err) console.log('err', err);
-        
-            const facit = JSON.parse(data);
-            
-            //generate random index
-            //let randomIndex = Math.floor(Math.random() * 3) 
-            let printFacit = facit[index];
+  //GET PIC TO COPY
+  socket.on("getFacitPic", (index) => {
+      
+    //get .json file
+    fs.readFile('facit.json', (err, data) => {
+      if (err) console.log('err', err);
 
-            //send random pic array
-            io.emit('printFacit', printFacit);
+      const facit = JSON.parse(data);
+      
+      //get random pic
+      let printFacit = facit[index];
 
-        });
+      //send random pic array
+      io.emit('printFacit', printFacit);
 
     });
+
+  });
 
 
   // CHAT MESSAGES
   socket.on('chatMessage', (inputMsg) => {
     const user = getCurrentUser(socket.id);
     io.emit('message', formatMessage(user.username, inputMsg, user.color));
-
   });
 
   // USER DISCONNECTS
@@ -218,14 +205,7 @@ socket.on("timeUp", () => {
     socket.join(user);
   });
 
-  // WHEN USER PRESS PLAY
-//   socket.on('play', () => {
-//     const user = getCurrentUser(socket.id);
-//     io.emit(
-//       'ready',
-//       formatMessage(user.username, `${user.username} is ready to play`)
-//     );
-//   });
+
 });
 
 module.exports = { app: app, server: server };
