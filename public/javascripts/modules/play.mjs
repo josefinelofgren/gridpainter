@@ -29,21 +29,33 @@ function awaitPlayers(target) {
     socket.emit('gameAwait', username);
 
     target.style.display = 'none';
-    target.parentNode.insertAdjacentHTML(
-      'afterbegin',
-      `<button class="canvas-btn" id="stopBtn">Stop</button>`
-    );
+    target.parentNode.insertAdjacentHTML("afterbegin", `
+      <button id="stopBtn">Stop</button>
+      <ul id="printPlayers"></ul>`)
 
     socket.on('beginGame', (players) => {
-      if (players.length === 4) {
-        runTimer();
+      if (players.length === 1) {
         socket.emit('getFacitPic', username);
 
+        runTimer();
+
+
         socket.on('printFacit', (picture) => {
+
+          // runTimer(picture);
+
+          console.log(picture)
+          
           document.getElementById('waitingForPlayers').innerHTML = null;
           const facitGrid = document.getElementById('facit');
-          printImage(facitGrid, picture, 25, 25);
+          
+          console.log(facitGrid);
+          
+          printImage(facitGrid, picture, 25, 25)
+
+          console.log(printImage(facitGrid, picture, 25, 25))
         });
+
       } else {
         inputPressPlay();
       }

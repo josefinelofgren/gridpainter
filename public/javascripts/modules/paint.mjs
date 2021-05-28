@@ -42,7 +42,7 @@ function saveDrawnPic(input) {
 
         // replace "canvas" in name with input value
         for (let obj in savedPic) {
-            let newName = savedPic[obj].name.replace("", input.value)
+            let newName = input.value;
             savedPic[obj].name = newName;
         };
 
@@ -56,7 +56,7 @@ function saveDrawnPic(input) {
         });
 
         //empty savedPic for next time 
-        //savedPic = [];
+        // savedPic = [];
         
         //clear input field
         input.value = "";
@@ -128,11 +128,16 @@ function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
       gridCell.id = gridRow.id + 'cell' + cell;
       gridRow.appendChild(gridCell);
 
+      console.log(gridCell);
+
       //find saved pics background color
       const foundCell = drawnPic.find(({ id }) => id === gridCell.id);
 
+      console.log(foundCell);
+
       //apply color to new grid cell
       gridCell.style.backgroundColor = foundCell.color;
+
     }
   }
 }

@@ -175,6 +175,8 @@ socket.on("timeUp", (player) => {
 
     });
 
+    let randomIndex = Math.floor(Math.random() * 5) 
+
     //GET PIC TO COPY
     socket.on("getFacitPic", (player) => {
         
@@ -185,8 +187,7 @@ socket.on("timeUp", (player) => {
             const facit = JSON.parse(data);
             
             //generate random index
-            let randomIndex = Math.floor(Math.random() * 5) 
-            let printFacit = facit[randomIndex];
+            let printFacit = facit[0];
 
             //send random pic array
             io.emit('printFacit', printFacit);
