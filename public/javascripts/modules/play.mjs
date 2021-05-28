@@ -3,14 +3,22 @@ import { printImage, savedPic } from '../modules/paint.mjs';
 
 const socket = io();
 
+let userInfo = [{ name: username, color: color }];
+
 //print players that are in the game
 socket.on('printPlayers', (players) => {
   const printPlayers = document.getElementById('usersReadyToPlay');
   printPlayers.innerHTML = '';
 
-  for (let player in players) {
-    printPlayers.insertAdjacentHTML('beforeend', `<li>${players[player]}</li>`);
-  }
+  players.forEach((player) => {
+    printPlayers.insertAdjacentHTML(
+      'beforeend',
+      `<li>${player[0].name} is ready!</li>`
+    );
+  });
+  // for (let player in players) {
+
+  // }
 });
 
 //find random pic function
@@ -24,7 +32,8 @@ function findRandomPic(randomPics, facit) {
 //wait for all players to join game
 function awaitPlayers(target) {
   if (target.id === 'playBtn') {
-    socket.emit('gameAwait', username);
+    console.log(userInfo);
+    socket.emit('gameAwait', userInfo);
 
     target.style.display = 'none';
     target.parentNode.insertAdjacentHTML(
@@ -36,7 +45,8 @@ function awaitPlayers(target) {
 
     // start game if 4 players have pressed start button
     socket.on('beginGame', (players) => {
-      if (players.length === 4) {
+      console.log(players);
+      if (players.length === 1) {
         socket.emit('getFacitPic', username);
 
         socket.on('printFacit', (picture) => {

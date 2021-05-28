@@ -9,6 +9,7 @@ const {
   getCurrentUser,
   userLeave,
   getRoomUsers,
+  assignColorsToFacit,
 } = require('./utils/users');
 const socketio = require('socket.io');
 const randomColor = require('randomcolor');
@@ -115,9 +116,10 @@ io.on('connection', function (socket) {
   });
 
   //waiting for players to join
-  socket.on('gameAwait', (player) => {
+  socket.on('gameAwait', (userInfo) => {
+    console.log(userInfo);
     //push player when click on "play"
-    players.push(player);
+    players.push(userInfo);
 
     //move if(length === 3)here?
     io.emit('beginGame', players);
@@ -139,12 +141,19 @@ io.on('connection', function (socket) {
   });
 
   //remove player on "stopBtn"
-  socket.on('playerLeaving', (player) => {
-    for (let i = 0; i < players.length; i++) {
-      if (players[i] === player) {
-        players.splice(i, 1);
+  socket.on('playerLeaving', (username) => {
+    console.log(players);
+
+    players.forEach((player) => {
+      if (player[0].name === username) {
+        players.splice(player, 1);
       }
-    }
+    });
+    // for (let i = 0; i < players.length; i++) {
+    //   if (players[i].name === player) {
+    //     players.splice(i, 1);
+    //   }
+    // }
 
     // print players in client
     io.emit('printPlayers', players);
@@ -167,6 +176,9 @@ io.on('connection', function (socket) {
 
       //generate random index
       let printFacit = facit[randomIndex];
+
+      //Function that goes true printFacit and sets the color that the players have. input players och printfacit
+      assignColorsToFacit(players, printFacit);
 
       //send random pic array
       io.emit('printFacit', printFacit);
