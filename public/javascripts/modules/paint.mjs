@@ -39,6 +39,8 @@ function saveDrawnPic(input) {
       grid[cell].name = input.value; 
     };
 
+    console.log(grid);
+
     //send grid to server =>  allDrawnPics.json
     fetch("http://localhost:3000/pic", {
         method: "post",
