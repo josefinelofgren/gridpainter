@@ -1,8 +1,5 @@
 import { username, color } from './user.mjs';
-import { printImage } from '../modules/paint.mjs';
-
 const socket = io();
-
 
 //print players that are in the game
 socket.on('printPlayers', (players) => {
@@ -21,7 +18,39 @@ function findRandomPic(randomPics, facit) {
   facit = [...randomPics[index]]; //user random number as index
 
   return facit;
-}
+};
+
+
+//print selected facit
+function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
+  canvasGrid.innerHTML = '';
+
+  // creates rows
+  for (let row = 1; row <= gridHeight; row++) {
+  //  console.log('drawnPic[row]', drawnPic[row]);
+    let gridRow = document.createElement('tr');
+    gridRow.id = 'row' + row;
+    gridRow.name = drawnPic[0].name;
+    canvasGrid.appendChild(gridRow);
+
+    //create cells
+    for (let cell = 1; cell <= gridWidth; cell++) {
+      let gridCell = document.createElement('td');
+      gridCell.id = gridRow.id + 'cell' + cell;
+      gridRow.appendChild(gridCell);
+
+      //find saved pics background color
+      const foundCell = drawnPic.find(( cell ) => cell.id === gridCell.id);
+
+      //apply color to new grid cell
+      gridCell.style.backgroundColor = foundCell.color;
+
+    };
+  };
+};
+
+
+
 
 //wait for all players to join game
 function awaitPlayers(target) {
@@ -124,7 +153,7 @@ function compare(facitPic) {
     if (facitPic[cell].color === foundObj.color) x++; //add +1 to every equal
     if (facitPic[cell].color === null && foundObj.color === "") x++;// color is "" OR null - correct!
   };
-  
+
   //print result
   document.getElementById('waitingForPlayers').innerText = `Your picture is ${
     (x / facitPic.length) * 100
@@ -155,4 +184,4 @@ function inputPressPlay() {
   ).innerHTML = `<i class="fa-spin fas fa-spinner"></i>Waiting for the other players..`;
 }
 
-export { findRandomPic, awaitPlayers, runTimer, compare, inputPressPlay };
+export { awaitPlayers };

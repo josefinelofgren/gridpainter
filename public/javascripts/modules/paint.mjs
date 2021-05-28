@@ -99,33 +99,6 @@ function printSavedPics(target) {
     });
 };
 
-//print selected image/facit
-function printImage(canvasGrid, drawnPic, gridHeight, gridWidth) {
-  canvasGrid.innerHTML = '';
-
-  // creates rows
-  for (let row = 1; row <= gridHeight; row++) {
-  //  console.log('drawnPic[row]', drawnPic[row]);
-    let gridRow = document.createElement('tr');
-    gridRow.id = 'row' + row;
-    gridRow.name = drawnPic[0].name;
-    canvasGrid.appendChild(gridRow);
-
-    //create cells
-    for (let cell = 1; cell <= gridWidth; cell++) {
-      let gridCell = document.createElement('td');
-      gridCell.id = gridRow.id + 'cell' + cell;
-      gridRow.appendChild(gridCell);
-
-      //find saved pics background color
-      const foundCell = drawnPic.find(( cell ) => cell.id === gridCell.id);
-
-      //apply color to new grid cell
-      gridCell.style.backgroundColor = foundCell.color;
-
-    }
-  }
-}
 
 ///////////////////// MOUSE BEHAVIOUR ///////////////////
 //declare down as false before mousedown so mouseover does not pain
@@ -164,7 +137,6 @@ export {
   createGrid,
   saveDrawnPic,
   printSavedPics,
-  printImage,
   downState,
   colorCell,
 };
