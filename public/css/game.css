@@ -44,6 +44,14 @@ h2 {
 h3 {
   margin: 6px;
 }
+.painting-canvas th,
+.painting-canvas td {
+  border: 1.2px solid black;
+}
+
+.painting-canvas {
+  border-collapse: collapse;
+}
 
 .input-field {
   margin-top: 10px;
@@ -93,7 +101,7 @@ h3 {
 }
 
 #playBtn,
-#doneBtn,
+#stopBtn,
 #optionsBtn {
   width: 100%;
   margin: 10px 0px;
@@ -119,8 +127,8 @@ i {
 .dropdown-content {
   display: none;
   padding-inline-start: 0px;
-  position: absolute;
-  bottom: 10px;
+  position: relative;
+  top: -22px;
   background-color: #f9f9f9;
   min-width: 180px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -132,7 +140,7 @@ i {
   padding: 5px;
   text-decoration: none;
   display: block;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
 }
 

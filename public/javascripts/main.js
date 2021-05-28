@@ -1,15 +1,8 @@
-const socket = io();
 import {inputMessage} from "./modules/chat.mjs";
-import {inputPressPlay} from "./modules/play.mjs";
 import {color} from "./modules/user.mjs";
-console.log('color', color);
-import { findRandomPic, playBtnAction, compare } from './modules/play.mjs';
-import {createGrid, saveDrawnPic, printSavedPics, printImage, downState, colorCell} from "./modules/paint.mjs";
-import { randomPics } from './modules/array.mjs';
+import { awaitPlayers} from './modules/play.mjs';
+import {createGrid, saveDrawnPic, printSavedPics, downState, colorCell} from "./modules/paint.mjs";
 
-
-const printListContainer = document.getElementById("printList");
-const facitGrid = document.querySelector('#facit');
 const canvasGrid = document.querySelector('#canvas');
 const paint = document.querySelector('#paint');
 const erase = document.querySelector('#erase');
@@ -18,20 +11,12 @@ const saveArray = document.querySelector('#saveArray');
 const printSavedPicsBtn = document.querySelector('#optionsBtn');
 
 
-//initial array for drawing pic
-//do we still need this one here?
-let savedPic = [];
-
 //user color
-let userColor;
-//array to store all saved pics
-const allDrawnPics = [];
+let userColor = color;
 
-//declare var
-let facit;
 
 //generate grid/canvas
-createGrid(canvasGrid, 2, 2);
+createGrid(canvasGrid, 25, 25);
 
 //set userColor as a color
 paint.addEventListener('click', () =>  userColor = color );
@@ -46,18 +31,14 @@ save.addEventListener("click", () => saveDrawnPic(saveArray)); // name from inpu
 printSavedPicsBtn.addEventListener("click", ({target}) => printSavedPics(target));
 
 //colorCell on mouseover
-canvas.addEventListener('mouseover', ({target}) =>  colorCell(target, userColor));
+canvas.addEventListener('mouseover', ({target}) => colorCell(target, userColor));
 
 // mousedown => down = true
 canvas.addEventListener('mousedown', ({target}) => downState(target, userColor));
 
+//on click "play/stop"
+document.getElementById('btnBox').addEventListener('click', ({target}) => awaitPlayers(target));
 
-document.getElementById('playBtn').addEventListener('click', ({target}) => {
-
-    inputPressPlay();
-    playBtnAction(target, savedPic);
-  
-});
 
 
 /////////////////////////// CHAT /////////////////////////// 
@@ -67,4 +48,3 @@ document.getElementById('btnMsg').addEventListener('click', function(e){
     e.preventDefault();
     inputMessage();
 });
-

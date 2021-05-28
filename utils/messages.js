@@ -7,7 +7,7 @@ function formatMessage(username, text, color){
         color,
         time: moment().format('h:mm a')
     }
-};
+}
 
 
-module.exports = {formatMessage};
+module.exports = formatMessage;
