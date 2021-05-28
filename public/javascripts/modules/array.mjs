@@ -42,7 +42,7 @@ let colorRed = 'red';
 let colorPurple = 'purple';
 let colorYellow = 'yellow';
 
-const randomPics = [
+const facitPics = [
   [
     { name: 'facit', id: 'row1cell1', color: colorWhite },
     { name: 'facit', id: 'row1cell2', color: colorWhite },
