@@ -111,6 +111,7 @@ io.on('connection', function (socket) {
   socket.on('reset', () => {
     // send reseted canvas to everyone
     io.emit('reset');
+    io.emit('resetBeforeGame');
   });
 
   //waiting for players to join

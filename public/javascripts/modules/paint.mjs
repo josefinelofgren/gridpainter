@@ -134,7 +134,10 @@ function colorCell(target, color) {
 
 // Reset canvas for everyone
 socket.on('reset', () => {
-  let gridCells = document.getElementsByTagName('td');
+
+  let paintingCanvas = document.getElementById('canvas');
+  let gridCells = paintingCanvas.getElementsByTagName('td');
+
   let item;
 
   // set every gridcells backgroundcolor to null
