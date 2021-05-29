@@ -27,23 +27,15 @@ function userLeave(id) {
 
 //Function assign right colors to printfacit
 function assignColorsToFacit(players, facit) {
-  facit.forEach((square) => {
-    if (square.color === null) {
-      for (let i = 0; i < players.length; i++) {
-        console.log(players[i][0].color);
-        if (i === 0) square.color = players[i][0].color;
-      }
-    }
-  });
-  // players.forEach((player) => {
-  //   console.log(player);
+  for (let i = 0; i < players.length; i++) {
+    facit.forEach((square) => {
+      if (square.color === 1 && i === 0) square.color = players[i][0].color;
+      if (square.color === 2 && i === 1) square.color = players[i][0].color;
+      if (square.color === 3 && i === 2) square.color = players[i][0].color;
+      if (square.color === 4 && i === 3) square.color = players[i][0].color;
+    });
+  }
 
-  //   facit.forEach((square) => {
-  //     if (square.color === null) {
-  //       square.color = player[0].color;
-  //     }
-  //   });
-  // });
   return facit;
 }
 

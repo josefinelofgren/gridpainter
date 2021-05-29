@@ -32,21 +32,20 @@ function findRandomPic(randomPics, facit) {
 //wait for all players to join game
 function awaitPlayers(target) {
   if (target.id === 'playBtn') {
-    console.log(userInfo);
     socket.emit('gameAwait', userInfo);
 
     target.style.display = 'none';
     target.parentNode.insertAdjacentHTML(
       'afterbegin',
       `
-      <button id="stopBtn">Stop</button>
+      <button class="canvas-btn" id="stopBtn">Stop</button>
       <ul id="printPlayers"></ul>`
     );
 
     // start game if 4 players have pressed start button
     socket.on('beginGame', (players) => {
       console.log(players);
-      if (players.length === 1) {
+      if (players.length === 4) {
         socket.emit('getFacitPic', username);
 
         socket.on('printFacit', (picture) => {
@@ -107,8 +106,6 @@ function runTimer(picture) {
 
     //BUG!! PRINTING RESULT A MILLION TIMES
     compare(randomPic, savedPic);
-
-    console.log(randomPic);
   });
 }
 

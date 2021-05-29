@@ -117,7 +117,6 @@ io.on('connection', function (socket) {
 
   //waiting for players to join
   socket.on('gameAwait', (userInfo) => {
-    console.log(userInfo);
     //push player when click on "play"
     players.push(userInfo);
 
@@ -142,18 +141,12 @@ io.on('connection', function (socket) {
 
   //remove player on "stopBtn"
   socket.on('playerLeaving', (username) => {
-    console.log(players);
-
+    //Remove right player
     players.forEach((player) => {
       if (player[0].name === username) {
         players.splice(player, 1);
       }
     });
-    // for (let i = 0; i < players.length; i++) {
-    //   if (players[i].name === player) {
-    //     players.splice(i, 1);
-    //   }
-    // }
 
     // print players in client
     io.emit('printPlayers', players);
