@@ -67,6 +67,7 @@ function awaitPlayers(target) {
     // start game if 4 players have pressed start button
     socket.on('beginGame', (players) => {
       if (players.length === 4) {
+        let index = Math.floor(Math.random() * 3);
         socket.emit('getFacitPic', index);
 
         socket.on('printFacit', (picture) => {
