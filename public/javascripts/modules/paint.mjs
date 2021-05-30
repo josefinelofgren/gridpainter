@@ -29,12 +29,6 @@ function createGrid(canvasGrid, gridHeight, gridWidth) {
 
 //save drawn pic
 function saveDrawnPic(input) {
-  // if (input.value !== '') {
-  //   // replace "canvas" in name with input value
-  //   for (let obj in savedPic) {
-  //     let newName = input.value;
-  //     savedPic[obj].name = newName;
-  //   }
 
   // give grid array data
   for (let cell in grid) {
@@ -51,9 +45,6 @@ function saveDrawnPic(input) {
     },
     body: JSON.stringify(grid),
   });
-
-  // //empty grid for next time
-  // grid = [];
 
   //clear input field
   input.value = '';
@@ -126,7 +117,7 @@ function colorCell(target, color) {
     //find cell and change color in array;
 
     let foundCell = { name: '', id: target.id, color: color };
-    //document.getElementById(target.id).style.backgroundColor = color;
+
     //send foundCell with new color to server
     socket.emit('paint', foundCell);
   }
