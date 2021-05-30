@@ -38,7 +38,7 @@ function saveDrawnPic(input) {
   }
 
   //send grid to server =>  allDrawnPics.json
-  fetch('http://localhost:3000/pic', {
+  fetch('https://gridpainter-josefinelofgren.herokuapp.com/pic', {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ function printSavedPics(target) {
   printList.innerHTML = '';
 
   //fetch allDrawnPics from .json
-  fetch('http://localhost:3000/pic')
+  fetch('https://gridpainter-josefinelofgren.herokuapp.com/pic')
     .then((res) => res.json())
     .then((allDrawnPics) => {
       for (let index in allDrawnPics) {
